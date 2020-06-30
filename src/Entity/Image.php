@@ -42,6 +42,11 @@ class Image
      */
     private $length;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $filetype;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,42 @@ class Image
     public function setLength(int $length): self
     {
         $this->length = $length;
+
+        return $this;
+    }
+
+    public function setFileAttributesWithImageFilePath($imagePath): self
+    {
+        $imgData = base64_encode(file_get_contents($imagePath));
+        $imgLength = filesize($imagePath);
+        $imgProps = getimagesize($imagePath);
+
+        $imgWidth = $imgProps[0];
+        $imgHeight = $imgProps[1];
+        $imgType = $imgProps["mime"];
+
+        $this->setData($imgData);
+        $this->setFiletype($imgType);
+        $this->setLength($imgLength);
+        $this->setWidth($imgWidth);
+        $this->setHeight($imgHeight);
+
+        return $this;
+    }
+
+    public function getParsedImageSrc()
+    {
+        return 'data:' . $this->getFiletype() . ';base64,' . $this->getData();
+    }
+
+    public function getFiletype(): ?string
+    {
+        return $this->filetype;
+    }
+
+    public function setFiletype(string $filetype): self
+    {
+        $this->filetype = $filetype;
 
         return $this;
     }
