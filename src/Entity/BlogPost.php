@@ -96,7 +96,12 @@ class BlogPost
 
     public function setEntered(\DateTimeInterface $entered): self
     {
-        $this->entered = $entered;
+        $this->entered = new \DateTime($entered->format('Y-m-d H:i:s'));
+        $this->modified = new \DateTime($entered->format('Y-m-d H:i:s'));
+        $minutes = $entered->format("i");
+        $entered->modify("+1 hour");
+        $entered->modify("-" . $minutes . " minutes");
+        $this->publishTime = $entered;
 
         return $this;
     }
@@ -123,5 +128,20 @@ class BlogPost
         $this->publishTime = $publishTime;
 
         return $this;
+    }
+
+    public function updateSlug() : bool
+    {
+        $hasUpdated = false;
+        if (!empty($this->getPublishTime()) && !empty($this->getTitle())) {
+            $slug = substr($this->getPublishTime()->format("Y-m-d H:i:s"), 0, 10);
+            $slug .= "_";
+            $title_slug = str_replace(" ", "_", $this->getTitle());
+            $slug .= $title_slug;
+            $this->setSlug($slug);
+            $hasUpdated = true;
+        }
+
+        return $hasUpdated;
     }
 }
