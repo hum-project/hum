@@ -29,4 +29,12 @@ class ImageTest extends TestCase
         $this->assertNotEmpty($image->getParsedImageSrc());
         $this->assertEquals("image/png", $image->getFiletype());
     }
+
+    /**
+     * @depends testSetFileAttributesWithImageFilePath
+     */
+    public function testHasAltField(Image $image)
+    {
+        $this->assertClassHasAttribute("alt", "App\Entity\Image");
+    }
 }
