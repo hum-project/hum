@@ -42,4 +42,12 @@ class HumTest extends TestCase
         $hum->setDate(new \DateTime("2100-01-01 10:00:00"));
         $this->assertNotEquals($aDate, $hum->getDate());
     }
+
+    public function testHasCorrectFields()
+    {
+        $this->assertClassHasAttribute('date', 'App\Entity\Hum');
+        $this->assertClassHasAttribute('language', 'App\Entity\Hum');
+        $this->assertClassHasAttribute('parent', 'App\Entity\Hum');
+        $this->assertClassHasAttribute('hums', 'App\Entity\Hum');
+    }
 }
