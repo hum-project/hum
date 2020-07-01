@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PolicyThemeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,16 @@ class PolicyTheme
      * @ORM\Column(type="text")
      */
     private $text;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Policy::class, mappedBy="policyTheme")
+     */
+    private $policies;
+
+    public function __construct()
+    {
+        $this->policies = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -69,6 +81,37 @@ class PolicyTheme
     public function setText(string $text): self
     {
         $this->text = $text;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Policy[]
+     */
+    public function getPolicies(): Collection
+    {
+        return $this->policies;
+    }
+
+    public function addPolicy(Policy $policy): self
+    {
+        if (!$this->policies->contains($policy)) {
+            $this->policies[] = $policy;
+            $policy->setPolicyTheme($this);
+        }
+
+        return $this;
+    }
+
+    public function removePolicy(Policy $policy): self
+    {
+        if ($this->policies->contains($policy)) {
+            $this->policies->removeElement($policy);
+            // set the owning side to null (unless already changed)
+            if ($policy->getPolicyTheme() === $this) {
+                $policy->setPolicyTheme(null);
+            }
+        }
 
         return $this;
     }
