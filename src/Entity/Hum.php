@@ -29,11 +29,28 @@ class Hum
      */
     private $questions;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="hums")
+     */
+    private $language;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Hum::class, inversedBy="hums")
+     */
+    private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Hum::class, mappedBy="parent")
+     */
+    private $hums;
+
+
     public function __construct()
     {
         $this->date = new \DateTime('now');
         $this->date->modify('+7 day');
         $this->questions = new ArrayCollection();
+        $this->hums = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,4 +100,60 @@ class Hum
 
         return $this;
     }
+
+    public function getLanguage(): ?Language
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?Language $language): self
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?self $parent): self
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getHums(): Collection
+    {
+        return $this->hums;
+    }
+
+    public function addHum(self $hum): self
+    {
+        if (!$this->hums->contains($hum)) {
+            $this->hums[] = $hum;
+            $hum->setParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHum(self $hum): self
+    {
+        if ($this->hums->contains($hum)) {
+            $this->hums->removeElement($hum);
+            // set the owning side to null (unless already changed)
+            if ($hum->getParent() === $this) {
+                $hum->setParent(null);
+            }
+        }
+
+        return $this;
+    }
+    
 }
