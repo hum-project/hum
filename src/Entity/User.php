@@ -41,6 +41,11 @@ class User implements UserInterface
      */
     private $blogPosts;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $username;
+
     public function __construct()
     {
         $this->blogPosts = new ArrayCollection();
@@ -151,6 +156,13 @@ class User implements UserInterface
                 $blogPost->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }
