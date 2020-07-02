@@ -37,6 +37,11 @@ class Policy
      */
     private $policyTheme;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Argument::class, cascade={"persist", "remove"})
+     */
+    private $argument;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Policy
     public function setPolicyTheme(?PolicyTheme $policyTheme): self
     {
         $this->policyTheme = $policyTheme;
+
+        return $this;
+    }
+
+    public function getArgument(): ?Argument
+    {
+        return $this->argument;
+    }
+
+    public function setArgument(?Argument $argument): self
+    {
+        $this->argument = $argument;
 
         return $this;
     }

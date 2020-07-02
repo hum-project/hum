@@ -18,6 +18,7 @@ class PolicyTest extends TestCase
         $this->assertClassHasAttribute('text', 'App\Entity\Policy');
         $this->assertClassHasAttribute('source', 'App\Entity\Policy');
         $this->assertClassHasAttribute('policyTheme', 'App\Entity\Policy');
+        $this->assertClassHasAttribute('argument', 'App\Entity\Policy');
     }
 
 }
