@@ -44,6 +44,16 @@ class Hum
      */
     private $hums;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Policy::class, cascade={"persist", "remove"})
+     */
+    private $policy;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Institution::class, cascade={"persist", "remove"})
+     */
+    private $institution;
+
 
     public function __construct()
     {
@@ -152,6 +162,30 @@ class Hum
                 $hum->setParent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPolicy(): ?Policy
+    {
+        return $this->policy;
+    }
+
+    public function setPolicy(?Policy $policy): self
+    {
+        $this->policy = $policy;
+
+        return $this;
+    }
+
+    public function getInstitution(): ?Institution
+    {
+        return $this->institution;
+    }
+
+    public function setInstitution(?Institution $institution): self
+    {
+        $this->institution = $institution;
 
         return $this;
     }
