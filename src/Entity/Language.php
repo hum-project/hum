@@ -29,9 +29,15 @@ class Language
      */
     private $hums;
 
+    /**
+     * @ORM\OneToMany(targetEntity=BlogPost::class, mappedBy="language")
+     */
+    private $blogPosts;
+
     public function __construct()
     {
         $this->hums = new ArrayCollection();
+        $this->blogPosts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -76,6 +82,37 @@ class Language
             // set the owning side to null (unless already changed)
             if ($hum->getLanguage() === $this) {
                 $hum->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BlogPost[]
+     */
+    public function getBlogPosts(): Collection
+    {
+        return $this->blogPosts;
+    }
+
+    public function addBlogPost(BlogPost $blogPost): self
+    {
+        if (!$this->blogPosts->contains($blogPost)) {
+            $this->blogPosts[] = $blogPost;
+            $blogPost->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlogPost(BlogPost $blogPost): self
+    {
+        if ($this->blogPosts->contains($blogPost)) {
+            $this->blogPosts->removeElement($blogPost);
+            // set the owning side to null (unless already changed)
+            if ($blogPost->getLanguage() === $this) {
+                $blogPost->setLanguage(null);
             }
         }
 

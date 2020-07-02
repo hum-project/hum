@@ -59,9 +59,25 @@ class BlogPost
      */
     private $blogImages;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="blogPosts")
+     */
+    private $language;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=BlogPost::class, inversedBy="blogPosts")
+     */
+    private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BlogPost::class, mappedBy="parent")
+     */
+    private $blogPosts;
+
     public function __construct()
     {
         $this->blogImages = new ArrayCollection();
+        $this->blogPosts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -199,6 +215,61 @@ class BlogPost
             // set the owning side to null (unless already changed)
             if ($blogImage->getBlogPost() === $this) {
                 $blogImage->setBlogPost(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getLanguage(): ?Language
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?Language $language): self
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?self $parent): self
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getBlogPosts(): Collection
+    {
+        return $this->blogPosts;
+    }
+
+    public function addBlogPost(self $blogPost): self
+    {
+        if (!$this->blogPosts->contains($blogPost)) {
+            $this->blogPosts[] = $blogPost;
+            $blogPost->setParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlogPost(self $blogPost): self
+    {
+        if ($this->blogPosts->contains($blogPost)) {
+            $this->blogPosts->removeElement($blogPost);
+            // set the owning side to null (unless already changed)
+            if ($blogPost->getParent() === $this) {
+                $blogPost->setParent(null);
             }
         }
 

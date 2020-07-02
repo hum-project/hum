@@ -69,4 +69,14 @@ class BlogPostTest extends TestCase
         $this->assertTrue($blogPost->updateSlug());
         $this->assertEquals("2020-07-20_Test_Title", $blogPost->getSlug());
     }
+
+    /**
+     * @depends testCanCreateBlogPost
+     */
+    public function testHasCorrectFields()
+    {
+        $this->assertClassHasAttribute('language', 'App\Entity\BlogPost');
+        $this->assertClassHasAttribute('parent', 'App\Entity\BlogPost');
+        $this->assertClassHasAttribute('blogPosts', 'App\Entity\BlogPost');
+    }
 }
