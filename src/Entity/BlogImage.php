@@ -37,6 +37,11 @@ class BlogImage
      */
     private $blogPost;
 
+    public function __construct()
+    {
+        $this->setOrdering(1);
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,13 @@ class BlogImage
     public function setBlogPost(?BlogPost $blogPost): self
     {
         $this->blogPost = $blogPost;
+
+        $blogImages = $blogPost->getBlogImages();
+        if (!empty($blogImages)) {
+            if (!in_array($this, array($blogImages))) {
+                $this->setOrdering(count($blogImages));
+            }
+        }
 
         return $this;
     }
