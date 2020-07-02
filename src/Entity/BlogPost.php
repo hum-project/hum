@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\BlogPostRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -51,6 +53,16 @@ class BlogPost
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="blogPosts")
      */
     private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BlogImage::class, mappedBy="blogPost")
+     */
+    private $blogImages;
+
+    public function __construct()
+    {
+        $this->blogImages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -158,6 +170,37 @@ class BlogPost
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BlogImage[]
+     */
+    public function getBlogImages(): Collection
+    {
+        return $this->blogImages;
+    }
+
+    public function addBlogImage(BlogImage $blogImage): self
+    {
+        if (!$this->blogImages->contains($blogImage)) {
+            $this->blogImages[] = $blogImage;
+            $blogImage->setBlogPost($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlogImage(BlogImage $blogImage): self
+    {
+        if ($this->blogImages->contains($blogImage)) {
+            $this->blogImages->removeElement($blogImage);
+            // set the owning side to null (unless already changed)
+            if ($blogImage->getBlogPost() === $this) {
+                $blogImage->setBlogPost(null);
+            }
+        }
 
         return $this;
     }
