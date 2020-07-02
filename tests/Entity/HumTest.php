@@ -49,5 +49,7 @@ class HumTest extends TestCase
         $this->assertClassHasAttribute('language', 'App\Entity\Hum');
         $this->assertClassHasAttribute('parent', 'App\Entity\Hum');
         $this->assertClassHasAttribute('hums', 'App\Entity\Hum');
+        $this->assertClassHasAttribute('policy', 'App\Entity\Hum');
+        $this->assertClassHasAttribute('institution', 'App\Entity\Hum');
     }
 }

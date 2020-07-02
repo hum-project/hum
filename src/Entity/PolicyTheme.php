@@ -39,9 +39,15 @@ class PolicyTheme
      */
     private $policies;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Institution::class, mappedBy="policyTheme")
+     */
+    private $institutions;
+
     public function __construct()
     {
         $this->policies = new ArrayCollection();
+        $this->institutions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -110,6 +116,37 @@ class PolicyTheme
             // set the owning side to null (unless already changed)
             if ($policy->getPolicyTheme() === $this) {
                 $policy->setPolicyTheme(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Institution[]
+     */
+    public function getInstitutions(): Collection
+    {
+        return $this->institutions;
+    }
+
+    public function addInstitution(Institution $institution): self
+    {
+        if (!$this->institutions->contains($institution)) {
+            $this->institutions[] = $institution;
+            $institution->setPolicyTheme($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInstitution(Institution $institution): self
+    {
+        if ($this->institutions->contains($institution)) {
+            $this->institutions->removeElement($institution);
+            // set the owning side to null (unless already changed)
+            if ($institution->getPolicyTheme() === $this) {
+                $institution->setPolicyTheme(null);
             }
         }
 
