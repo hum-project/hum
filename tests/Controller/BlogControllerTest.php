@@ -22,4 +22,12 @@ class BlogControllerTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCas
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
+
+    public function testAddNewsHasSubmitButton()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/news/add');
+        $this->assertNotEmpty($crawler->filter('button[type="submit"]'));
+    }
 }

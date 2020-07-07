@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\BlogPost;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -16,6 +17,7 @@ class BlogPostType extends AbstractType
             ->add('text')
             ->add('publishTime')
             ->add('language')
+            ->add('submit', SubmitType::class)
         ;
     }
 
