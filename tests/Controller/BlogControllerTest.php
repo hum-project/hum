@@ -30,4 +30,22 @@ class BlogControllerTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCas
         $crawler = $client->request('GET', '/news/add');
         $this->assertNotEmpty($crawler->filter('button[type="submit"]'));
     }
+
+    public function testControllerFillsInDefaultValues()
+    {
+        $client = static::createClient();
+
+        $crawler = $client->request('GET', '/news/add');
+        $client->submitForm('Submit', [
+            'blog_post[title]' => 'test',
+            'blog_post[text]' => 'test text',
+            'blog_post[publishTime][date][month]' => '7',
+            'blog_post[publishTime][date][day]' => '1',
+            'blog_post[publishTime][date][year]' => '2020',
+            'blog_post[publishTime][time][hour]' => '8',
+            'blog_post[publishTime][time][minute]' => '15'
+        ]);
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
 }
