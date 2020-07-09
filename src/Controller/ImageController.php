@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Image;
 use App\Form\ImageType;
+use App\Repository\ImageRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,10 +14,12 @@ class ImageController extends AbstractController
     /**
      * @Route("/image", name="image")
      */
-    public function index()
+    public function index(ImageRepository $repository)
     {
+        $images = $repository->findAll();
         return $this->render('image/index.html.twig', [
             'controller_name' => 'ImageController',
+            'images' => $images
         ]);
     }
 

@@ -133,7 +133,7 @@ class Image
 
     public function getParsedImageSrc()
     {
-        return 'data:' . $this->getFiletype() . ';base64,' . $this->getData();
+        return 'data:' . $this->getFiletype() . ';base64,' . $this->readData();
     }
 
     public function getFiletype(): ?string
@@ -146,5 +146,15 @@ class Image
         $this->filetype = $filetype;
 
         return $this;
+    }
+
+    public function readData()
+    {
+        $data = '';
+        while(!feof($this->getData())){
+            $data.= fread($this->getData(), $this->getLength());
+        }
+        rewind($this->getData());
+        return $data;
     }
 }
