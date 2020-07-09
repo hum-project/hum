@@ -31,10 +31,18 @@ class BlogController extends AbstractController
     public function addPost(Request $request, BlogPostRepository $repository)
     {
         $blogPost = new BlogPost();
+
         $form = $this->createForm(BlogPostType::class, $blogPost);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // make sure no empty blog image is being added
+            foreach ($blogPost->getBlogImages() as $image) {
+                if (!$image->getImage()) {
+                    $blogPost->removeBlogImage($image);
+                }
+            }
+
             $entitymanager = $this->getDoctrine()->getManager();
             $blogPost->setEntered(new \DateTime('now'));
             $blogPost->updateSlug();

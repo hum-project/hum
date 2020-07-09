@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\BlogImage;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,7 +34,6 @@ class BlogImageType extends AbstractType
                 'mapped' => false
             ])
             ->add('subtext')
-            ->add('submit', SubmitType::class)
         ;
     }
 
