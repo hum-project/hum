@@ -16,11 +16,11 @@
         {{ form_row(form.language) }}
 
         <div id="images-container">
-        <ul id="images-list" class="images" data-prototype="{{ form_widget(form.blogImages.vars.prototype)|e('html_attr') }}">
+        <ol id="images-list" class="images" data-prototype="{{ form_widget(form.blogImages.vars.prototype)|e('html_attr') }}">
             {% for image in form.blogImages %}
                 <li>{{ form_row(image) }}</li>
             {% endfor %}
-        </ul>
+        </ol>
         </div>
         {{ form_row(form.publishTime) }}
 

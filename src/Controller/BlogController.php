@@ -33,10 +33,6 @@ class BlogController extends AbstractController
     public function addPost(Request $request, BlogPostRepository $repository, SluggerInterface $slugger)
     {
         $blogPost = new BlogPost();
-        /*
-        $blogImage = new BlogImage();
-        $blogPost->addBlogImage($blogImage);
-        // */
 
         $form = $this->createForm(BlogPostType::class, $blogPost);
         $form->handleRequest($request);
@@ -74,6 +70,7 @@ class BlogController extends AbstractController
 
                 $image->setFileName($newFilename);
                 $image->setAlt($alt);
+                $entitymanager->persist($image);
 
                 if (!empty($subtext)) {
                     $blogImageEntity->setSubtext($subtext);
@@ -81,21 +78,46 @@ class BlogController extends AbstractController
 
                 $blogImageEntity->setImage($image);
                 $blogImageEntity->setBlogPost($blogPost);
+                $entitymanager->persist($blogImageEntity);
+
                 $blogPost->addBlogImage($blogImageEntity);
 
             }
 
             $blogPost->setEntered(new \DateTime('now'));
             $blogPost->updateSlug();
-            dump($blogPost);
-            /*
+
             $entitymanager->persist($blogPost);
             $entitymanager->flush();
-            // */
+
         }
         return $this->render('blog/new.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/news/{slug}", name="news_show")
+     */
+    public function show(BlogPost $blogPost)
+    {
+        $text = $blogPost->getText();
+        $filePath = $_SERVER['APP_ENV'] === 'dev' ? '/images' : $this->getParameter('images_view');
+        $blogImages = $blogPost->getBlogImages();
+        foreach ($blogImages as $blogImage) {
+            $pattern = '/\|\d\|/';
+            $replace = '<div class="img-container"> <img src="' . $filePath . '/'
+                . $blogImage->getImage()->getFileName()
+                . '" alt="' . $blogImage->getImage()->getAlt() . '" /><p>'. $blogImage->getSubtext() .'</p></div>';
+            $text = preg_replace($pattern, $replace, $text);
+        }
+        
+        return $this->render('blog/show.html.twig', [
+            "title" => $blogPost->getTitle(),
+            "publish_date" => $blogPost->getPublishTime(),
+            "text" => $text
+        ]);
+
     }
 
     /**
