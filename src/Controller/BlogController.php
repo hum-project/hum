@@ -16,6 +16,31 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 
 class BlogController extends AbstractController
 {
+
+    /**
+     * @Route("/news/edit/{slug}", name="news_edit", methods={"GET", "POST"})
+     */
+    public function editPost(Request $request, BlogPost $blogPost)
+    {
+        $form = $this->createForm(BlogPostType::class, $blogPost);
+
+        foreach ($blogPost->getBlogImages() as $blogImage) {
+            //$form->setData();
+        }
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+        }
+        $text = "heheh";
+        return $this->render('blog/show.html.twig', [
+            "title" => $blogPost->getTitle(),
+            "publish_date" => $blogPost->getPublishTime(),
+            "text" => $text
+        ]);
+    }
+
     /**
      * @Route("/news", name="news")
      */
@@ -116,38 +141,6 @@ class BlogController extends AbstractController
             "title" => $blogPost->getTitle(),
             "publish_date" => $blogPost->getPublishTime(),
             "text" => $text
-        ]);
-
-    }
-
-    /**
-     * @Route("/news/image/add"), name="news_image_add"), methods={"GET", "POST"})
-     */
-    public function addImage(Request $request)
-    {
-        $blogImage = new BlogImage();
-        $form = $this->createForm(BlogImageType::class, $blogImage);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entitymanager = $this->getDoctrine()->getManager();
-
-            $imageFile = $form->get('image')->getData();
-            $alt = $form->get('alt')->getData();
-            dump($imageFile);
-            $image = new Image();
-            $image->setFileAttributesWithImageFilePath($imageFile->getPathName());
-            $image->setFiletype($imageFile->getMimeType());
-            $image->setAlt($alt);
-            $entitymanager->persist($image);
-            $blogImage->setImage($image);
-
-            $entitymanager->persist($blogImage);
-            $entitymanager->flush();
-        }
-
-        return $this->render('blog/new_image.html.twig', [
-            'form' => $form->createView()
         ]);
 
     }
