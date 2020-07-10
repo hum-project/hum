@@ -23,29 +23,9 @@ class Image
     private $alt;
 
     /**
-     * @ORM\Column(type="blob")
-     */
-    private $data;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $width;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $height;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $length;
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
-    private $filetype;
+    private $fileName;
 
     public function getId(): ?int
     {
@@ -64,97 +44,15 @@ class Image
         return $this;
     }
 
-    public function getData()
+    public function getFileName(): ?string
     {
-        return $this->data;
+        return $this->fileName;
     }
 
-    public function setData($data): self
+    public function setFileName(string $fileName): self
     {
-        $this->data = $data;
+        $this->fileName = $fileName;
 
         return $this;
-    }
-
-    public function getWidth(): ?int
-    {
-        return $this->width;
-    }
-
-    public function setWidth(int $width): self
-    {
-        $this->width = $width;
-
-        return $this;
-    }
-
-    public function getHeight(): ?int
-    {
-        return $this->height;
-    }
-
-    public function setHeight(int $height): self
-    {
-        $this->height = $height;
-
-        return $this;
-    }
-
-    public function getLength(): ?int
-    {
-        return $this->length;
-    }
-
-    public function setLength(int $length): self
-    {
-        $this->length = $length;
-
-        return $this;
-    }
-
-    public function setFileAttributesWithImageFilePath($imagePath): self
-    {
-        $imgData = base64_encode(file_get_contents($imagePath));
-        $imgLength = filesize($imagePath);
-        $imgProps = getimagesize($imagePath);
-
-        $imgWidth = $imgProps[0];
-        $imgHeight = $imgProps[1];
-        $imgType = $imgProps["mime"];
-
-        $this->setData($imgData);
-        $this->setFiletype($imgType);
-        $this->setLength($imgLength);
-        $this->setWidth($imgWidth);
-        $this->setHeight($imgHeight);
-
-        return $this;
-    }
-
-    public function getParsedImageSrc()
-    {
-        return 'data:' . $this->getFiletype() . ';base64,' . $this->readData();
-    }
-
-    public function getFiletype(): ?string
-    {
-        return $this->filetype;
-    }
-
-    public function setFiletype(string $filetype): self
-    {
-        $this->filetype = $filetype;
-
-        return $this;
-    }
-
-    public function readData()
-    {
-        $data = '';
-        while(!feof($this->getData())){
-            $data.= fread($this->getData(), $this->getLength());
-        }
-        rewind($this->getData());
-        return $data;
     }
 }

@@ -90,6 +90,9 @@ class BlogImage
 
     public function setBlogPost(?BlogPost $blogPost): self
     {
+        if (empty($blogPost)) {
+            return $this;
+        }
         $this->blogPost = $blogPost;
 
         $blogImages = $blogPost->getBlogImages();
