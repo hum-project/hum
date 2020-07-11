@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello BlogController!{% endblock %}
+
+{% block body %}
+    <style>
+        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+    <div class="example-wrapper">
+        <h1>Add news</h1>
+        {{ form_start(form) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.text) }}
+        {{ form_row(form.language) }}
+
+        <div id="images-container">
+        <ol id="images-list" class="images" data-prototype="{{ form_widget(form.blogImages.vars.prototype)|e('html_attr') }}">
+            {% for image in blogPost.blogImages %}
+                <p>OH NOOOO</p>
+            {% endfor %}
+        </ol>
+        </div>
+        {{ form_row(form.publishTime) }}
+
+
+
+        {{ form_end(form) }}
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        var imagesContainer = document.getElementById('images-container');
+        var collectionContainer = document.getElementById('images-list');
+        collectionContainer.setAttribute('data-index', 1);
+
+        var addButton = document.createElement("button");
+        var addButtonText = document.createTextNode("Add image");
+
+        addButton.appendChild(addButtonText);
+        addButton.type = "button";
+        addButton.addEventListener('click',addImageForm)
+
+        imagesContainer.appendChild(addButton);
+
+        {% if  blogPost.blogImages is not empty %}
+            {% for blogImage in blogPost.blogImages %}
+                let fileName = '{{ blogImage.image.fileName }}';
+                let alt = '{{ blogImage.image.alt }}';
+                let subtext = '{{ blogImage.subtext }}';
+                setImageForm(fileName, alt, subtext);
+
+            {% endfor %}
+        {% endif %}
+
+        function addImageForm() {
+            let prototype = collectionContainer.dataset.prototype;
+            let index = collectionContainer.dataset.index;
+            let newForm = prototype;
+            newForm = newForm.replace(/__name__/g, index);
+            collectionContainer.dataset.index =  1 + parseInt(index);
+
+            let removeButton = document.createElement("button");
+            let removeButtonText = document.createTextNode("Remove image");
+            removeButton.appendChild(removeButtonText);
+            removeButton.type = "button";
+            removeButton.setAttribute("id", "remove_" + index);
+            removeButton.addEventListener('click', removeImageForm);
+
+            let newFormLi = document.createElement('li');
+            newFormLi.innerHTML = newForm;
+            newFormLi.appendChild(removeButton);
+            collectionContainer.appendChild(newFormLi);
+        }
+
+        function setImageForm(fileName, alt, subtext) {
+            addImageForm();
+            let imageInput = document.getElementById('blog_post_blogImages_' + (collectionContainer.dataset.index - 1)
+                +'_image');
+            let imageInputDiv = imageInput.parentElement;
+            imageInputDiv.innerHTML = '<p>' + fileName + '</p>';
+
+            let imageAlt = document.getElementById('blog_post_blogImages_' + (collectionContainer.dataset.index - 1)
+                + '_alt');
+            imageAlt.setAttribute('value', alt);
+
+            let imageSubtext = document.getElementById('blog_post_blogImages_' + (collectionContainer.dataset.index - 1)
+                + '_subtext');
+            imageSubtext.innerHTML = subtext;
+
+        }
+
+        function removeImageForm(event) {
+            let elementRemove = event.target;
+            let parentRemove = elementRemove.parentElement;
+            parentRemove.parentNode.removeChild(parentRemove);
+        }
+
+    </script>
+{% endblock %}

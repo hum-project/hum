@@ -18,26 +18,30 @@ class BlogController extends AbstractController
 {
 
     /**
-     * @Route("/news/edit/{slug}", name="news_edit", methods={"GET", "POST"})
+     * @Route("/news/{slug}/edit", name="news_edit", methods={"GET", "POST"})
      */
-    public function editPost(Request $request, BlogPost $blogPost)
+    public function editPost(BlogPost $blogPost, Request $request)
     {
         $form = $this->createForm(BlogPostType::class, $blogPost);
-
-        foreach ($blogPost->getBlogImages() as $blogImage) {
-            //$form->setData();
-        }
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
         }
-        $text = "heheh";
-        return $this->render('blog/show.html.twig', [
-            "title" => $blogPost->getTitle(),
-            "publish_date" => $blogPost->getPublishTime(),
-            "text" => $text
+
+        $blogImages = $blogPost->getBlogImages();
+        foreach ($blogImages as $blogImage) {
+            $image = $blogImage->getImage();
+            $alt = $image->getAlt();
+            dump($image);
+        }
+
+        dump($blogPost, $blogImages);
+
+        return $this->render('blog/edit.html.twig', [
+            "form" => $form->createView(),
+            "blogPost" => $blogPost
         ]);
     }
 
@@ -129,13 +133,26 @@ class BlogController extends AbstractController
         $text = $blogPost->getText();
         $filePath = $_SERVER['APP_ENV'] === 'dev' ? '/images' : $this->getParameter('images_view');
         $blogImages = $blogPost->getBlogImages();
+        $imageIndex = 0;
         foreach ($blogImages as $blogImage) {
-            $pattern = '/\|\d\|/';
-            $replace = '<div class="img-container"> <img src="' . $filePath . '/'
-                . $blogImage->getImage()->getFileName()
-                . '" alt="' . $blogImage->getImage()->getAlt() . '" /><p>'. $blogImage->getSubtext() .'</p></div>';
-            $text = preg_replace($pattern, $replace, $text);
+            $found = false;
+            for ($i = 0; $i < 25; $i++) {
+                $pattern = '/\|' . $imageIndex . '\|/';
+                if (strpos($text, '|' . $imageIndex . '|')) {
+                    $found = true;
+                    $replace = '<div class="img-container"> <img src="' . $filePath . '/'
+                        . $blogImage->getImage()->getFileName()
+                        . '" alt="' . $blogImage->getImage()->getAlt() . '" /><p>'. $blogImage->getSubtext() .'</p></div>';
+                    $text = preg_replace($pattern, $replace, $text);
+                }
+                $imageIndex++;
+                if ($found) {
+                    exit;
+                }
+            }
         }
+
+        dump($blogPost);
         
         return $this->render('blog/show.html.twig', [
             "title" => $blogPost->getTitle(),
