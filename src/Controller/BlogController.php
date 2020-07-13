@@ -17,33 +17,6 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class BlogController extends AbstractController
 {
 
-    /**
-     * @Route("/news/{slug}/edit", name="news_edit", methods={"GET", "POST"})
-     */
-    public function editPost(BlogPost $blogPost, Request $request)
-    {
-        $form = $this->createForm(BlogPostType::class, $blogPost);
-
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-
-        }
-
-        $blogImages = $blogPost->getBlogImages();
-        foreach ($blogImages as $blogImage) {
-            $image = $blogImage->getImage();
-            $alt = $image->getAlt();
-            dump($image);
-        }
-
-        dump($blogPost, $blogImages);
-
-        return $this->render('blog/edit.html.twig', [
-            "form" => $form->createView(),
-            "blogPost" => $blogPost
-        ]);
-    }
 
     /**
      * @Route("/news", name="news")
@@ -147,18 +120,45 @@ class BlogController extends AbstractController
                 }
                 $imageIndex++;
                 if ($found) {
-                    exit;
+                    break;
                 }
             }
         }
 
         dump($blogPost);
-        
-        return $this->render('blog/show.html.twig', [
+        return $this->render('blog/show.html.twig   ', [
             "title" => $blogPost->getTitle(),
             "publish_date" => $blogPost->getPublishTime(),
             "text" => $text
         ]);
 
+    }
+
+    /**
+     * @Route("/news/{slug}/edit", name="news_edit", methods={"GET", "POST"})
+     */
+    public function editPost(BlogPost $blogPost, Request $request)
+    {
+        $form = $this->createForm(BlogPostType::class, $blogPost);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+        }
+
+        $blogImages = $blogPost->getBlogImages();
+        foreach ($blogImages as $blogImage) {
+            $image = $blogImage->getImage();
+            $alt = $image->getAlt();
+            dump($image);
+        }
+
+        dump($blogPost, $blogImages);
+
+        return $this->render('blog/edit.html.twig', [
+            "form" => $form->createView(),
+            "blogPost" => $blogPost
+        ]);
     }
 }
