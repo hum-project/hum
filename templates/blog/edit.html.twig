@@ -17,9 +17,6 @@
 
         <div id="images-container">
         <ol id="images-list" class="images" data-prototype="{{ form_widget(form.blogImages.vars.prototype)|e('html_attr') }}">
-            {% for image in blogPost.blogImages %}
-                <p>OH NOOOO</p>
-            {% endfor %}
         </ol>
         </div>
         {{ form_row(form.publishTime) }}
@@ -32,9 +29,17 @@
 {% endblock %}
 {% block javascripts %}
     <script>
-        var imagesContainer = document.getElementById('images-container');
+        var imagesContainer = document.getElementById('blog_post_blogImages');
+
         var collectionContainer = document.getElementById('images-list');
-        collectionContainer.setAttribute('data-index', 1);
+        var prototypeString = collectionContainer.dataset.prototype;
+
+        var imageList = document.createElement("ol");
+        imageList.setAttribute('data-index', 1);
+        imageList.setAttribute('data-prototype', prototypeString);
+
+        imagesContainer.innerHTML = '';
+        imagesContainer.appendChild(imageList);
 
         var addButton = document.createElement("button");
         var addButtonText = document.createTextNode("Add image");
@@ -46,21 +51,25 @@
         imagesContainer.appendChild(addButton);
 
         {% if  blogPost.blogImages is not empty %}
+            let fileName = '';
+            let alt = '';
+            let subtext = '';
+            let index = 1;
             {% for blogImage in blogPost.blogImages %}
-                let fileName = '{{ blogImage.image.fileName }}';
-                let alt = '{{ blogImage.image.alt }}';
-                let subtext = '{{ blogImage.subtext }}';
-                setImageForm(fileName, alt, subtext);
-
+                fileName = '{{ blogImage.image.fileName }}';
+                alt = '{{ blogImage.image.alt }}';
+                subtext = '{{ blogImage.subtext }}';
+                setImageForm(index, fileName, alt, subtext);
+                index++;
             {% endfor %}
         {% endif %}
 
         function addImageForm() {
-            let prototype = collectionContainer.dataset.prototype;
-            let index = collectionContainer.dataset.index;
+            let prototype = prototypeString;
+            let index = imageList.dataset.index;
             let newForm = prototype;
             newForm = newForm.replace(/__name__/g, index);
-            collectionContainer.dataset.index =  1 + parseInt(index);
+            imageList.dataset.index =  1 + parseInt(index);
 
             let removeButton = document.createElement("button");
             let removeButtonText = document.createTextNode("Remove image");
@@ -72,22 +81,26 @@
             let newFormLi = document.createElement('li');
             newFormLi.innerHTML = newForm;
             newFormLi.appendChild(removeButton);
-            collectionContainer.appendChild(newFormLi);
+            imageList.appendChild(newFormLi);
         }
 
-        function setImageForm(fileName, alt, subtext) {
+        function setImageForm(index, fileName, alt, subtext) {
             addImageForm();
-            let imageInput = document.getElementById('blog_post_blogImages_' + (collectionContainer.dataset.index - 1)
-                +'_image');
+            let objectIndex = index;
+            let imageInput = document.getElementById('blog_post_blogImages_' + objectIndex +'_image');
             let imageInputDiv = imageInput.parentElement;
-            imageInputDiv.innerHTML = '<p>' + fileName + '</p>';
+            imageInputDiv.innerHTML =
+                '<input type="hidden" id="blog_post_blogImages_'+ objectIndex +'_image"'
+                + 'name="blog_post[blogImages]['+ objectIndex +'][image]" value="' + fileName +'">';
+            let imageInputP = document.createElement('p');
+            let pText = document.createTextNode(fileName);
+            imageInputP.appendChild(pText);
+            imageInputDiv.appendChild(imageInputP);
 
-            let imageAlt = document.getElementById('blog_post_blogImages_' + (collectionContainer.dataset.index - 1)
-                + '_alt');
+            let imageAlt = document.getElementById('blog_post_blogImages_' + objectIndex + '_alt');
             imageAlt.setAttribute('value', alt);
 
-            let imageSubtext = document.getElementById('blog_post_blogImages_' + (collectionContainer.dataset.index - 1)
-                + '_subtext');
+            let imageSubtext = document.getElementById('blog_post_blogImages_' + objectIndex + '_subtext');
             imageSubtext.innerHTML = subtext;
 
         }
