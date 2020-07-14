@@ -1,0 +1,18 @@
+
+<div class="posts-list">
+    <ul>
+    {% for post in posts %}
+        <li><p>
+            {{ post.title }}
+            <a href="{{ path('news_show', {slug: post.slug}) }}">View</a>
+            <a href="{{ path('news_edit', {slug: post.slug}) }}">Edit</a>
+            Languages: {{ post.language.name }}
+            {% for child in post.blogPosts %}
+                {{ child.language.name }}
+            {% endfor %}
+            <a href="{{ path('news_add_child', {slug: post.slug}) }}">Add language</a>
+
+        </p></li>
+    {% endfor %}
+    </ul>
+</div>

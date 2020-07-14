@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\BlogPost;
+use App\Entity\Language;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,24 @@ class BlogPostRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, BlogPost::class);
+    }
+
+    /**
+     * @return BlogPost[]
+     */
+    public function findAllEnglish()
+    {
+        $languageRepository = $this->getEntityManager()->getRepository(Language::class);
+        $english = $languageRepository->findOneByName('English');
+
+        return  $this->createQueryBuilder('b')
+            ->andWhere('b.language = :lang')
+            ->setParameter('lang', $english)
+            ->orderBy('b.publishTime', 'DESC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
     }
 
     // /**
