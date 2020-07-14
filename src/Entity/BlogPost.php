@@ -171,7 +171,7 @@ class BlogPost
             $slug .= "_";
             $title_slug = str_replace(" ", "_", $this->getTitle());
             $slug .= $title_slug;
-            $this->setSlug($slug);
+            $this->setSlug(urlencode($slug));
             $hasUpdated = true;
         }
 

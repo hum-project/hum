@@ -100,12 +100,84 @@ class BlogController extends AbstractController
     }
 
     /**
+     * @Route("/news/{slug}/add-child", name="news_add_child", methods={"GET", "POST"})
+     */
+    public function addChild(BlogPost $parent, Request $request, SluggerInterface $slugger)
+    {
+        $blogPost = new BlogPost();
+        $blogPost->setParent($parent);
+
+        $form = $this->createForm(BlogPostType::class, $blogPost);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entitymanager = $this->getDoctrine()->getManager();
+
+            // make sure no empty blog image is being added
+
+            foreach ($form->get('blogImages') as $blogImage) {
+                $blogImageEntity = new BlogImage();
+
+                $imageFile = $blogImage->get('image')->getData();
+                dump($imageFile);
+                $alt = $blogImage->get('alt')->getData();
+                $subtext = $blogImage->get('subtext')->getData();
+
+                $image = new Image();
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+                // Move the file to the directory where images are stored
+
+
+                try {
+                    $imageFile->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                    $errors[] = $e;
+                }
+
+                $image->setFileName($newFilename);
+                $image->setAlt($alt);
+                $entitymanager->persist($image);
+
+                if (!empty($subtext)) {
+                    $blogImageEntity->setSubtext($subtext);
+                }
+
+                $blogImageEntity->setImage($image);
+                $blogImageEntity->setBlogPost($blogPost);
+                $entitymanager->persist($blogImageEntity);
+
+                $blogPost->addBlogImage($blogImageEntity);
+
+            }
+
+            $blogPost->setEntered(new \DateTime('now'));
+            $blogPost->updateSlug();
+
+            $entitymanager->persist($blogPost);
+            $entitymanager->flush();
+
+        }
+        return $this->render('blog/new.html.twig', [
+            'form' => $form->createView(),
+            'blogPost' => $blogPost,
+            'hasParent' => true
+        ]);
+    }
+    /**
      * @Route("/news/{slug}", name="news_show")
      */
     public function show(BlogPost $blogPost)
     {
         $text = $blogPost->getText();
-        $filePath = $_SERVER['APP_ENV'] === 'dev' ? '/images' : $this->getParameter('images_view');
+        $filePath = $_SERVER['APP_ENV'] === 'dev' ? '/uploads/images' : $this->getParameter('images_view');
         $blogImages = $blogPost->getBlogImages();
         $imageIndex = 0;
         foreach ($blogImages as $blogImage) {
@@ -152,6 +224,7 @@ class BlogController extends AbstractController
 
         $form->handleRequest($request);
 
+        $filePath = $_SERVER['APP_ENV'] === 'dev' ? 'uploads/images' : $this->getParameter('images_view');
 
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -166,8 +239,6 @@ class BlogController extends AbstractController
             dump($blogInputs, $request);
             $currentBlogImages = $form->get('blogImages');
             $prevBlogImages = $blogPost->getBlogImages();
-
-            $filePath = $_SERVER['APP_ENV'] === 'dev' ? 'images' : $this->getParameter('images_view');
 
             // Update or remove images
             foreach ($prevBlogImages as $prevBlogImage) {
@@ -250,11 +321,12 @@ class BlogController extends AbstractController
             $entitymanager->flush();
         }
 
-
         return $this->render('blog/edit.html.twig', [
             "form" => $form->createView(),
             "blogPost" => $blogPost,
-            "messages" => $messages
+            "messages" => $messages,
+            "hasParent" => !empty($blogPost->getParent()),
+            "filePath" => $filePath
         ]);
     }
 }

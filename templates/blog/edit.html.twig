@@ -1,15 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BlogController!{% endblock %}
+{% block title %}Hum Admin - Edit News Post{% endblock %}
 
 {% block body %}
     <style>
-        .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-        .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+        .form-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .form-wrapper code { background: #F5F5F5; padding: 2px 6px; }
     </style>
 
-    <div class="example-wrapper">
-        <h1>Add news</h1>
+    <div class="form-wrapper">
+        {% if hasParent %}
+            <h1>Add translation</h1>
+        {% else %}
+            <h1>Add news</h1>
+        {% endif %}
         {{ form_start(form) }}
         {{ form_row(form.title) }}
         {{ form_row(form.text) }}
@@ -24,6 +28,22 @@
 
 
         {{ form_end(form) }}
+        <div class="translations-area">
+            {% if hasParent %}
+                <a href="{{ path('news_edit', {slug: blogPost.parent.slug}) }}"><h2>Edit parent post. [{{ blogPost.parent.language.name }}]</h2></a>
+                {% include 'blog/_raw.html.twig' with {'post': blogPost.parent} %}
+            {% else %}
+                {% if blogPost.blogPosts is empty %}
+                    <a href="{{ path('news_add_child', {slug: blogPost.slug}) }}">Add a translation.</a>
+                {% else %}
+                    {% for post in blogPost.blogPosts %}
+                        <a href="{{ path('news_edit', {slug: post.slug}) }}" ><h2>Edit translation [{{ post.language.name }}]</h2></a>
+                        {% include 'blog/_raw.html.twig' with {'post': post} %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        </div>
+
 
     </div>
 {% endblock %}
@@ -102,6 +122,11 @@
 
             let imageSubtext = document.getElementById('blog_post_blogImages_' + objectIndex + '_subtext');
             imageSubtext.innerHTML = subtext;
+
+            let imgElement = document.createElement('img');
+            imgElement.setAttribute('src', '/{{ filePath }}/' + fileName );
+            imgElement.setAttribute('alt', alt);
+            imageInputDiv.appendChild(imgElement);
 
         }
 

@@ -11,7 +11,7 @@
 <div class="example-wrapper">
     <h1>Latest news</h1>
     {% for post in news %}
-        <p class="news">{{ post.title }}</p>
+        <p class="news"><a href="{{ path('news_show', {slug: post.slug}) }}">{{ post.title }}</a></p>
     {% endfor %}
     {% if news is empty %}
         <p>No news to share</p>

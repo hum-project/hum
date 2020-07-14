@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hum - news{% endblock %}
+
+{% block body %}
+
+
+<div class="raw-post">
+    <h1>{{ post.title }}</h1>
+    <time>{{ post.publishTime|date("d/m/Y") }}</time>
+    <div>{{ post.text|raw }}</div>
+    {% if post.blogImages is not empty %}
+        <h2>Images</h2>
+        <ol>
+        {% for image in post.blogImages %}
+            <li>
+                <p>{{ image.image.fileName }}</p>
+                <img src="/{{ filePath }}/{{ image.image.fileName }}" alt="{{ image.image.alt }}" />
+                <p>{{ image.image.alt }}</p>
+                <p>{{ image.subText }}</p>
+
+            </li>
+        {% endfor %}
+        </ol>
+    {% else %}
+        <p>No images.</p>
+    {% endif %}
+</div>
+{% endblock %}
