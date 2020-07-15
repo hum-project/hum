@@ -1,10 +1,3 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Hum - news{% endblock %}
-
-{% block body %}
-
-
 <div class="raw-post">
     <h1>{{ post.title }}</h1>
     <time>{{ post.publishTime|date("d/m/Y") }}</time>
@@ -26,4 +19,3 @@
         <p>No images.</p>
     {% endif %}
 </div>
-{% endblock %}

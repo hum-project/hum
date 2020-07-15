@@ -74,10 +74,16 @@ class BlogPost
      */
     private $blogPosts;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isReleasable;
+
     public function __construct()
     {
         $this->blogImages = new ArrayCollection();
         $this->blogPosts = new ArrayCollection();
+        $this->isReleasable = false;
     }
 
     public function getId(): ?int
@@ -272,6 +278,18 @@ class BlogPost
                 $blogPost->setParent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIsReleasable(): ?bool
+    {
+        return $this->isReleasable;
+    }
+
+    public function setIsReleasable(bool $isReleasable): self
+    {
+        $this->isReleasable = $isReleasable;
 
         return $this;
     }

@@ -23,14 +23,14 @@ class BlogPostRepository extends ServiceEntityRepository
     /**
      * @return BlogPost[]
      */
-    public function findAllEnglish()
+    public function findAllByEnglish()
     {
         $languageRepository = $this->getEntityManager()->getRepository(Language::class);
         $english = $languageRepository->findOneByName('English');
 
         return  $this->createQueryBuilder('b')
-            ->andWhere('b.language = :lang')
-            ->setParameter('lang', $english)
+            ->andWhere('b.language = :val')
+            ->setParameter('val', $english)
             ->orderBy('b.publishTime', 'DESC')
             ->setMaxResults(10)
             ->getQuery()

@@ -13,7 +13,7 @@ class AdminController extends AbstractController
      */
     public function index(BlogPostRepository $blogPostRepository)
     {
-        $blogPosts = $blogPostRepository->findAllEnglish();
+        $blogPosts = $blogPostRepository->findAllByEnglish();
         return $this->render('admin/index.html.twig', [
             'blogPosts' => $blogPosts
         ]);

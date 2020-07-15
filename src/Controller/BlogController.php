@@ -23,7 +23,7 @@ class BlogController extends AbstractController
      */
     public function index(BlogPostRepository $repository)
     {
-        $news = $repository->findAll();
+        $news = $repository->findAllByEnglish();
         return $this->render('blog/index.html.twig', [
             'news' => $news,
         ]);
@@ -326,6 +326,40 @@ class BlogController extends AbstractController
             "blogPost" => $blogPost,
             "messages" => $messages,
             "hasParent" => !empty($blogPost->getParent()),
+            "filePath" => $filePath
+        ]);
+    }
+
+    /**
+     * @Route("news/{slug}/release", name="news_release", methods={"GET", "POST"})
+     */
+    public function releasePost(BlogPost $blogPost, Request $request)
+    {
+        $messages = [];
+
+        $blogImages = $blogPost->getBlogImages();
+        foreach ($blogImages as $blogImage) {
+            $image = $blogImage->getImage();
+            $alt = $image->getAlt();
+        }
+
+        $filePath = $_SERVER['APP_ENV'] === 'dev' ? 'uploads/images' : $this->getParameter('images_view');
+
+        if ('POST' === $request->getMethod()) {
+            $entitymanager = $this->getDoctrine()->getManager();
+
+            $blogPost->setIsReleasable(!$blogPost->getIsReleasable());
+            $entitymanager->persist($blogPost);
+            $entitymanager->flush();
+        }
+
+        if (!empty($blogPost->getParent())) {
+            $blogPost = $blogPost->getParent();
+        }
+
+        return $this->render('blog/release.html.twig', [
+            "blogPost" => $blogPost,
+            "messages" => $messages,
             "filePath" => $filePath
         ]);
     }
