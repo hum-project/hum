@@ -19,7 +19,7 @@ class AdminControllerTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCa
         $crawler = $client->request('GET', '/admin');
 
         $this->assertNotEmpty($crawler->filter('.news-list'),
-            'Admin page should contain a section with a html class \'news\'');
+            'Admin page should contain a section with a html class \'news-list\'');
     }
 
 }

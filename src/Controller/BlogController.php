@@ -23,7 +23,7 @@ class BlogController extends AbstractController
      */
     public function index(BlogPostRepository $repository)
     {
-        $news = $repository->findAllByEnglish();
+        $news = $repository->getPostsByLanguageName('English');
         return $this->render('blog/index.html.twig', [
             'news' => $news,
         ]);

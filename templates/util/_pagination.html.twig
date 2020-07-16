@@ -1,0 +1,26 @@
+{# Add beginning #}
+{% if currentPage > 1 %}
+    <a href="{{ path(path, {page: 1})}}"> |< </a>
+{% endif %}
+
+{# Add middle #}
+{% if currentPage > 2 %}
+    <a href="{{ path(path, {page: currentPage - 2})}}"> {{ currentPage - 2 }} </a>
+    <a href="{{ path(path, {page: currentPage - 1})}}"> {{ currentPage - 1 }} </a>
+{% elseif currentPage > 1 %}
+    <a href="{{ path(path, {page: currentPage - 1})}}"> {{ currentPage - 1 }} </a>
+{% endif %}
+
+    <a class="current-page" href="{{ path(path, {page: currentPage})}}"> {{ currentPage}} </a>
+
+{% if pages > currentPage + 2 %}
+    <a href="{{ path(path, {page: currentPage + 1})}}"> {{ currentPage + 1 }} </a>
+    <a href="{{ path(path, {page: currentPage + 2})}}"> {{ currentPage + 2 }} </a>
+{% elseif pages > currentPage + 1 %}
+    <a href="{{ path(path, {page: currentPage + 1})}}"> {{ currentPage + 1 }} </a>
+{% endif %}
+
+{# Add ending #}
+{% if pages > 1 and pages != currentPage %}
+    <a href="{{ path(path, {page: pages})}}"> >| </a> ({{ pages }})
+{% endif %}

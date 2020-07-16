@@ -23,19 +23,47 @@ class BlogPostRepository extends ServiceEntityRepository
     /**
      * @return BlogPost[]
      */
-    public function findAllByEnglish()
+    public function getPostsByLanguageName($languageName, $page = 1, $results = 10)
     {
         $languageRepository = $this->getEntityManager()->getRepository(Language::class);
-        $english = $languageRepository->findOneByName('English');
+        $language = $languageRepository->findOneByName($languageName);
+
+        $startIndex = ($page - 1) * $results;
 
         return  $this->createQueryBuilder('b')
             ->andWhere('b.language = :val')
-            ->setParameter('val', $english)
+            ->setParameter('val', $language)
             ->orderBy('b.publishTime', 'DESC')
-            ->setMaxResults(10)
+            ->setFirstResult($startIndex)
+            ->setMaxResults($results)
             ->getQuery()
             ->getResult()
-        ;
+            ;
+    }
+
+    public function getPageCountByLanguageName($languageName, $resultsPerPage = 10)
+    {
+        $languageRepository = $this->getEntityManager()->getRepository(Language::class);
+        $language = $languageRepository->findOneByName($languageName);
+
+        $count = $this->getTotalByLanguageName($languageName);
+        $pages = ceil($count/$resultsPerPage);
+
+        return (int)$pages;
+    }
+
+    public function getTotalByLanguageName($languageName)
+    {
+        $languageRepository = $this->getEntityManager()->getRepository(Language::class);
+        $language = $languageRepository->findOneByName($languageName);
+
+        return  $this->createQueryBuilder('b')
+            ->andWhere('b.language = :val')
+            ->setParameter('val', $language)
+            ->select('COUNT(b.language) as num')
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
     }
 
     // /**

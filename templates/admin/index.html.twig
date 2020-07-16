@@ -11,6 +11,7 @@
 <div class="example-wrapper">
     <div class="news-list">
         {% include 'blog/_list.html.twig' with {'posts': blogPosts} %}
+        {% include 'util/_pagination.html.twig' with {'currentPage': currentPage, 'pages': pages, 'path': 'admin_posts_page'} %}
     </div>
 </div>
 {% endblock %}
