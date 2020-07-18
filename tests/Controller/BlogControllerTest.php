@@ -12,7 +12,7 @@ class BlogControllerTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCas
         $crawler = $client->request('GET', '/news');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('.news')->count());
+        $this->assertGreaterThan(0, $crawler->filter('.news-list')->count());
     }
 
     public function testShowAddPost() {
