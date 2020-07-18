@@ -2,10 +2,13 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>Hum Admin - {% block title %}{% endblock %}</title>
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+    <header>
+        {% include "util/_nav.html.twig" %}
+    </header>
     {% for message in app.flashes('success') %}
         <div class="flash-notice">
             {{ message }}
