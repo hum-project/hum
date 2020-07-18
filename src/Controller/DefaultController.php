@@ -22,24 +22,4 @@ class DefaultController extends AbstractController
             'pages' => $pages
         ]);
     }
-
-    /**
-     * @Route("/posts/{page}", name="posts_page")
-     */
-    public function getBlogPostsForPage($page)
-    {
-        if (is_numeric($page)) {
-            $repository = $this->getDoctrine()->getManager()->getRepository("App\Entity\BlogPost");
-            $results = $repository->getPostsByLanguageName('English', $page, 10);
-            $pages = $repository->getPageCountByLanguageName('English');
-
-            return $this->render('default/index.html.twig', [
-                'blogPosts' => $results,
-                'pages' => $pages,
-                'currentPage' => $page
-            ]);
-        } else {
-            return new Response("Not valid: " . $page);
-        }
-    }
 }

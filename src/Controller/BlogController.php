@@ -11,6 +11,7 @@ use App\Repository\BlogPostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -21,12 +22,29 @@ class BlogController extends AbstractController
     /**
      * @Route("/news", name="news")
      */
-    public function index(BlogPostRepository $repository)
+    public function index($page = 1)
     {
-        $news = $repository->getPostsByLanguageName('English');
-        return $this->render('blog/index.html.twig', [
-            'news' => $news,
-        ]);
+        if (is_numeric($page)) {
+            $repository = $this->getDoctrine()->getManager()->getRepository("App\Entity\BlogPost");
+            $results = $repository->getPostsByLanguageName('English', $page, 10);
+            $pages = $repository->getPageCountByLanguageName('English');
+
+            return $this->render('blog/index.html.twig', [
+                'blogPosts' => $results,
+                'pages' => $pages,
+                'currentPage' => $page
+            ]);
+        } else {
+            return new Response("Not valid: " . $page);
+        }
+    }
+
+    /**
+     * @Route("/news/{page}", name="news_page")
+     */
+    public function indexPage($page)
+    {
+        return $this->index($page);
     }
 
     /**
