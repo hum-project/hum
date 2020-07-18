@@ -1,13 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hum - news{% endblock %}
+{% block title %}News{% endblock %}
 
 {% block body %}
 
 
-<div class="example-wrapper">
+<article class="news-post">
     <h1>{{ title }}</h1>
     <time>{{ publish_date|date("d/m/Y") }}</time>
     <div>{{ text|raw }}</div>
-</div>
+    <p><a href="{{ path("news_edit", {slug: blogPost.slug}) }}">Edit</a></p>
+    <p>
+        {% if blogPost.isReleasable %}
+            Approved
+        {% else %}
+            Pending
+        {% endif %}
+        <a href="{{ path("news_release", {slug: blogPost.slug}) }}">Update status</a>
+    </p>
+</article>
 {% endblock %}

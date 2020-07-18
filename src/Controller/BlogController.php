@@ -18,35 +18,6 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class BlogController extends AbstractController
 {
 
-
-    /**
-     * @Route("/news", name="news")
-     */
-    public function index($page = 1)
-    {
-        if (is_numeric($page)) {
-            $repository = $this->getDoctrine()->getManager()->getRepository("App\Entity\BlogPost");
-            $results = $repository->getPostsByLanguageName('English', $page, 10);
-            $pages = $repository->getPageCountByLanguageName('English');
-
-            return $this->render('blog/index.html.twig', [
-                'blogPosts' => $results,
-                'pages' => $pages,
-                'currentPage' => $page
-            ]);
-        } else {
-            return new Response("Not valid: " . $page);
-        }
-    }
-
-    /**
-     * @Route("/news/{page}", name="news_page")
-     */
-    public function indexPage($page)
-    {
-        return $this->index($page);
-    }
-
     /**
      * @Route("/news/add", name="news_add", methods={"GET", "POST"})
      */
@@ -118,7 +89,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/news/{slug}/add-child", name="news_add_child", methods={"GET", "POST"})
+     * @Route("/news/view/{slug}/add-child", name="news_add_child", methods={"GET", "POST"})
      */
     public function addChild(BlogPost $parent, Request $request, SluggerInterface $slugger)
     {
@@ -190,7 +161,7 @@ class BlogController extends AbstractController
         ]);
     }
     /**
-     * @Route("/news/{slug}", name="news_show")
+     * @Route("/news/view/{slug}", name="news_show")
      */
     public function show(BlogPost $blogPost)
     {
@@ -220,13 +191,14 @@ class BlogController extends AbstractController
         return $this->render('blog/show.html.twig   ', [
             "title" => $blogPost->getTitle(),
             "publish_date" => $blogPost->getPublishTime(),
-            "text" => $text
+            "text" => $text,
+            "blogPost" => $blogPost
         ]);
 
     }
 
     /**
-     * @Route("/news/{slug}/edit", name="news_edit", methods={"GET", "POST"})
+     * @Route("/news/view/{slug}/edit", name="news_edit", methods={"GET", "POST"})
      */
     public function editPost(BlogPost $blogPost, Request $request, SluggerInterface $slugger)
     {
@@ -349,7 +321,7 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("news/{slug}/release", name="news_release", methods={"GET", "POST"})
+     * @Route("news/view/{slug}/release", name="news_release", methods={"GET", "POST"})
      */
     public function releasePost(BlogPost $blogPost, Request $request)
     {
@@ -380,5 +352,33 @@ class BlogController extends AbstractController
             "messages" => $messages,
             "filePath" => $filePath
         ]);
+    }
+
+    /**
+     * @Route("/news", name="news")
+     */
+    public function index($page = 1)
+    {
+        if (is_numeric($page)) {
+            $repository = $this->getDoctrine()->getManager()->getRepository("App\Entity\BlogPost");
+            $results = $repository->getPostsByLanguageName('English', $page, 10);
+            $pages = $repository->getPageCountByLanguageName('English');
+
+            return $this->render('blog/index.html.twig', [
+                'blogPosts' => $results,
+                'pages' => $pages,
+                'currentPage' => $page
+            ]);
+        } else {
+            return new Response("Not valid: " . $page);
+        }
+    }
+
+    /**
+     * @Route("/news/{page}", name="news_page")
+     */
+    public function indexPage($page)
+    {
+        return $this->index($page);
     }
 }
