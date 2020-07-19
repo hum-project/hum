@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Policy Theme{% endblock %}
+
+{% block body %}
+
+<div class="form-wrapper">
+    <h1>Edit Policy Theme: {{ theme.title }}</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.text) }}
+    {{ form_row(form.symbol) }}
+    {{ form_end(form) }}
+
+
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    altElement = document.getElementById("policy_theme_alt");
+    altElement.setAttribute("value", "{{ theme.symbol.alt }}");
+
+    imageDiv = document.querySelector("form div:nth-child(3)");
+    textElement = document.createElement("p");
+    textElementContent = document.createTextNode("{{ theme.symbol.fileName }}");
+    textElement.appendChild(textElementContent);
+    imageDiv.appendChild(textElement);
+    imageElement = document.createElement("img");
+    imageElement.setAttribute("src", "{{ filePath ~ "/" ~ theme.symbol.fileName }}");
+    imageElement.setAttribute("alt", "{{ theme.symbol.alt }}");
+    imageDiv.appendChild(imageElement);
+
+    labelElement = document.querySelector("form div:nth-child(3) label");
+    labelElement.innerHTML = "Replace image";
+    console.log(labelElement);
+
+</script>
+{% endblock %}

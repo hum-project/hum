@@ -21,7 +21,7 @@ class PolicyThemeType extends AbstractType
             ->add('symbol', FileType::class, [
                 'label' => 'Add image',
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'constraints' => [
                     new File([
                         'maxSize' => '4096k',

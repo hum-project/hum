@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Image;
 use App\Entity\PolicyTheme;
 use App\Form\PolicyThemeType;
+use App\Repository\PolicyThemeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,10 +17,14 @@ class PolicyThemeController extends AbstractController
     /**
      * @Route("/theme", name="theme")
      */
-    public function index()
+    public function index(PolicyThemeRepository $repository)
     {
+        $themes = $repository->findAll();
+        $filePath = $_SERVER['APP_ENV'] === 'dev' ? '/uploads/images' : $this->getParameter('images_view');
+
         return $this->render('theme/index.html.twig', [
-            'controller_name' => 'PolicyThemeController',
+            'themes' => $themes,
+            'filePath' => $filePath
         ]);
     }
 
@@ -76,5 +81,22 @@ class PolicyThemeController extends AbstractController
             'errors' => $errors
         ]);
 
+    }
+
+    /**
+     * @Route("/theme/{id}/edit", name="theme_edit", methods={"GET", "POST"})
+     */
+    public function edit(PolicyTheme $theme, Request $request, SluggerInterface $slugger)
+    {
+        $form = $this->createForm(PolicyThemeType::class, $theme);
+        $form->handleRequest($request);
+
+        $filePath = $_SERVER['APP_ENV'] === 'dev' ? '/uploads/images' : $this->getParameter('images_view');
+
+        return $this->render('theme/edit.html.twig', [
+            'form' => $form->createView(),
+            'theme' => $theme,
+            'filePath' => $filePath
+        ]);
     }
 }

@@ -1,20 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello PolicyThemeController!{% endblock %}
+{% block title %}Add Policy Theme{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
+<div class="form-wrapper">
+    <h1>Policy Themes</h1>
     <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/abjor/code/hum/backend/src/Controller/PolicyThemeController.php'|file_link(0) }}">src/Controller/PolicyThemeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/abjor/code/hum/backend/templates/policy_theme/index.html.twig'|file_link(0) }}">templates/policy_theme/index.html.twig</a></code></li>
+    {% for theme in themes %}
+        <li>
+            <img src="{{ filePath ~ '/' ~ theme.symbol.fileName }}" alt="{{ theme.symbol.alt }}" />
+            <h2>{{ theme.title }}</h2>
+            <div class="foldable">
+                <h3 class="fold-action">Description</h3>
+                <div class="fold-content">
+                    <p>{{ theme.text }}</p>
+                    <p><a href="{{ path("theme_edit", {id: theme.id}) }}">Edit</a></p>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
     </ul>
+
+
 </div>
 {% endblock %}
