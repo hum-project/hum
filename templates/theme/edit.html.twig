@@ -28,7 +28,7 @@
     textElement.appendChild(textElementContent);
     imageDiv.appendChild(textElement);
     imageElement = document.createElement("img");
-    imageElement.setAttribute("src", "{{ filePath ~ "/" ~ theme.symbol.fileName }}");
+    imageElement.setAttribute("src", "{{ fileShowPath ~ "/" ~ theme.symbol.fileName }}");
     imageElement.setAttribute("alt", "{{ theme.symbol.alt }}");
     imageDiv.appendChild(imageElement);
 

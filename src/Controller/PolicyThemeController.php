@@ -91,12 +91,62 @@ class PolicyThemeController extends AbstractController
         $form = $this->createForm(PolicyThemeType::class, $theme);
         $form->handleRequest($request);
 
-        $filePath = $_SERVER['APP_ENV'] === 'dev' ? '/uploads/images' : $this->getParameter('images_view');
+        $filePath = $_SERVER['APP_ENV'] === 'dev' ? 'uploads/images' : $this->getParameter('images_view');
+        $fileShowPath = $_SERVER['APP_ENV'] === 'dev' ? '/uploads/images' : $this->getParameter('images_view');
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entitymanager = $this->getDoctrine()->getManager();
+
+            $imageFile = $form->get('symbol')->getData();
+
+            $alt = $form->get('alt')->getData();
+
+            // Check that a new image has been set.
+            if ($imageFile) {
+
+                // If it has been set. Store the new one
+                $originalFileName = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFileName = $slugger->slug($originalFileName);
+                $newFileName = $safeFileName.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    $imageFile->move(
+                        $this->getParameter('images_directory'),
+                        $newFileName
+                    );
+                } catch (FileException $e) {
+                    $errors[] = $e;
+                }
+
+                $prevImage = $theme->getSymbol();
+                if ($prevImage) {
+                    // and delete the old one.
+                    $deleteStatus = unlink($filePath . '/' . $prevImage->getFileName());
+                    if ($deleteStatus) {
+                        $prevImage->setFileName($newFileName);
+                        $prevImage->setAlt($alt);
+                    } else {
+                        $messages[] = "Could not remove file " . $prevImage->getFileName();
+                    }
+                } else {
+                    $image = new Image();
+                    $image->setFileName($newFileName);
+                    $image->setAlt($alt);
+                    $entitymanager->persist($image);
+
+                    $theme->setSymbol($image);
+                }
+            }
+
+            $entitymanager->persist($theme);
+            $entitymanager->flush();
+        }
 
         return $this->render('theme/edit.html.twig', [
             'form' => $form->createView(),
             'theme' => $theme,
-            'filePath' => $filePath
+            'filePath' => $filePath,
+            'fileShowPath' => $fileShowPath
         ]);
     }
 }
