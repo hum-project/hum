@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Policy Theme{% endblock %}
+
+{% block body %}
+    <h1>Add a Policy Theme</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.text) }}
+    {{ form_row(form.symbol) }}
+    {{ form_end(form) }}
+{% endblock %}

@@ -37,7 +37,6 @@ class BlogController extends AbstractController
                 $blogImageEntity = new BlogImage();
 
                 $imageFile = $blogImage->get('image')->getData();
-                dump($imageFile);
                 $alt = $blogImage->get('alt')->getData();
                 $subtext = $blogImage->get('subtext')->getData();
 
