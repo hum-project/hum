@@ -44,6 +44,11 @@ class PolicyTheme
      */
     private $institutions;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="policyThemes")
+     */
+    private $language;
+
     public function __construct()
     {
         $this->policies = new ArrayCollection();
@@ -156,5 +161,17 @@ class PolicyTheme
     public function __toString()
     {
         return $this->getTitle();
+    }
+
+    public function getLanguage(): ?Language
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?Language $language): self
+    {
+        $this->language = $language;
+
+        return $this;
     }
 }

@@ -34,10 +34,16 @@ class Language
      */
     private $blogPosts;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PolicyTheme::class, mappedBy="language")
+     */
+    private $policyThemes;
+
     public function __construct()
     {
         $this->hums = new ArrayCollection();
         $this->blogPosts = new ArrayCollection();
+        $this->policyThemes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -122,5 +128,36 @@ class Language
     public function __toString()
     {
         return $this->getName();
+    }
+
+    /**
+     * @return Collection|PolicyTheme[]
+     */
+    public function getPolicyThemes(): Collection
+    {
+        return $this->policyThemes;
+    }
+
+    public function addPolicyTheme(PolicyTheme $policyTheme): self
+    {
+        if (!$this->policyThemes->contains($policyTheme)) {
+            $this->policyThemes[] = $policyTheme;
+            $policyTheme->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePolicyTheme(PolicyTheme $policyTheme): self
+    {
+        if ($this->policyThemes->contains($policyTheme)) {
+            $this->policyThemes->removeElement($policyTheme);
+            // set the owning side to null (unless already changed)
+            if ($policyTheme->getLanguage() === $this) {
+                $policyTheme->setLanguage(null);
+            }
+        }
+
+        return $this;
     }
 }

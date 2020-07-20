@@ -34,6 +34,7 @@ class PolicyThemeType extends AbstractType
             ->add('alt', TextType::class, [
                 'mapped' => false
             ])
+            ->add('language')
             ->add('submit', SubmitType::class)
         ;
     }

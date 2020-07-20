@@ -149,4 +149,24 @@ class PolicyThemeController extends AbstractController
             'fileShowPath' => $fileShowPath
         ]);
     }
+
+    /**
+     * @Route("theme/{language}", name="theme_language")
+     */
+    public function indexForLanguage($language, PolicyThemeRepository $repository)
+    {
+        $languageRepository = $this->getDoctrine()->getRepository("App\Entity\Language");
+        $languageEntity = $languageRepository->findOneBy(["name" => $language]);
+        if (!$languageEntity) {
+            $languageEntity = $languageRepository->findOneBy(["name" => ucfirst($language)]);
+        }
+
+        $themes = $repository->findBy(["language" => $languageEntity]);
+        $filePath = $_SERVER['APP_ENV'] === 'dev' ? '/uploads/images' : $this->getParameter('images_view');
+
+        return $this->render('theme/index.html.twig', [
+            'themes' => $themes,
+            'filePath' => $filePath
+        ]);
+    }
 }
