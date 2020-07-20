@@ -81,7 +81,7 @@ class InstitutionController extends AbstractController
                 $entitymanager = $this->getDoctrine()->getManager();
                 $entitymanager->remove($institution);
                 $entitymanager->flush();
-                $this->redirectToRoute('institution');
+                return $this->redirectToRoute('institution');
             }
         }
 

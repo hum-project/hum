@@ -6,8 +6,10 @@
     <h1>Delete an Institution</h1>
     <form method="post">
         <h2>{{ institution.name }}</h2>
-        <label for="confirmation">Are you sure you want to delete?</label>
+        <p>Are you sure you want to delete?</p>
+        <label for="confirmation">Yes</label>
         <input id="confirmation" name="confirmation" type="checkbox">
         <button type="submit">Delete</button>
+        <a class="button" href="{{ path('institution') }}" >Abort</a>
     </form>
 {% endblock %}
