@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Institution{% endblock %}
+
+{% block body %}
+    <h1>Delete an Institution</h1>
+    <form method="post">
+        <h2>{{ institution.name }}</h2>
+        <label for="confirmation">Are you sure you want to delete?</label>
+        <input id="confirmation" name="confirmation" type="checkbox">
+        <button type="submit">Delete</button>
+    </form>
+{% endblock %}

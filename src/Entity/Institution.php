@@ -32,6 +32,11 @@ class Institution
      */
     private $policyTheme;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="institutions")
+     */
+    private $language;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,6 +74,18 @@ class Institution
     public function setPolicyTheme(?PolicyTheme $policyTheme): self
     {
         $this->policyTheme = $policyTheme;
+
+        return $this;
+    }
+
+    public function getLanguage(): ?Language
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?Language $language): self
+    {
+        $this->language = $language;
 
         return $this;
     }

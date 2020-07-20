@@ -4,7 +4,8 @@
     <div id="main-nav">
         <div id="start"><a href="{{ path('start') }}">Start</a></div>
         <div id="posts"><a href="{{ path('news') }}">News</a></div>
-        <div id="themes"><a href="{{ path('theme') }}">Themes</a></div>
+        <div id="themes"><a href="{{ path('theme') }}">Policy Theme</a></div>
+        <div id="themes"><a href="{{ path('institution') }}">Institution</a></div>
         <div id="logout"><a href="{{ path('app_logout', {page: 1}) }}">Logout</a></div>
     </div>
     <div id="sub-nav">
@@ -12,6 +13,8 @@
             <div id="add-news"><a href="{{ path('news_add') }}">Add news</a></div>
         {% elseif '/theme' in currentPath %}
             <div id="add-news"><a href="{{ path('theme_add') }}">Add theme</a></div>
+        {% elseif '/institution' in currentPath %}
+            <div id="add-institution"><a href="{{ path('institution_add') }}">Add institution</a></div>
         {% endif %}
     </div>
 </nav>

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Institution{% endblock %}
+
+{% block body %}
+    <h1>Edit an Institution</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.text) }}
+    {{ form_row(form.policyTheme) }}
+    {{ form_end(form) }}
+{% endblock %}

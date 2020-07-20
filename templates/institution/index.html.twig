@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Institutions{% endblock %}
+
+{% block body %}
+
+    <div class="form-wrapper">
+        <h1>Institutions</h1>
+        <ul>
+            {% for institution in institutions %}
+                <li>
+                    <h2>{{ institution.name }}</h2>
+                    <div class="foldable">
+                        <h3 class="fold-action">Description</h3>
+                        <div class="fold-content">
+                            <p>{{ institution.language.name }}</p>
+                            <p>{{ institution.text }}</p>
+                            <p>
+                                <a href="{{ path("institution_edit", {institution: institution.id}) }}">Edit</a>
+                                <a href="{{ path("institution_delete", {institution: institution.id}) }}">Delete</a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+
+    </div>
+{% endblock %}
