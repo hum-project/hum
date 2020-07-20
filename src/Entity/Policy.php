@@ -42,6 +42,11 @@ class Policy
      */
     private $argument;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="policies")
+     */
+    private $language;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,18 @@ class Policy
     public function setArgument(?Argument $argument): self
     {
         $this->argument = $argument;
+
+        return $this;
+    }
+
+    public function getLanguage(): ?Language
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?Language $language): self
+    {
+        $this->language = $language;
 
         return $this;
     }

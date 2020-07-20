@@ -95,4 +95,23 @@ class Argument
 
         return $this;
     }
+
+    public function getDecendants()
+    {
+        if ($this->getChild()) {
+            return $this->traverseDecendants([$this], $this->getChild());
+        }
+
+        return null;
+    }
+
+    private function traverseDecendants($array, Argument $decendant)
+    {
+        if ($decendant->getChild()) {
+            $array[] = $decendant->getChild();
+            $this->traverseDecendants($array, $decendant->getChild());
+        } else {
+            return $array;
+        }
+    }
 }

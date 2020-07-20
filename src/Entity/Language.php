@@ -44,12 +44,18 @@ class Language
      */
     private $institutions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Policy::class, mappedBy="language")
+     */
+    private $policies;
+
     public function __construct()
     {
         $this->hums = new ArrayCollection();
         $this->blogPosts = new ArrayCollection();
         $this->policyThemes = new ArrayCollection();
         $this->institutions = new ArrayCollection();
+        $this->policies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -192,6 +198,37 @@ class Language
             // set the owning side to null (unless already changed)
             if ($institution->getLanguage() === $this) {
                 $institution->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Policy[]
+     */
+    public function getPolicies(): Collection
+    {
+        return $this->policies;
+    }
+
+    public function addPolicy(Policy $policy): self
+    {
+        if (!$this->policies->contains($policy)) {
+            $this->policies[] = $policy;
+            $policy->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePolicy(Policy $policy): self
+    {
+        if ($this->policies->contains($policy)) {
+            $this->policies->removeElement($policy);
+            // set the owning side to null (unless already changed)
+            if ($policy->getLanguage() === $this) {
+                $policy->setLanguage(null);
             }
         }
 

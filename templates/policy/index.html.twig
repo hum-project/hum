@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Policy{% endblock %}
+
+{% block body %}
+
+    <div class="form-wrapper">
+        <h1>Policy Overview</h1>
+        <ul>
+            {% for policy in policies %}
+                <li>
+                    <h2>{{ policy.title }}</h2>
+                    <div class="foldable">
+                        <h3 class="fold-action">Description</h3>
+                        <div class="fold-content">
+                            <p>{{ policy.language.name }}</p>
+                            <p>Theme: {{ policy.policyTheme.title }}</p>
+                            <p>{{ policy.text }}</p>
+
+                            {% if policy.argument is not empty %}
+                                {% set arguments = policy.argument.decendants %}
+                                {% for argument in arguments %}
+                                    <p>{{ argument.text }}</p>
+                                {% endfor %}
+                            {% endif %}
+                            <p><a href="{{ path("policy", {policy: policy.id}) }}">Edit</a></p>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+
+    </div>
+{% endblock %}
