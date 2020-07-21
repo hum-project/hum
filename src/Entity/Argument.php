@@ -37,6 +37,11 @@ class Argument
      */
     private $child;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="arguments")
+     */
+    private $language;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -96,22 +101,40 @@ class Argument
         return $this;
     }
 
-    public function getDecendants()
+    public function getDescendants()
     {
         if ($this->getChild()) {
-            return $this->traverseDecendants([$this], $this->getChild());
+            $array = array();
+            $array[] = $this->getChild();
+            return $this->traverseDescendants($array, $this->getChild());
         }
-
         return null;
     }
 
-    private function traverseDecendants($array, Argument $decendant)
+    private function traverseDescendants($array, Argument $decendant)
     {
         if ($decendant->getChild()) {
             $array[] = $decendant->getChild();
-            $this->traverseDecendants($array, $decendant->getChild());
-        } else {
-            return $array;
+            $this->traverseDescendants($array, $decendant->getChild());
         }
+
+        return $array;
+    }
+
+    public function getLanguage(): ?Language
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?Language $language): self
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getSide() . ': ' . substr($this->getText(), 0, 40);
     }
 }

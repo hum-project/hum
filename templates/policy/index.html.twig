@@ -18,7 +18,7 @@
                             <p>{{ policy.text }}</p>
 
                             {% if policy.argument is not empty %}
-                                {% set arguments = policy.argument.decendants %}
+                                {% set arguments = policy.argument.descendants %}
                                 {% for argument in arguments %}
                                     <p>{{ argument.text }}</p>
                                 {% endfor %}

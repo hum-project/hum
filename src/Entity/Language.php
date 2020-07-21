@@ -49,6 +49,11 @@ class Language
      */
     private $policies;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Argument::class, mappedBy="language")
+     */
+    private $arguments;
+
     public function __construct()
     {
         $this->hums = new ArrayCollection();
@@ -56,6 +61,7 @@ class Language
         $this->policyThemes = new ArrayCollection();
         $this->institutions = new ArrayCollection();
         $this->policies = new ArrayCollection();
+        $this->arguments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -229,6 +235,37 @@ class Language
             // set the owning side to null (unless already changed)
             if ($policy->getLanguage() === $this) {
                 $policy->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Argument[]
+     */
+    public function getArguments(): Collection
+    {
+        return $this->arguments;
+    }
+
+    public function addArgument(Argument $argument): self
+    {
+        if (!$this->arguments->contains($argument)) {
+            $this->arguments[] = $argument;
+            $argument->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArgument(Argument $argument): self
+    {
+        if ($this->arguments->contains($argument)) {
+            $this->arguments->removeElement($argument);
+            // set the owning side to null (unless already changed)
+            if ($argument->getLanguage() === $this) {
+                $argument->setLanguage(null);
             }
         }
 
