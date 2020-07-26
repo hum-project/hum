@@ -52,17 +52,41 @@ class ArgumentController extends AbstractController
     public function addChild(Argument $argument, Request $request)
     {
         $child = new Argument();
+        $prevChild = $argument->getChild();
+        if ($prevChild) {
+            $prevChild->setParent($child);
+        }
+        $child->setChild($prevChild);
+
         $argument->setChild($child);
+        $child->setParent($argument);
         $child->setLanguage($argument->getLanguage());
 
         $form = $this->createForm(ArgumentType::class, $child);
         $form->add("submit", SubmitType::class);
 
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $entitymanager = $this->getDoctrine()->getManager();
+
+
+            if ($prevChild) {
+                $child->setParent(null);
+                $entitymanager->persist($child);
+                $entitymanager->persist($prevChild);
+                $entitymanager->flush();
+            }
+
+            $child->setParent($argument);
+            $entitymanager->persist($child);
+            $entitymanager->flush();
+
             $entitymanager->persist($argument);
             $entitymanager->flush();
+
+
+
         }
         return $this->render('argument/new.html.twig', [
             "form" => $form->createView(),
@@ -116,15 +140,30 @@ class ArgumentController extends AbstractController
             }
 
             if ($confirmation) {
-                if ($argument->getParent()) {
-                    if ($argument->getChild()) {
-                        $argument->getParent()->setChild($argument->getChild());
+
+                $parent = $argument->getParent();
+                $child = $argument->getChild();
+                $argument->setChild(null);
+                $argument->setParent(null);
+                $entitymanager->persist($argument);
+                $entitymanager->flush();
+
+
+                if ($parent) {
+                    if ($child) {
+                        $parent->setChild($child);
+                        $child->setParent($parent);
+                        $entitymanager->persist($child);
                     } else {
-                        $argument->setChild(null);
+                        $parent->setChild(null);
                     }
-                } elseif ($argument->getChild()) {
-                    $argument->getChild()->setParent(null);
+                    $entitymanager->persist($parent);
+
+                } elseif ($child) {
+                    $child->setParent(null);
+                    $entitymanager->persist($child);
                 }
+                $entitymanager->flush();
 
                 $entitymanager->remove($argument);
                 $entitymanager->flush();

@@ -12,6 +12,8 @@
     {{ form_end(form) }}
     {% if argument.id is not empty %}
         <a href="{{ path('argument_add_child', {argument: argument.id}) }}">Add child</a>
+        <a href="{{ path('argument_delete', { argument: argument.id }) }}">Delete</a>
     {% endif %}
+
     {% include 'argument/_list-descendants.html.twig' with {'descendants': argument.descendants} %}
 {% endblock %}

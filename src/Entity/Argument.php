@@ -92,33 +92,30 @@ class Argument
     {
         $this->child = $child;
 
-        // set (or unset) the owning side of the relation if necessary
-        $newParent = null === $child ? null : $this;
-        if ($child->getParent() !== $newParent) {
-            $child->setParent($newParent);
-        }
-
         return $this;
     }
 
     public function getDescendants()
     {
-        if ($this->getChild()) {
+        $result = null;
+        if (null !== $this->getChild()) {
             $array = array();
             $array[] = $this->getChild();
-            return $this->traverseDescendants($array, $this->getChild());
+            $result = Argument::traverseDescendants($array, $this->getChild());
         }
-        return null;
+        return $result;
     }
 
-    private function traverseDescendants($array, Argument $decendant)
+    public static function traverseDescendants($array, Argument $decendant)
     {
-        if ($decendant->getChild()) {
-            $array[] = $decendant->getChild();
-            $this->traverseDescendants($array, $decendant->getChild());
+        $child = $decendant->getChild();
+        if (null === $child) {
+            return $array;
         }
 
-        return $array;
+        array_push($array, $child);
+        return Argument::traverseDescendants($array, $child);
+
     }
 
     public function getLanguage(): ?Language
