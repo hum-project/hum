@@ -129,7 +129,12 @@ class ArgumentController extends AbstractController
             if($confirmation && $deleteAll) {
                 $arguments = $argument->getDescendants();
                 foreach ($arguments as $descendant) {
+                    $descendant->setParent(null);
+                    $entitymanager->persist($descendant);
+                    $entitymanager->flush();
                     $entitymanager->remove($descendant);
+                    $entitymanager->flush();
+
                 }
                 if ($argument->getParent()) {
                     $argument->getParent()->setChild(null);
