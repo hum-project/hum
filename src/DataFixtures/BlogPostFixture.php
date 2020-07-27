@@ -6,20 +6,18 @@ namespace App\DataFixtures;
 
 use App\Entity\BlogPost;
 use App\Entity\Language;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-class BlogPostFixture extends \Doctrine\Bundle\FixturesBundle\Fixture
+class BlogPostFixture extends \Doctrine\Bundle\FixturesBundle\Fixture implements DependentFixtureInterface
 {
+    public const ENGLISH_POST = 'English post';
+    public const SWEDISH_POST = 'Svenskt inlägg';
 
     public function load(ObjectManager $manager)
     {
-        $english = new Language();
-        $english->setName("English");
-        $manager->persist($english);
-
-        $svenska = new Language();
-        $svenska->setName("Svenska");
-        $manager->persist($svenska);
+        $english = $this->getReference(LanguageFixture::LANGUAGE_ENGLISH);
+        $svenska = $this->getReference(LanguageFixture::LANGUAGE_SWEDISH);
 
         $post1 = new BlogPost();
         $post1->setTitle("Some great news");
@@ -51,6 +49,9 @@ class BlogPostFixture extends \Doctrine\Bundle\FixturesBundle\Fixture
 
 
         $manager->flush();
+
+        $this->addReference(self::ENGLISH_POST, $post1);
+        $this->addReference(self::SWEDISH_POST, $post2);
     }
 
     public function generatePost($title, Language $language) : BlogPost
@@ -74,5 +75,12 @@ Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
         $post->setLanguage($language);
 
         return $post;
+    }
+
+    public function getDependencies()
+    {
+        return array(
+            LanguageFixture::class,
+        );
     }
 }
