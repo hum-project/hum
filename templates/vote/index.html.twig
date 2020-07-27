@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Institutions{% endblock %}
+
+{% block body %}
+
+    <div class="form-wrapper">
+        <h1>Votes</h1>
+        <ul>
+            {% for vote in votes %}
+                <li>
+                    <h2>{{ vote.policy }}</h2>
+                    <div class="foldable">
+                        <div class="fold-content">
+                            <p>Yes: {{ vote.yes }}</p>
+                            <p>No: {{ vote.no }}</p>
+                            <p>Abstain: {{ vote.abstain }}</p>
+                            <p>Absent: {{ vote.absent }}</p>
+                            <p>
+                                <a href="{{ path("vote_edit", {vote: vote.id}) }}">Edit</a>
+                                <a href="{{ path("vote_delete", {vote: vote.id}) }}">Delete</a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+
+    </div>
+{% endblock %}

@@ -62,7 +62,8 @@ class PolicyController extends AbstractController
         }
 
         return $this->render('policy/edit.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'policy' => $policy
         ]);
     }
 }

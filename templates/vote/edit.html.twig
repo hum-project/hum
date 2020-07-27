@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Vote{% endblock %}
+
+{% block body %}
+    <h1>Edit a vote</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.yes) }}
+    {{ form_row(form.no) }}
+    {{ form_row(form.abstain) }}
+    {{ form_row(form.absent) }}
+    {{ form_row(form.policy) }}
+    {{ form_end(form) }}
+    <a class="button" href="{{ path('vote_delete', {vote: vote.id}) }}">Delete</a>
+{% endblock %}

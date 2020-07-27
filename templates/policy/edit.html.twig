@@ -12,4 +12,5 @@
     {{ form_row(form.argument) }}
     {{ form_row(form.language) }}
     {{ form_end(form) }}
+    <a class="button" href="{{ path('vote_add_policy', {policy: policy.id}) }}" >Add vote</a>
 {% endblock %}

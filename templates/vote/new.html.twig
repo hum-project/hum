@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Vote{% endblock %}
+
+{% block body %}
+    <h1>Add a vote</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.yes) }}
+    {{ form_row(form.no) }}
+    {{ form_row(form.abstain) }}
+    {{ form_row(form.absent) }}
+    {{ form_row(form.policy) }}
+    {{ form_end(form) }}
+{% endblock %}
