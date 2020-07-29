@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PolicyRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,6 +48,21 @@ class Policy
      * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="policies")
      */
     private $language;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Policy::class, inversedBy="policies")
+     */
+    private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Policy::class, mappedBy="parent")
+     */
+    private $policies;
+
+    public function __construct()
+    {
+        $this->policies = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -127,6 +144,49 @@ class Policy
     public function __toString()
     {
         return $this->getTitle();
+    }
+
+    public function getParent(): ?self
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?self $parent): self
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getPolicies(): Collection
+    {
+        return $this->policies;
+    }
+
+    public function addPolicy(self $policy): self
+    {
+        if (!$this->policies->contains($policy)) {
+            $this->policies[] = $policy;
+            $policy->setParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removePolicy(self $policy): self
+    {
+        if ($this->policies->contains($policy)) {
+            $this->policies->removeElement($policy);
+            // set the owning side to null (unless already changed)
+            if ($policy->getParent() === $this) {
+                $policy->setParent(null);
+            }
+        }
+
+        return $this;
     }
 
 

@@ -13,7 +13,17 @@
                     <div class="foldable">
                         <h3 class="fold-action">Description</h3>
                         <div class="fold-content">
-                            <p>{{ policy.language.name }}</p>
+                            <p>Language: {{ policy.language.name }}</p>
+                            <p>
+                                Versions:
+                                {% if policy.policies is not empty %}
+                                    {% for child in policy.policies %}
+                                        <a href="{{ path('policy_edit', {policy: child.id}) }}">{{ child.language.name }}</a>
+                                    {% endfor %}
+                                {% endif %}
+                                <br />
+                                <a href="{{ path("policy_add_child", {policy: policy.id}) }}">Add child</a>
+                            </p>
                             <p>Theme: {{ policy.policyTheme.title }}</p>
                             <p>{{ policy.text }}</p>
 
@@ -23,7 +33,10 @@
                                     <p>{{ argument.text }}</p>
                                 {% endfor %}
                             {% endif %}
-                            <p><a href="{{ path("policy_edit", {policy: policy.id}) }}">Edit</a></p>
+                            <p>
+                                <a href="{{ path("policy_delete", {policy: policy.id}) }}">Delete</a>
+                                <a href="{{ path("policy_edit", {policy: policy.id}) }}">Edit</a>
+                            </p>
                         </div>
                     </div>
                 </li>

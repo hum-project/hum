@@ -17,7 +17,7 @@ class PolicyController extends AbstractController
      */
     public function index(PolicyRepository $repository)
     {
-        $policies = $repository->findAll();
+        $policies = $repository->findAllParents();
         return $this->render('policy/index.html.twig', [
             'policies' => $policies,
         ]);
@@ -47,6 +47,32 @@ class PolicyController extends AbstractController
     }
 
     /**
+     * @Route("/policy/{policy}/add", name="policy_add_child")
+     */
+    public function addChild(Policy $policy, Request $request)
+    {
+        $child = new Policy();
+        $child->setParent($policy);
+        $policy->addPolicy($child);
+        $form = $this->createForm(PolicyType::class, $child);
+        $form->add("submit", SubmitType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entitymanager = $this->getDoctrine()->getManager();
+            $entitymanager->persist($child);
+            $entitymanager->flush();
+
+            return $this->redirectToRoute('policy_edit', ["policy" => $child->getId()]);
+        }
+
+        return $this->render('policy/new.html.twig', [
+            'form' => $form->createView(),
+            'policy' => $child
+        ]);
+    }
+
+    /**
      * @Route("/policy/{policy}/edit", name="policy_edit")
      */
     public function edit(Policy $policy, Request $request)
@@ -63,6 +89,26 @@ class PolicyController extends AbstractController
 
         return $this->render('policy/edit.html.twig', [
             'form' => $form->createView(),
+            'policy' => $policy
+        ]);
+    }
+
+    /**
+     * @Route("/policy/{policy}/delete", name="policy_delete")
+     */
+    public function delete(Policy $policy, Request $request)
+    {
+        if ('POST' === $request->getMethod()) {
+            $confirmation = $request->get("confirmation");
+            if ($confirmation) {
+                $entitymanager = $this->getDoctrine()->getManager();
+                $entitymanager->remove($policy);
+                $entitymanager->flush();
+                return $this->redirectToRoute('policy');
+            }
+        }
+
+        return $this->render('policy/delete.html.twig', [
             'policy' => $policy
         ]);
     }

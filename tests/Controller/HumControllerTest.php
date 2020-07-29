@@ -4,12 +4,12 @@
 namespace App\Tests\Controller;
 
 
-class QuestionControllerTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
+class HumControllerTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
 {
     public function testShowIndex() {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/question');
+        $crawler = $client->request('GET', '/hum');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
@@ -17,7 +17,7 @@ class QuestionControllerTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTes
     public function testShowAddPost() {
         $client = static::createClient();
 
-        $client->request('GET', 'question/add');
+        $client->request('GET', 'hum/add');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
@@ -26,7 +26,7 @@ class QuestionControllerTest extends \Symfony\Bundle\FrameworkBundle\Test\WebTes
     {
         $client = static::createClient();
 
-        $crawler = $client->request('GET', '/question/add');
+        $crawler = $client->request('GET', '/hum/add');
         $this->assertNotEmpty($crawler->filter('button[type="submit"]'));
     }
 

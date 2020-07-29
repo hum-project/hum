@@ -2,30 +2,28 @@
 
 namespace App\Form;
 
-use App\Entity\Policy;
+use App\Entity\Hum;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PolicyType extends AbstractType
+class HumType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('parent')
-            ->add('title')
-            ->add('text')
-            ->add('source')
-            ->add('policyTheme')
-            ->add('argument')
+            ->add('date')
             ->add('language')
+            ->add('parent')
+            ->add('policy')
+            ->add('institution')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Policy::class,
+            'data_class' => Hum::class,
         ]);
     }
 }

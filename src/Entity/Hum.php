@@ -189,5 +189,11 @@ class Hum
 
         return $this;
     }
-    
+
+    public function __toString()
+    {
+        return $this->getPolicy() . ' [' . $this->getDate()->format("Y-m-d") . ']';
+    }
+
+
 }
