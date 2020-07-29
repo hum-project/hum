@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Hum{% endblock %}
+
+{% block body %}
+    <h1>Add a Hum</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.date) }}
+    {{ form_row(form.language) }}
+    <div>
+        {{ form_row(form.parent) }}
+        <a class="button" href="{{ path('hum_add') }}">Add child (language version)</a>
+    </div>
+    <div>
+        {{ form_row(form.policy) }}
+        <a class="button" href="{{ path('policy_add') }}">Add new policy</a>
+    </div>
+    <div>
+        {{ form_row(form.institution) }}
+        <a class="button" href="{{ path('institution_add') }}">Add new institution</a>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
