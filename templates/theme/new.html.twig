@@ -7,6 +7,11 @@
     {{ form_start(form) }}
     {{ form_row(form.title) }}
     {{ form_row(form.text) }}
+    {% if theme.symbol is not empty %}
+        <p>Inherited image</p>
+        <p>Filename: {{ theme.symbol.fileName }}</p>
+        <p>Alt: {{ theme.symbol.alt }}</p>
+    {% endif %}
     {{ form_row(form.symbol) }}
     {{ form_end(form) }}
 {% endblock %}

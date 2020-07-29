@@ -14,9 +14,21 @@
             <div class="foldable">
                 <h3 class="fold-action">Description</h3>
                 <div class="fold-content">
-                    <p>{{ theme.language.name }}</p>
+                    <p>Language: {{ theme.language.name }}</p>
+                    {% if theme.translation is empty %}
+                        <p>
+                            Versions:
+                            {% if theme.translations is not empty %}
+                                {% for child in theme.translations %}
+                                    <a href="{{ path('theme_edit', {theme: child.id}) }}">{{ child.language.name }}</a>
+                                {% endfor %}
+                            {% endif %}
+                            <br />
+                            <a href="{{ path("theme_add_translation", {theme: theme.id}) }}">Add translation</a>
+                        </p>
+                    {% endif %}
                     <p>{{ theme.text }}</p>
-                    <p><a href="{{ path("theme_edit", {id: theme.id}) }}">Edit</a></p>
+                    <p><a href="{{ path("theme_edit", {theme: theme.id}) }}">Edit</a></p>
                 </div>
             </div>
         </li>

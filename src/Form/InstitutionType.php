@@ -16,6 +16,7 @@ class InstitutionType extends AbstractType
             ->add('text')
             ->add('policyTheme')
             ->add('language')
+            ->add('translation')
         ;
     }
 

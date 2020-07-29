@@ -77,6 +77,7 @@ class PolicyThemeController extends AbstractController
 
         return $this->render('theme/new.html.twig', [
             'form' => $form->createView(),
+            'theme' => $theme,
             'status' => $status,
             'errors' => $errors
         ]);
@@ -84,7 +85,65 @@ class PolicyThemeController extends AbstractController
     }
 
     /**
-     * @Route("/theme/{id}/edit", name="theme_edit", methods={"GET", "POST"})
+     * @Route("/theme/{theme}/add-translation", name="theme_add_translation")
+     */
+    public function addTranslation(PolicyTheme $theme, Request $request, SluggerInterface $slugger)
+    {
+        $translation = new PolicyTheme();
+        $translation->setTranslation($theme);
+        $image = new Image();
+        $image->setFileName($theme->getSymbol()->getFileName());
+        $image->setAlt($theme->getSymbol()->getAlt());
+        $translation->setSymbol($image);
+
+        $form = $this->createForm(PolicyThemeType::class, $translation);
+        $form->handleRequest($request);
+
+        $status = "get";
+        $errors = array();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+
+            $status = "post";
+
+            $alt = $form->get('alt')->getData();
+
+            $imageFile = $form->get('symbol')->getData();
+            if ($imageFile) {
+                $originalFileName = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFileName = $slugger->slug($originalFileName);
+                $newFileName = $safeFileName.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    $imageFile->move(
+                        $this->getParameter('images_directory'),
+                        $newFileName
+                    );
+                } catch (FileException $e) {
+                    $errors[] = $e;
+                }
+
+                $image->setFileName($newFileName);
+            }
+
+            $image->setAlt($alt);
+            $entityManager->persist($image);
+            $entityManager->persist($theme);
+
+            $entityManager->flush();
+        }
+
+        return $this->render('theme/new.html.twig', [
+            'form' => $form->createView(),
+            'theme' => $translation,
+            'status' => $status,
+            'errors' => $errors
+        ]);
+    }
+
+    /**
+     * @Route("/theme/{theme}/edit", name="theme_edit", methods={"GET", "POST"})
      */
     public function edit(PolicyTheme $theme, Request $request, SluggerInterface $slugger)
     {

@@ -35,6 +35,7 @@ class PolicyThemeType extends AbstractType
                 'mapped' => false
             ])
             ->add('language')
+            ->add('translation')
             ->add('submit', SubmitType::class)
         ;
     }

@@ -71,6 +71,41 @@ class InstitutionController extends AbstractController
     }
 
     /**
+     * @Route("/institution/{institution}/add-translation", name="institution_add_translation")
+     */
+    public function addTranslation(institution $institution, Request $request)
+    {
+        $translation = new Institution();
+        $translation->setTranslation($institution);
+        $institution->addTranslation($translation);
+        $parentTheme = $institution->getPolicyTheme();
+        $translation->setPolicyTheme($parentTheme);
+        $form = $this->createForm(InstitutionType::class, $translation);
+        $form->add("submit", SubmitType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $language = $translation->getLanguage();
+            foreach ($institution->getPolicyTheme()->getTranslations() as $themeTranslation) {
+                if ($themeTranslation->getLanguage() === $language) {
+                    $translation->setPolicyTheme($themeTranslation);
+                    break;
+                }
+            }
+            $entitymanager = $this->getDoctrine()->getManager();
+            $entitymanager->persist($translation);
+            $entitymanager->flush();
+
+            return $this->redirectToRoute('institution_edit', ["institution" => $translation->getId()]);
+        }
+
+        return $this->render('institution/new.html.twig', [
+            'form' => $form->createView(),
+            'institution' => $translation
+        ]);
+    }
+
+    /**
      * @Route("/institution/{institution}/delete", name="institution_delete")
      */
     public function delete(Institution $institution, Request $request)
