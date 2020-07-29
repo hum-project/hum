@@ -17,7 +17,7 @@ class ArgumentController extends AbstractController
     public function index()
     {
         $repository = $this->getDoctrine()->getRepository(Argument::class);
-        $arguments = $repository->findBy(["parent" => null]);
+        $arguments = $repository->findAll();
         return $this->render('argument/index.html.twig', [
             'arguments' => $arguments,
         ]);
@@ -86,6 +86,34 @@ class ArgumentController extends AbstractController
             $entitymanager->flush();
 
 
+
+        }
+        return $this->render('argument/new.html.twig', [
+            "form" => $form->createView(),
+            "argument" => $child
+        ]);
+    }
+
+    /**
+     * @Route("/argument/{argument}/add-translation", name="argument_add_translation")
+     */
+    public function addTranslation(Argument $argument, Request $request)
+    {
+        $child = new Argument();
+        $child->setTranslation($argument);
+
+        $argument->addTranslation($child);
+
+        $form = $this->createForm(ArgumentType::class, $child);
+        $form->add("submit", SubmitType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entitymanager = $this->getDoctrine()->getManager();
+
+            $entitymanager->persist($child);
+            $entitymanager->flush();
 
         }
         return $this->render('argument/new.html.twig', [

@@ -16,6 +16,7 @@ class ArgumentType extends AbstractType
             ->add('text')
             ->add('parent')
             ->add('language')
+            ->add('translation')
         ;
     }
 
