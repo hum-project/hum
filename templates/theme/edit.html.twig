@@ -12,8 +12,7 @@
     {{ form_row(form.symbol) }}
     {{ form_end(form) }}
 
-
-
+    <a href="{{ path("theme_delete", {theme: theme.id}) }}">Delete</a>
 </div>
 {% endblock %}
 

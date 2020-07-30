@@ -28,7 +28,10 @@
                         </p>
                     {% endif %}
                     <p>{{ theme.text }}</p>
-                    <p><a href="{{ path("theme_edit", {theme: theme.id}) }}">Edit</a></p>
+                    <p>
+                        <a href="{{ path("theme_edit", {theme: theme.id}) }}">Edit</a>
+                        <a href="{{ path("theme_delete", {theme: theme.id}) }}">Delete</a>
+                    </p>
                 </div>
             </div>
         </li>

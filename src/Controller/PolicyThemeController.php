@@ -228,4 +228,31 @@ class PolicyThemeController extends AbstractController
             'filePath' => $filePath
         ]);
     }
+
+    /**
+     * @Route("/theme/{theme}/delete", name="theme_delete")
+     */
+    public function delete(PolicyTheme $theme, Request $request)
+    {
+        if ('POST' === $request->getMethod()) {
+            $confirmation = $request->get("confirmation");
+            $deleteTranslations = $request->get("translations");
+            if ($confirmation) {
+                $entitymanager = $this->getDoctrine()->getManager();
+
+                if ($deleteTranslations) {
+                    foreach ($theme->getTranslations() as $translation) {
+                        $entitymanager->remove($translation);
+                    }
+                }
+                $entitymanager->remove($theme);
+                $entitymanager->flush();
+                return $this->redirectToRoute('policy');
+            }
+        }
+
+        return $this->render('theme/delete.html.twig', [
+            'theme' => $theme
+        ]);
+    }
 }
