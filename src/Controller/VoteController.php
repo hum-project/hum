@@ -24,30 +24,6 @@ class VoteController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/vote/add", name="vote_add")
-     */
-    public function add(Request $request)
-    {
-        $vote = new Vote();
-
-        $form = $this->createForm(VoteType::class, $vote);
-        $form->add('submit', SubmitType::class);
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entitymanager = $this->getDoctrine()->getManager();
-            $entitymanager->persist($vote);
-            $entitymanager->flush();
-
-            return $this->redirectToRoute('vote_edit', ['vote' => $vote->getId()]);
-        }
-
-        return $this->render('vote/new.html.twig', [
-            'form' => $form->createView(),
-            'vote' => $vote
-        ]);
-    }
 
     /**
      * @Route("/vote/add/{policy}", name="vote_add_policy")

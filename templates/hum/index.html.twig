@@ -16,8 +16,10 @@
                             <p>Theme: {{ hum.policy.policyTheme }}</p>
                             <p>Policy <a href="{{ path("policy_edit", {policy: hum.policy.id}) }}">{{ hum.policy }}</a></p>
                             <p><a class="button" href="{{ path("hum_edit", {hum: hum.id}) }}">Edit Hum</a></p>
+                            <p><a class="button" href="{{ path("hum_delete", {hum: hum.id}) }}">Delete Hum</a></p>
                         </div>
                     </div>
+
                 </li>
             {% endfor %}
         </ul>

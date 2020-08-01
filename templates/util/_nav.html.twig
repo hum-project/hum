@@ -9,7 +9,6 @@
         <div id="policy"><a href="{{ path('policy') }}">Policy</a></div>
         <div id="argument"><a href="{{ path('argument') }}">Argument</a></div>
         <div id="institution"><a href="{{ path('institution') }}">Institution</a></div>
-        <div id="vote"><a href="{{ path('vote') }}">Vote</a></div>
         <div id="logout"><a href="{{ path('app_logout', {page: 1}) }}">Logout</a></div>
     </div>
     <div id="sub-nav">
@@ -23,8 +22,6 @@
             <div id="add-policy"><a href="{{ path('policy_add') }}">Add policy</a></div>
         {% elseif '/argument' in currentPath %}
             <div id="add-argument"><a href="{{ path('argument_add') }}">Add argument</a></div>
-        {% elseif '/vote' in currentPath %}
-            <div id="add-vote"><a href="{{ path('vote_add') }}">Add vote</a></div>
         {% elseif '/hum' in currentPath %}
             <div id="add-hum"><a href="{{ path('hum_add') }}">Add hum</a></div>
         {% endif %}

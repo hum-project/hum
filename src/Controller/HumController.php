@@ -65,4 +65,29 @@ class HumController extends AbstractController
             'hum' => $hum
         ]);
     }
+
+    /**
+     * @Route("/hum/{hum}/delete", name="hum_delete")
+     */
+    public function delete(Hum $hum, Request $request)
+    {
+        if ('POST' === $request->getMethod()) {
+            $confirmation = $request->get("confirmation");
+            if ($confirmation) {
+                $entitymanager = $this->getDoctrine()->getManager();
+                $hum->setPolicy(null);
+                $hum->setInstitution(null);
+                $entitymanager->persist($hum);
+                $entitymanager->flush();
+                
+                $entitymanager->remove($hum);
+                $entitymanager->flush();
+                return $this->redirectToRoute('vote');
+            }
+        }
+
+        return $this->render('hum/delete.html.twig', [
+            'hum' => $hum
+        ]);
+    }
 }
