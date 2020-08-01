@@ -6,11 +6,6 @@
     <h1>Edit a Hum</h1>
     {{ form_start(form) }}
     {{ form_row(form.date) }}
-    {{ form_row(form.language) }}
-    <div>
-        {{ form_row(form.parent) }}
-        <a class="button" href="{{ path('hum_add_child', {hum: hum.id}) }}">Add child (language version)</a>
-    </div>
     <div>
         {{ form_row(form.policy) }}
         <a class="button" href="{{ path('policy_add') }}">Add new policy</a>

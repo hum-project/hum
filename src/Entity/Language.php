@@ -25,11 +25,6 @@ class Language
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Hum::class, mappedBy="language")
-     */
-    private $hums;
-
-    /**
      * @ORM\OneToMany(targetEntity=BlogPost::class, mappedBy="language")
      */
     private $blogPosts;
@@ -77,37 +72,6 @@ class Language
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Hum[]
-     */
-    public function getHums(): Collection
-    {
-        return $this->hums;
-    }
-
-    public function addHum(Hum $hum): self
-    {
-        if (!$this->hums->contains($hum)) {
-            $this->hums[] = $hum;
-            $hum->setLanguage($this);
-        }
-
-        return $this;
-    }
-
-    public function removeHum(Hum $hum): self
-    {
-        if ($this->hums->contains($hum)) {
-            $this->hums->removeElement($hum);
-            // set the owning side to null (unless already changed)
-            if ($hum->getLanguage() === $this) {
-                $hum->setLanguage(null);
-            }
-        }
 
         return $this;
     }

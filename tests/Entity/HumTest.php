@@ -46,9 +46,6 @@ class HumTest extends TestCase
     public function testHasCorrectFields()
     {
         $this->assertClassHasAttribute('date', 'App\Entity\Hum');
-        $this->assertClassHasAttribute('language', 'App\Entity\Hum');
-        $this->assertClassHasAttribute('parent', 'App\Entity\Hum');
-        $this->assertClassHasAttribute('hums', 'App\Entity\Hum');
         $this->assertClassHasAttribute('policy', 'App\Entity\Hum');
         $this->assertClassHasAttribute('institution', 'App\Entity\Hum');
     }

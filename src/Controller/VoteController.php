@@ -44,7 +44,8 @@ class VoteController extends AbstractController
         }
 
         return $this->render('vote/new.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'vote' => $vote
         ]);
     }
 
@@ -54,7 +55,7 @@ class VoteController extends AbstractController
     public function addWithPolicy(Policy $policy, Request $request)
     {
         $vote = new Vote();
-        $vote->setPolicy($policy);
+        $vote->addPolicy($policy);
 
         $form = $this->createForm(VoteType::class, $vote);
         $form->add('submit', SubmitType::class);

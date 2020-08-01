@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Delete a Vote</h1>
     <form method="post">
-        <h2>Votes for {{ vote.policy }}</h2>
+        <h2>Votes for {{ vote.rootPolicy }}</h2>
         <p>Are you sure you want to delete?</p>
         <label for="confirmation">Yes</label>
         <input id="confirmation" name="confirmation" type="checkbox">

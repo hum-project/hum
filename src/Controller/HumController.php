@@ -65,29 +65,4 @@ class HumController extends AbstractController
             'hum' => $hum
         ]);
     }
-
-    /**
-     * @Route("/hum/{hum}/add", name="hum_add_child")
-     */
-    public function addChild(Hum $hum, Request $request)
-    {
-        $child = new Hum();
-        $child->setParent($hum);
-        $hum->addHum($child);
-        $form = $this->createForm(HumType::class, $child);
-        $form->add('submit', SubmitType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($child);
-            $manager->flush();
-        }
-
-
-        return $this->render('hum/edit.html.twig', [
-            'form' => $form->createView(),
-            'hum' => $hum
-        ]);
-    }
 }

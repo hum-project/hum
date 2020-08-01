@@ -16,7 +16,6 @@ class VoteType extends AbstractType
             ->add('no')
             ->add('abstain')
             ->add('absent')
-            ->add('policy')
         ;
     }
 

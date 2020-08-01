@@ -13,8 +13,6 @@ class HumType extends AbstractType
     {
         $builder
             ->add('date')
-            ->add('language')
-            ->add('parent')
             ->add('policy')
             ->add('institution')
         ;

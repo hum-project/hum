@@ -59,6 +59,11 @@ class Policy
      */
     private $policies;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Vote::class, inversedBy="policies")
+     */
+    private $vote;
+
     public function __construct()
     {
         $this->policies = new ArrayCollection();
@@ -185,6 +190,18 @@ class Policy
                 $policy->setParent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVote(): ?Vote
+    {
+        return $this->vote;
+    }
+
+    public function setVote(?Vote $vote): self
+    {
+        $this->vote = $vote;
 
         return $this;
     }

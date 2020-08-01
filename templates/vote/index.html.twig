@@ -9,7 +9,9 @@
         <ul>
             {% for vote in votes %}
                 <li>
-                    <h2>{{ vote.policy }}</h2>
+                    {% if vote.rootPolicy is not empty %}
+                        <h2><a href="{{ path('policy_edit', {policy: vote.rootPolicy.id}) }}">{{ vote.rootPolicy }}</a></h2>
+                    {% endif %}
                     <div class="foldable">
                         <div class="fold-content">
                             <p>Yes: {{ vote.yes }}</p>
