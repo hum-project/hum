@@ -12,6 +12,18 @@
     {{ form_row(form.symbol) }}
     {{ form_end(form) }}
 
+    {% if theme.translation is empty %}
+        <p>
+            Versions:
+            {% if theme.translations is not empty %}
+                {% for child in theme.translations %}
+                    <a href="{{ path('theme_edit', {theme: child.id}) }}">{{ child.language.name }}</a>
+                {% endfor %}
+            {% endif %}
+            <br />
+            <a href="{{ path("theme_add_translation", {theme: theme.id}) }}">Add translation</a>
+        </p>
+    {% endif %}
     <a href="{{ path("theme_delete", {theme: theme.id}) }}">Delete</a>
 </div>
 {% endblock %}

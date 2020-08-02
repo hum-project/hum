@@ -3,7 +3,12 @@
 {% block title %}Add Policy Theme{% endblock %}
 
 {% block body %}
-    <h1>Add a Policy Theme</h1>
+    {% if theme.translation is empty %}
+        <h1>Add a Policy Theme</h1>
+    {% else %}
+        <h1>Add a translation to Policy Theme</h1>
+        <h2>Original: {{ theme.translation }}</h2>
+    {% endif %}
     {{ form_start(form) }}
     {{ form_row(form.title) }}
     {{ form_row(form.text) }}

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Image;
+use App\Entity\Language;
 use App\Entity\PolicyTheme;
 use App\Form\PolicyThemeType;
 use App\Repository\PolicyThemeRepository;
@@ -34,6 +35,11 @@ class PolicyThemeController extends AbstractController
     public function add(Request $request, SluggerInterface $slugger)
     {
         $theme = new PolicyTheme();
+        $language = $this->getDoctrine()->getRepository(Language::class)
+            ->findOneBy(["name" => "English"]);
+        if ($language) {
+            $theme->setLanguage($language);
+        }
 
         $form = $this->createForm(PolicyThemeType::class, $theme);
         $form->handleRequest($request);
@@ -50,28 +56,31 @@ class PolicyThemeController extends AbstractController
             $alt = $form->get('alt')->getData();
 
             $imageFile = $form->get('symbol')->getData();
-            $originalFileName = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-            $safeFileName = $slugger->slug($originalFileName);
-            $newFileName = $safeFileName.'-'.uniqid().'.'.$imageFile->guessExtension();
+            if ($imageFile) {
+                $originalFileName = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFileName = $slugger->slug($originalFileName);
+                $newFileName = $safeFileName.'-'.uniqid().'.'.$imageFile->guessExtension();
 
-            try {
-                $imageFile->move(
-                    $this->getParameter('images_directory'),
-                    $newFileName
-                );
-            } catch (FileException $e) {
-                $errors[] = $e;
+                try {
+                    $imageFile->move(
+                        $this->getParameter('images_directory'),
+                        $newFileName
+                    );
+                } catch (FileException $e) {
+                    $errors[] = $e;
+                }
+
+                $image->setFileName($newFileName);
+                $image->setAlt($alt);
+                $entityManager->persist($image);
+
+                $theme->setSymbol($image);
             }
 
-            $image->setFileName($newFileName);
-            $image->setAlt($alt);
-            $entityManager->persist($image);
-
-
-            $theme->setSymbol($image);
             $entityManager->persist($theme);
-
             $entityManager->flush();
+
+            $this->redirectToRoute('theme_edit', ['theme' => $theme->getId()]);
 
         }
 
@@ -91,6 +100,12 @@ class PolicyThemeController extends AbstractController
     {
         $translation = new PolicyTheme();
         $translation->setTranslation($theme);
+        $language = $this->getDoctrine()->getRepository(Language::class)
+            ->findOneBy(["name" => "Svenska"]);
+        if ($language) {
+            $translation->setLanguage($language);
+        }
+
         $image = new Image();
         $image->setFileName($theme->getSymbol()->getFileName());
         $image->setAlt($theme->getSymbol()->getAlt());
@@ -129,7 +144,7 @@ class PolicyThemeController extends AbstractController
 
             $image->setAlt($alt);
             $entityManager->persist($image);
-            $entityManager->persist($theme);
+            $entityManager->persist($translation);
 
             $entityManager->flush();
         }
