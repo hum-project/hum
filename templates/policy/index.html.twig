@@ -22,7 +22,7 @@
                                     {% endfor %}
                                 {% endif %}
                                 <br />
-                                <a href="{{ path("policy_add_child", {policy: policy.id}) }}">Add child</a>
+                                <a href="{{ path("policy_add_child", {policy: policy.id}) }}">Add translation</a>
                             </p>
                             <p>Theme: {{ policy.policyTheme.title }}</p>
                             <p>{{ policy.text }}</p>
@@ -32,6 +32,8 @@
                                 {% for argument in arguments %}
                                     <p>{{ argument.text }}</p>
                                 {% endfor %}
+                            {% else %}
+                                <a class="button" href="{{ path('policy_add_argument', {policy: policy.id}) }}" >Add argument</a>
                             {% endif %}
                             <p>
                                 {% if policy.vote is empty %}

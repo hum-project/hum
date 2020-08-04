@@ -4,6 +4,9 @@
 
 {% block body %}
     <h1>Add an argument</h1>
+    {% if policy is defined %}
+        <p>Add argument for policy: {{ policy }}</p>
+    {% endif %}
     {{ form_start(form) }}
     {{ form_row(form.side) }}
     {{ form_row(form.text) }}

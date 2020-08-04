@@ -20,7 +20,10 @@
             {% endfor %}
         {% endif %}
         <br />
-        <a href="{{ path("policy_add_child", {policy: policy.id}) }}">Add child</a>
+        <a href="{{ path("policy_add_child", {policy: policy.id}) }}">Add translation</a>
+    </p>
+    <p>
+        <a class="button" href="{{ path('policy_add_argument', {policy: policy.id}) }}" >Add argument</a>
     </p>
     {% if policy.vote is empty %}
         {% if policy.parent is empty %}

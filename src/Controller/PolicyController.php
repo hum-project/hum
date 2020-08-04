@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Argument;
+use App\Entity\Language;
 use App\Entity\Policy;
 use App\Entity\Vote;
+use App\Form\ArgumentType;
 use App\Form\PolicyType;
 use App\Form\VoteType;
 use App\Repository\PolicyRepository;
@@ -49,13 +52,78 @@ class PolicyController extends AbstractController
     }
 
     /**
+     * @Route("/policy/{policy}/add-argument", name="policy_add_argument")
+     */
+    public function addArgument(Policy $policy, Request $request)
+    {
+        $argument = new Argument();
+        $policy->setArgument($argument);
+        $form = $this->createForm(ArgumentType::class, $argument);
+        $form->add("submit", SubmitType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entitymanager = $this->getDoctrine()->getManager();
+            $entitymanager->persist($argument);
+            $entitymanager->persist($policy);
+            $entitymanager->flush();
+        }
+
+        return $this->render('argument/new.html.twig', [
+            "form" => $form->createView(),
+            "policy" => $policy,
+            "argument" => $argument
+        ]);
+    }
+
+    /**
      * @Route("/policy/{policy}/add", name="policy_add_child")
      */
     public function addChild(Policy $policy, Request $request)
     {
+        $language = $this->getDoctrine()->getRepository(Language::class)
+            ->findOneBy(["name" => "Svenska"]);
+
         $child = new Policy();
         $child->setParent($policy);
         $child->setVote($policy->getVote());
+        $child->setLanguage($language);
+
+        $argumentTranslation = false;
+        $themeTranslation = false;
+
+        if ($policy->getArgument()) {
+            $argument = $policy->getArgument();
+            if ($argument->getTranslations()) {
+                foreach ($argument->getTranslations() as $translation) {
+                    if ($translation->getLanguage() === $language) {
+                        $argument = $translation;
+                        $argumentTranslation = true;
+                        break;
+                    }
+                }
+            }
+            $child->setArgument($argument);
+
+        }
+        if ($policy->getPolicyTheme()) {
+            $theme = $policy->getPolicyTheme();
+            if ($theme->getTranslations()) {
+                foreach ($theme->getTranslations() as $translation) {
+                    if ($translation->getLanguage() === $language) {
+                        $theme = $translation;
+                        $themeTranslation = true;
+                        break;
+                    }
+                }
+            }
+            $child->setPolicyTheme($theme);
+        }
+        if ($policy->getSource()) {
+            $child->setSource($policy->getSource());
+        }
+
         $policy->addPolicy($child);
         $form = $this->createForm(PolicyType::class, $child);
         $form->add("submit", SubmitType::class);
@@ -69,9 +137,12 @@ class PolicyController extends AbstractController
             return $this->redirectToRoute('policy_edit', ["policy" => $child->getId()]);
         }
 
-        return $this->render('policy/new.html.twig', [
+        return $this->render('policy/add-translation.html.twig', [
             'form' => $form->createView(),
-            'policy' => $child
+            'policy' => $child,
+            'argumentParent' => $policy->getArgument(),
+            'argumentTranslation' => $argumentTranslation,
+            'themeTranslation' => $themeTranslation
         ]);
     }
 
