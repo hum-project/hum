@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Argument;
 use App\Entity\Language;
 use App\Entity\Policy;
+use App\Entity\PolicyTheme;
 use App\Entity\Vote;
 use App\Form\ArgumentType;
 use App\Form\PolicyType;
@@ -12,7 +13,9 @@ use App\Form\VoteType;
 use App\Repository\PolicyRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class PolicyController extends AbstractController
@@ -74,6 +77,22 @@ class PolicyController extends AbstractController
             "form" => $form->createView(),
             "policy" => $policy,
             "argument" => $argument
+        ]);
+    }
+
+    /**
+     * @Route("/policy/by-theme/{theme}", name="policy_by_theme")
+     */
+    public function policiesByTheme(PolicyTheme $theme, Request $request)
+    {
+        $policies = $this->getDoctrine()->getRepository(Policy::class)
+            ->findBy(["policyTheme" => $theme]);
+
+        $response = new JsonResponse($policies);
+
+        //return $response;
+        return $this->render('policy/index.html.twig', [
+            'policies' => $policies,
         ]);
     }
 
