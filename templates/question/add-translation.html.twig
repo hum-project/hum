@@ -1,12 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Add Question{% endblock %}
+{% block title %}Add translation for Question{% endblock %}
 
 {% block body %}
-    <h1>Add a Question</h1>
+    <h1>Add translation for Question</h1>
     {{ form_start(form) }}
     {{ form_row(form.hum) }}
     {{ form_row(form.language) }}
     {{ form_row(form.text) }}
     {{ form_end(form) }}
+    <div>
+        <h2>Original text</h2>
+        <p>{{ original.text }}</p>
+    </div>
 {% endblock %}

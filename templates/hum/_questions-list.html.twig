@@ -1,0 +1,26 @@
+<div>
+    {% if hum.questions is not empty %}
+        <p>Question</p>
+        {% for question in hum.questions %}
+            {% if question.translation is null %}
+            <p>
+                {{ question|slice(0, 45) }}
+                <a class="button" href="{{ path("question_edit", {question: question.id}) }}">Edit</a>
+                <a class="button" href="{{ path("question_delete", {question: question.id}) }}">Delete</a>
+            </p>
+            <p>
+                Translations:
+                {% if question.translations is not empty %}
+                    {% for translation in question.translations %}
+                        <a href="{{ path('question_edit', {question: translation.id}) }}">{{ translation.language.name }}</a>
+                    {% endfor %}
+                {% else %}
+                    No translation available
+                {% endif %}
+                <a class="button" href="{{ path("question_add_translation", {question: question.id}) }}">Add translation</a>
+            </p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <p><a class="button" href="{{ path("question_add_hum", {hum: hum.id}) }}">Add Question</a></p>
+</div>

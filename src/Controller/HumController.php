@@ -82,7 +82,7 @@ class HumController extends AbstractController
 
                 $entitymanager->remove($hum);
                 $entitymanager->flush();
-                return $this->redirectToRoute('vote');
+                return $this->redirectToRoute('hum');
             }
         }
 

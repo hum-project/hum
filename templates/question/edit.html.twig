@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Question{% endblock %}
+
+{% block body %}
+    <h1>Edit a Question</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.hum) }}
+    {{ form_row(form.language) }}
+    {{ form_row(form.text) }}
+    {% if question.translation is null %}
+        <p>
+            Translations:
+            {% if question.translations is not empty %}
+                {% for translation in question.translations %}
+                    <a href="{{ path('question_edit', {question: translation.id}) }}">{{ translation.language.name }}</a>
+                {% endfor %}
+            {% else %}
+                No translation available
+            {% endif %}
+            <a class="button" href="{{ path("question_add_translation", {question: question.id}) }}">Add translation</a>
+        </p>
+    {% else %}
+        <div>
+            <h2>Original text</h2>
+            <p>{{ question.translation.text }}</p>
+        </div>
+    {% endif %}
+
+    {{ form_end(form) }}
+{% endblock %}

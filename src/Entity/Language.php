@@ -49,6 +49,11 @@ class Language
      */
     private $arguments;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Question::class, mappedBy="language")
+     */
+    private $questions;
+
     public function __construct()
     {
         $this->hums = new ArrayCollection();
@@ -57,6 +62,7 @@ class Language
         $this->institutions = new ArrayCollection();
         $this->policies = new ArrayCollection();
         $this->arguments = new ArrayCollection();
+        $this->questions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -230,6 +236,37 @@ class Language
             // set the owning side to null (unless already changed)
             if ($argument->getLanguage() === $this) {
                 $argument->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Question[]
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question): self
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions[] = $question;
+            $question->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): self
+    {
+        if ($this->questions->contains($question)) {
+            $this->questions->removeElement($question);
+            // set the owning side to null (unless already changed)
+            if ($question->getLanguage() === $this) {
+                $question->setLanguage(null);
             }
         }
 
