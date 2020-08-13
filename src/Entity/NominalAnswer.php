@@ -23,9 +23,10 @@ class NominalAnswer
     private $value;
 
     /**
-     * @ORM\OneToOne(targetEntity=Question::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="nominalAnswers")
      */
     private $question;
+
 
     public function getId(): ?int
     {
@@ -55,4 +56,5 @@ class NominalAnswer
 
         return $this;
     }
+
 }

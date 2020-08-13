@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Hum;
 use App\Entity\Language;
 use App\Entity\Question;
+use App\Form\AnswerType;
 use App\Form\QuestionType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -120,5 +121,18 @@ class QuestionController extends AbstractController
             'question' => $question
         ]);
 
+    }
+
+    /**
+     * @Route("/question/{question}/add-answer", name="question_add_answer")
+     */
+    public function addQuestion(Question $question, Request $request)
+    {
+        $form = $this->createForm(AnswerType::class);
+        $form->add('submit', SubmitType::class);
+        return $this->render('question/add-answers.html.twig', [
+            'form' => $form->createView(),
+            'question' => $question
+        ]);
     }
 }

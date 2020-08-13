@@ -28,9 +28,10 @@ class OrdinalAnswer
     private $scale;
 
     /**
-     * @ORM\OneToOne(targetEntity=Question::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="ordinalAnswers")
      */
     private $question;
+
 
     public function __construct()
     {
@@ -79,4 +80,5 @@ class OrdinalAnswer
 
         return $this;
     }
+
 }

@@ -44,9 +44,27 @@ class Question
      */
     private $language;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ContinuousAnswer::class, mappedBy="question")
+     */
+    private $continuousAnswers;
+
+    /**
+     * @ORM\OneToMany(targetEntity=OrdinalAnswer::class, mappedBy="question")
+     */
+    private $ordinalAnswers;
+
+    /**
+     * @ORM\OneToMany(targetEntity=NominalAnswer::class, mappedBy="question")
+     */
+    private $nominalAnswers;
+
     public function __construct()
     {
         $this->translations = new ArrayCollection();
+        $this->continuousAnswers = new ArrayCollection();
+        $this->ordinalAnswers = new ArrayCollection();
+        $this->nominalAnswers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -134,6 +152,99 @@ class Question
     public function setLanguage(?Language $language): self
     {
         $this->language = $language;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ContinuousAnswer[]
+     */
+    public function getContinuousAnswers(): Collection
+    {
+        return $this->continuousAnswers;
+    }
+
+    public function addContinuousAnswer(ContinuousAnswer $continuousAnswer): self
+    {
+        if (!$this->continuousAnswers->contains($continuousAnswer)) {
+            $this->continuousAnswers[] = $continuousAnswer;
+            $continuousAnswer->setQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContinuousAnswer(ContinuousAnswer $continuousAnswer): self
+    {
+        if ($this->continuousAnswers->contains($continuousAnswer)) {
+            $this->continuousAnswers->removeElement($continuousAnswer);
+            // set the owning side to null (unless already changed)
+            if ($continuousAnswer->getQuestion() === $this) {
+                $continuousAnswer->setQuestion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrdinalAnswer[]
+     */
+    public function getOrdinalAnswers(): Collection
+    {
+        return $this->ordinalAnswers;
+    }
+
+    public function addOrdinalAnswer(OrdinalAnswer $ordinalAnswer): self
+    {
+        if (!$this->ordinalAnswers->contains($ordinalAnswer)) {
+            $this->ordinalAnswers[] = $ordinalAnswer;
+            $ordinalAnswer->setQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrdinalAnswer(OrdinalAnswer $ordinalAnswer): self
+    {
+        if ($this->ordinalAnswers->contains($ordinalAnswer)) {
+            $this->ordinalAnswers->removeElement($ordinalAnswer);
+            // set the owning side to null (unless already changed)
+            if ($ordinalAnswer->getQuestion() === $this) {
+                $ordinalAnswer->setQuestion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|NominalAnswer[]
+     */
+    public function getNominalAnswers(): Collection
+    {
+        return $this->nominalAnswers;
+    }
+
+    public function addNominalAnswer(NominalAnswer $nominalAnswer): self
+    {
+        if (!$this->nominalAnswers->contains($nominalAnswer)) {
+            $this->nominalAnswers[] = $nominalAnswer;
+            $nominalAnswer->setQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNominalAnswer(NominalAnswer $nominalAnswer): self
+    {
+        if ($this->nominalAnswers->contains($nominalAnswer)) {
+            $this->nominalAnswers->removeElement($nominalAnswer);
+            // set the owning side to null (unless already changed)
+            if ($nominalAnswer->getQuestion() === $this) {
+                $nominalAnswer->setQuestion(null);
+            }
+        }
 
         return $this;
     }

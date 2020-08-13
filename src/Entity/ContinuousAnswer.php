@@ -23,7 +23,7 @@ class ContinuousAnswer
     private $value;
 
     /**
-     * @ORM\OneToOne(targetEntity=Question::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="continuousAnswers")
      */
     private $question;
 
@@ -55,4 +55,5 @@ class ContinuousAnswer
 
         return $this;
     }
+    
 }
