@@ -1,14 +1,21 @@
 let categoryElement = document.getElementById("answer_type");
+
+let textElement0 = document.getElementById("answer_text");
+textElement0.setAttribute("name", "answer[text][0]");
+
 let languageDiv = document.getElementById("answer_language").parentElement;
 let textDiv = document.getElementById("answer_text").parentElement;
 let scaleDiv = document.getElementById("answer_scale").parentElement;
 let minDiv = document.getElementById("answer_minimum").parentElement;
 let maxDiv = document.getElementById("answer_maximum").parentElement;
 
-let addButton = document.getElementById("add-nominals");
-addButton.addEventListener('click', addAnswer);
 let addIncrementor = 0;
 
+let addButton = document.getElementById("add-nominals");
+addButton.addEventListener('click', addAnswer);
+
+let removeButton = document.getElementById("remove-nominals");
+removeButton.addEventListener('click', removeField);
 
 let category = categoryElement.options[categoryElement.value].text;
 categoryElement.addEventListener('change', updatedCategory)
@@ -59,6 +66,19 @@ function addAnswer(event) {
     let textElement = document.createElement('input');
     textElement.setAttribute('type', 'text');
     textElement.setAttribute('name', 'answer[text][' + addIncrementor + ']');
+    textElement.setAttribute('id', 'answer_text_' + addIncrementor);
     textDiv.appendChild(textElement);
-    console.log("Button was pressed!");
+    removeButton.setAttribute('class', 'show');
+}
+
+function removeField(event) {
+    event.preventDefault();
+    let textElement = document.getElementById('answer_text_' + addIncrementor);
+    textElement.parentNode.removeChild(textElement);
+
+
+    addIncrementor--;
+    if (addIncrementor === 0) {
+        removeButton.setAttribute("class", "hide");
+    }
 }
