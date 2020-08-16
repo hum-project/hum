@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Hum;
 use App\Entity\Language;
+use App\Entity\NominalAnswer;
+use App\Entity\OrdinalAnswer;
 use App\Entity\Question;
 use App\Form\AnswerType;
 use App\Form\QuestionType;
@@ -130,9 +132,52 @@ class QuestionController extends AbstractController
     {
         $form = $this->createForm(AnswerType::class);
         $form->add('submit', SubmitType::class);
+
+        if ('POST' === $request->getMethod()) {
+            $manager = $this->getDoctrine()->getManager();
+            $answer = $request->get("answer");
+            $category = $answer["type"];
+
+            if ($category === "0") {
+                // Nominal
+                $nominals = $this->getNominals($question, $answer);
+                foreach ($nominals as $nominal) {
+                    $manager->persist($nominal);
+                }
+            } elseif ($category === "1") {
+                // Ordinal
+                $scale = $answer["scale"];
+
+                if ($scale) {
+                    $ordinal = new OrdinalAnswer();
+                    $ordinal->setQuestion($question);
+                    $ordinal->setScale($scale);
+                }
+            } else {
+                // Continuous
+
+            }
+            //$manager->flush();
+        }
+
         return $this->render('question/add-answers.html.twig', [
             'form' => $form->createView(),
             'question' => $question
         ]);
+    }
+
+    protected function getNominals($question, $answer) {
+        $nominals = array();
+        $textArray = $answer["text"];
+
+        foreach ($textArray as $text) {
+            $nominal = new NominalAnswer();
+            $nominal->setQuestion($question);
+            $nominal->setValue($text);
+            $nominals[] = $nominal;
+        }
+
+        return $nominals;
+
     }
 }

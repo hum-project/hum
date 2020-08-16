@@ -24,16 +24,18 @@ class AnswerType extends AbstractType
                     'Continuous' => false
                 ]
             ])
-            ->add('text', TextType::class)
-            ->add('scale', IntegerType::class)
-            ->add('language', EntityType::class, array(
-                'class' => Language::class,
-                'query_builder' => function(EntityRepository $repository) {
-                    return $repository->createQueryBuilder('l');
-                },
-            ))
-            ->add('minimum', IntegerType::class)
-            ->add('maximum', IntegerType::class)
+            ->add('text', TextType::class, [
+                "required" => false
+            ])
+            ->add('scale', IntegerType::class, [
+                "required" => false
+            ])
+            ->add('minimum', IntegerType::class, [
+                "required" => false
+            ])
+            ->add('maximum', IntegerType::class, [
+                "required" => false
+            ])
         ;
     }
 
