@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\NominalAnswerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +28,16 @@ class NominalAnswer
      * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="nominalAnswers")
      */
     private $question;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ClientNominalAnswer::class, mappedBy="nominalAnswer")
+     */
+    private $clientNominalAnswers;
+
+    public function __construct()
+    {
+        $this->clientNominalAnswers = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -53,6 +65,37 @@ class NominalAnswer
     public function setQuestion(?Question $question): self
     {
         $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ClientNominalAnswer[]
+     */
+    public function getClientNominalAnswers(): Collection
+    {
+        return $this->clientNominalAnswers;
+    }
+
+    public function addClientNominalAnswer(ClientNominalAnswer $clientNominalAnswer): self
+    {
+        if (!$this->clientNominalAnswers->contains($clientNominalAnswer)) {
+            $this->clientNominalAnswers[] = $clientNominalAnswer;
+            $clientNominalAnswer->setNominalAnswer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientNominalAnswer(ClientNominalAnswer $clientNominalAnswer): self
+    {
+        if ($this->clientNominalAnswers->contains($clientNominalAnswer)) {
+            $this->clientNominalAnswers->removeElement($clientNominalAnswer);
+            // set the owning side to null (unless already changed)
+            if ($clientNominalAnswer->getNominalAnswer() === $this) {
+                $clientNominalAnswer->setNominalAnswer(null);
+            }
+        }
 
         return $this;
     }
