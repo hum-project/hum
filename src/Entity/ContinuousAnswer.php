@@ -20,11 +20,6 @@ class ContinuousAnswer
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
-     */
-    private $value;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="continuousAnswers")
      */
     private $question;
@@ -34,6 +29,16 @@ class ContinuousAnswer
      */
     private $clientContinuousAnswers;
 
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $minimum;
+
+    /**
+     * @ORM\Column(type="float")
+     */
+    private $maximum;
+
     public function __construct()
     {
         $this->clientContinuousAnswers = new ArrayCollection();
@@ -42,18 +47,6 @@ class ContinuousAnswer
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getValue(): ?int
-    {
-        return $this->value;
-    }
-
-    public function setValue(int $value): self
-    {
-        $this->value = $value;
-
-        return $this;
     }
 
     public function getQuestion(): ?Question
@@ -95,6 +88,30 @@ class ContinuousAnswer
                 $clientContinuousAnswer->setContinuousAnswer(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMinimum(): ?float
+    {
+        return $this->minimum;
+    }
+
+    public function setMinimum(float $minimum): self
+    {
+        $this->minimum = $minimum;
+
+        return $this;
+    }
+
+    public function getMaximum(): ?float
+    {
+        return $this->maximum;
+    }
+
+    public function setMaximum(float $maximum): self
+    {
+        $this->maximum = $maximum;
 
         return $this;
     }

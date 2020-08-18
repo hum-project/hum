@@ -22,11 +22,6 @@ class OrdinalAnswer
     /**
      * @ORM\Column(type="integer")
      */
-    private $value;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
     private $scale;
 
     /**
@@ -49,20 +44,6 @@ class OrdinalAnswer
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getValue(): ?int
-    {
-        return $this->value;
-    }
-
-    public function setValue(int $value): self
-    {
-        if ($value <= $this->getScale() && $value > 0) {
-            $this->value = $value;
-        }
-
-        return $this;
     }
 
     public function getScale(): ?int
