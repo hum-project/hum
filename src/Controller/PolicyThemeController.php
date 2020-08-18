@@ -16,7 +16,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class PolicyThemeController extends AbstractController
 {
     /**
-     * @Route("/theme", name="theme")
+     * @Route("/hum/theme", name="theme")
      */
     public function index(PolicyThemeRepository $repository)
     {
@@ -30,7 +30,7 @@ class PolicyThemeController extends AbstractController
     }
 
     /**
-     * @Route("/theme/add", name="theme_add", methods={"GET", "POST"})
+     * @Route("/hum/theme/add", name="theme_add", methods={"GET", "POST"})
      */
     public function add(Request $request, SluggerInterface $slugger)
     {
@@ -94,7 +94,7 @@ class PolicyThemeController extends AbstractController
     }
 
     /**
-     * @Route("/theme/{theme}/add-translation", name="theme_add_translation")
+     * @Route("/hum/theme/{theme}/add-translation", name="theme_add_translation")
      */
     public function addTranslation(PolicyTheme $theme, Request $request, SluggerInterface $slugger)
     {
@@ -158,7 +158,7 @@ class PolicyThemeController extends AbstractController
     }
 
     /**
-     * @Route("/theme/{theme}/edit", name="theme_edit", methods={"GET", "POST"})
+     * @Route("/hum/theme/{theme}/edit", name="theme_edit", methods={"GET", "POST"})
      */
     public function edit(PolicyTheme $theme, Request $request, SluggerInterface $slugger)
     {
@@ -225,7 +225,7 @@ class PolicyThemeController extends AbstractController
     }
 
     /**
-     * @Route("theme/{language}", name="theme_language")
+     * @Route("/hum/theme/{language}", name="theme_language")
      */
     public function indexForLanguage($language, PolicyThemeRepository $repository)
     {
@@ -245,7 +245,7 @@ class PolicyThemeController extends AbstractController
     }
 
     /**
-     * @Route("/theme/{theme}/delete", name="theme_delete")
+     * @Route("/hum/theme/{theme}/delete", name="theme_delete")
      */
     public function delete(PolicyTheme $theme, Request $request)
     {

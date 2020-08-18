@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class VoteController extends AbstractController
 {
     /**
-     * @Route("/vote", name="vote")
+     * @Route("/hum/vote", name="vote")
      */
     public function index()
     {
@@ -26,7 +26,7 @@ class VoteController extends AbstractController
 
 
     /**
-     * @Route("/vote/add/{policy}", name="vote_add_policy")
+     * @Route("/hum/vote/add/{policy}", name="vote_add_policy")
      */
     public function addWithPolicy(Policy $policy, Request $request)
     {
@@ -51,7 +51,7 @@ class VoteController extends AbstractController
     }
 
     /**
-     * @Route("/vote/{vote}/edit", name="vote_edit")
+     * @Route("/hum/vote/{vote}/edit", name="vote_edit")
      */
     public function edit(Vote $vote, Request $request)
     {
@@ -73,7 +73,7 @@ class VoteController extends AbstractController
     }
 
     /**
-     * @Route("/vote/{vote}/delete", name="vote_delete")
+     * @Route("/hum/vote/{vote}/delete", name="vote_delete")
      */
     public function delete(Vote $vote, Request $request)
     {

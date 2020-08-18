@@ -6,4 +6,23 @@
   display: block;
 }
 
+.active {
+  color: red;
+  background-color: black;
+}
+
+body {
+  margin: 0;
+}
+
+nav {
+  background-image: linear-gradient(#BAE6FF, #BCE9FC);
+  height: 3rem;
+}
+
+#main-nav, #sub-nav, #sub-sub-nav {
+  display: flex;
+  flex-direction: row;
+}
+
 /*# sourceMappingURL=styles.css.map */

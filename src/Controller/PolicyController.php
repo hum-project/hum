@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PolicyController extends AbstractController
 {
     /**
-     * @Route("/policy", name="policy")
+     * @Route("/hum/policy", name="policy")
      */
     public function index(PolicyRepository $repository)
     {
@@ -32,7 +32,7 @@ class PolicyController extends AbstractController
     }
 
     /**
-     * @Route("/policy/add", name="policy_add")
+     * @Route("/hum/policy/add", name="policy_add")
      */
     public function add(Request $request)
     {
@@ -55,7 +55,7 @@ class PolicyController extends AbstractController
     }
 
     /**
-     * @Route("/policy/{policy}/add-argument", name="policy_add_argument")
+     * @Route("/hum/policy/{policy}/add-argument", name="policy_add_argument")
      */
     public function addArgument(Policy $policy, Request $request)
     {
@@ -81,7 +81,7 @@ class PolicyController extends AbstractController
     }
 
     /**
-     * @Route("/policy/by-theme/{theme}", name="policy_by_theme")
+     * @Route("/hum/policy/by-theme/{theme}", name="policy_by_theme")
      */
     public function policiesByTheme(PolicyTheme $theme, Request $request)
     {
@@ -97,7 +97,7 @@ class PolicyController extends AbstractController
     }
 
     /**
-     * @Route("/policy/{policy}/add", name="policy_add_child")
+     * @Route("/hum/policy/{policy}/add", name="policy_add_child")
      */
     public function addChild(Policy $policy, Request $request)
     {
@@ -166,7 +166,7 @@ class PolicyController extends AbstractController
     }
 
     /**
-     * @Route("/policy/{policy}/edit", name="policy_edit")
+     * @Route("/hum/policy/{policy}/edit", name="policy_edit")
      */
     public function edit(Policy $policy, Request $request)
     {
@@ -187,7 +187,7 @@ class PolicyController extends AbstractController
     }
 
     /**
-     * @Route("/policy/{policy}/delete", name="policy_delete")
+     * @Route("/hum/policy/{policy}/delete", name="policy_delete")
      */
     public function delete(Policy $policy, Request $request)
     {
@@ -207,7 +207,7 @@ class PolicyController extends AbstractController
     }
 
     /**
-     * @Route("policy/{policy}/add-vote", name="policy_add_vote")
+     * @Route("/hum/policy/{policy}/add-vote", name="policy_add_vote")
      */
     public function addVoteToPolicy(Policy $policy, Request $request)
     {

@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class InstitutionController extends AbstractController
 {
     /**
-     * @Route("/institution", name="institution")
+     * @Route("/hum/institution", name="institution")
      */
     public function index(InstitutionRepository $repository)
     {
@@ -24,7 +24,7 @@ class InstitutionController extends AbstractController
     }
     
     /**
-     * @Route("/institution/add", name="institution_add")
+     * @Route("/hum/institution/add", name="institution_add")
      */
     public function add(Request $request)
     {
@@ -49,7 +49,7 @@ class InstitutionController extends AbstractController
     }
 
     /**
-     * @Route("/institution/{institution}/edit", name="institution_edit")
+     * @Route("/hum/institution/{institution}/edit", name="institution_edit")
      */
     public function edit(Institution $institution, Request $request)
     {
@@ -71,7 +71,7 @@ class InstitutionController extends AbstractController
     }
 
     /**
-     * @Route("/institution/{institution}/add-translation", name="institution_add_translation")
+     * @Route("/hum/institution/{institution}/add-translation", name="institution_add_translation")
      */
     public function addTranslation(institution $institution, Request $request)
     {
@@ -106,7 +106,7 @@ class InstitutionController extends AbstractController
     }
 
     /**
-     * @Route("/institution/{institution}/delete", name="institution_delete")
+     * @Route("/hum/institution/{institution}/delete", name="institution_delete")
      */
     public function delete(Institution $institution, Request $request)
     {

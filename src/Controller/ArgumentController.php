@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class ArgumentController extends AbstractController
 {
     /**
-     * @Route("/argument", name="argument")
+     * @Route("/hum/argument", name="argument")
      */
     public function index()
     {
@@ -24,7 +24,7 @@ class ArgumentController extends AbstractController
     }
 
     /**
-     * @Route("/argument/add", name="argument_add")
+     * @Route("/hum/argument/add", name="argument_add")
      */
     public function add(Request $request)
     {
@@ -47,7 +47,7 @@ class ArgumentController extends AbstractController
     }
 
     /**
-     * @Route("/argument/{argument}/add", name="argument_add_child")
+     * @Route("/hum/argument/{argument}/add", name="argument_add_child")
      */
     public function addChild(Argument $argument, Request $request)
     {
@@ -95,7 +95,7 @@ class ArgumentController extends AbstractController
     }
 
     /**
-     * @Route("/argument/{argument}/add-translation", name="argument_add_translation")
+     * @Route("/hum/argument/{argument}/add-translation", name="argument_add_translation")
      */
     public function addTranslation(Argument $argument, Request $request)
     {
@@ -123,7 +123,7 @@ class ArgumentController extends AbstractController
     }
 
     /**
-     * @Route("/argument/{argument}/edit", name="argument_edit")
+     * @Route("/hum/argument/{argument}/edit", name="argument_edit")
      */
     public function edit(Argument $argument, Request $request)
     {
@@ -145,7 +145,7 @@ class ArgumentController extends AbstractController
     }
 
     /**
-     * @Route("/argument/{argument}/delete", name="argument_delete")
+     * @Route("/hum/argument/{argument}/delete", name="argument_delete")
      */
     public function delete(Argument $argument, Request $request)
     {

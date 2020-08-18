@@ -1,7 +1,31 @@
+$nav-top-bg: #BAE6FF;
+$nav-bottom-bg: #BCE9FC;
+
+
+
 .hide {
   display: none;
 }
 
 .show {
   display: block;
+}
+
+.active {
+  color: red;
+  background-color: black;
+}
+
+body {
+  margin: 0;
+}
+
+nav {
+  background-image: linear-gradient($nav-top-bg, $nav-bottom-bg);
+  height: 3rem;
+}
+
+#main-nav, #sub-nav, #sub-sub-nav {
+  display: flex;
+  flex-direction: row;
 }

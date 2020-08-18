@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\ContinuousAnswer;
 use App\Entity\Hum;
 use App\Entity\Language;
 use App\Entity\NominalAnswer;
@@ -17,7 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class QuestionController extends AbstractController
 {
     /**
-     * @Route("/question", name="question")
+     * @Route("/hum/question", name="question")
      */
     public function index()
     {
@@ -27,7 +28,7 @@ class QuestionController extends AbstractController
     }
 
     /**
-     * @Route("/question/{question}/add-translation", name="question_add_translation")
+     * @Route("/hum/question/{question}/add-translation", name="question_add_translation")
      */
     public function addTranslation(Question $question, Request $request)
     {
@@ -57,7 +58,7 @@ class QuestionController extends AbstractController
     }
 
     /**
-     * @Route("/question/{hum}/add", name="question_add_hum")
+     * @Route("/hum/question/{hum}/add", name="question_add_hum")
      */
     public function addToHum(Hum $hum, Request $request)
     {
@@ -84,7 +85,7 @@ class QuestionController extends AbstractController
     }
 
     /**
-     * @Route("/question/{question}/edit", name="question_edit")
+     * @Route("/hum/question/{question}/edit", name="question_edit")
      */
     public function edit(Question $question, Request $request)
     {
@@ -105,7 +106,7 @@ class QuestionController extends AbstractController
     }
 
     /**
-     * @Route("/question/{question}/delete", name="question_delete")
+     * @Route("/hum/question/{question}/delete", name="question_delete")
      */
     public function delete(Question $question, Request $request)
     {
@@ -126,7 +127,7 @@ class QuestionController extends AbstractController
     }
 
     /**
-     * @Route("/question/{question}/add-answer", name="question_add_answer")
+     * @Route("/hum/question/{question}/add-answer", name="question_add_answer")
      */
     public function addQuestion(Question $question, Request $request)
     {
@@ -152,12 +153,23 @@ class QuestionController extends AbstractController
                     $ordinal = new OrdinalAnswer();
                     $ordinal->setQuestion($question);
                     $ordinal->setScale($scale);
+                    $manager->persist($ordinal);
                 }
             } else {
                 // Continuous
+                $min = $answer["minimum"];
+                $max = $answer["maximum"];
+                if ($min && $max) {
+                    $continuous = new ContinuousAnswer();
+                    $continuous->setQuestion($question);
+                    $continuous->setMinimum($min);
+                    $continuous->setMaximum($max);
+                    $manager->persist($continuous);
+                }
 
             }
-            //$manager->flush();
+            $manager->flush();
+            return $this->redirectToRoute('question_edit', ['question' => $question->getId()]);
         }
 
         return $this->render('question/add-answers.html.twig', [
