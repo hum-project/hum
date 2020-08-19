@@ -1,12 +1,15 @@
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 
 <nav>
+    <div>
     <div id="main-nav">
         <div id="home" {% if '/' in currentPath and currentPath|length<2 %}class="active"{% endif %}><a href="{{ path('start') }}">Home</a></div>
         <div id="news" {% if '/news' in currentPath %}class="active"{% endif %}><a href="{{ path('news') }}">News</a></div>
         <div id="hum" {% if '/hum' in currentPath %}class="active"{% endif %}><a href="{{ path('hum') }}">Hum</a></div>
         <div id="logout"><a href="{{ path('app_logout', {page: 1}) }}">Logout</a></div>
     </div>
+    </div>
+    <div>
     <div id="sub-nav">
         {% if '/hum' in currentPath %}
             <div id="add-hum" {% if '/hum/add' in currentPath %}class="active"{% endif %}>
@@ -18,25 +21,38 @@
             <div id="policy" {% if '/policy' in currentPath %}class="active"{% endif %}>
                 <a href="{{ path('policy') }}">Policy</a>
             </div>
-            <div id="argument" {% if '/policy' in currentPath %}class="active"{% endif %}>
+            <div id="argument" {% if '/argument' in currentPath %}class="active"{% endif %}>
                 <a href="{{ path('argument') }}">Argument</a>
             </div>
             <div id="institution" {% if '/institution' in currentPath %}class="active"{% endif %}>
                 <a href="{{ path('institution') }}">Institution</a>
             </div>
+        {% elseif '/news' in currentPath %}
+            <div id="add-news" {% if '/news/add' in currentPath %}class="active"{% endif %}>
+                <a href="{{ path('news_add') }}">Add news</a>
+            </div>
         {% endif %}
     </div>
+    </div>
+    <div>
     <div id="sub-sub-nav">
-        {% if '/news' in currentPath %}
-            <div id="add-news"><a href="{{ path('news_add') }}">Add news</a></div>
-        {% elseif '/theme' in currentPath %}
-            <div id="add-theme"><a href="{{ path('theme_add') }}">Add theme</a></div>
+        {% if '/theme' in currentPath %}
+            <div id="add-theme" {% if '/theme/add' in currentPath %}class="active"{% endif %}>
+                <a href="{{ path('theme_add') }}">Add theme</a>
+            </div>
         {% elseif '/institution' in currentPath %}
-            <div id="add-institution"><a href="{{ path('institution_add') }}">Add institution</a></div>
+            <div id="add-institution" {% if '/institution/add' in currentPath %}class="active"{% endif %}>
+                <a href="{{ path('institution_add') }}">Add institution</a>
+            </div>
         {% elseif '/policy' in currentPath %}
-            <div id="add-policy"><a href="{{ path('policy_add') }}">Add policy</a></div>
+            <div id="add-policy" {% if '/policy/add' in currentPath %}class="active"{% endif %}>
+                <a href="{{ path('policy_add') }}">Add policy</a>
+            </div>
         {% elseif '/argument' in currentPath %}
-            <div id="add-argument"><a href="{{ path('argument_add') }}">Add argument</a></div>
+            <div id="add-argument" {% if '/argument/add' in currentPath %}class="active"{% endif %}>
+                <a href="{{ path('argument_add') }}">Add argument</a>
+            </div>
         {% endif %}
+    </div>
     </div>
 </nav>

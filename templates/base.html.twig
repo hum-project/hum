@@ -8,6 +8,15 @@
     </head>
     <body>
     <header>
+        <div id="logo">
+            <a href="{{ path('start') }}">
+                <img id="logo-image" src="{{ asset('images/hum-logo.svg') }}" alt="Logo for Hum, a bumblebee in flight">
+                <div id="logo-text-container">
+                    <p id="logo-text">Hum</p>
+                    <p id="logo-description">Policies made easy</p>
+                </div>
+            </a>
+        </div>
         {% include "util/_nav.html.twig" %}
     </header>
     {% for message in app.flashes('success') %}
