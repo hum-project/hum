@@ -4,6 +4,11 @@
 };
 
 @font-face {
+  font-family: 'Raleway-Light';
+  src: url('../fonts/Raleway-Light.ttf');
+};
+
+@font-face {
   font-family: Sniglet;
   src: url('../fonts/Sniglet-Regular.ttf');
 }
@@ -13,11 +18,17 @@ $bright-blue: #BAE6FF;
 $brighter-blue: #BCE9FC;
 $dark-black: #2C2C2C;
 $smoke-white: #f9f9f9;
+$yellow: #FFFB88;
 
 $nav-top-bg: $bright-blue;
 $nav-bottom-bg: $brighter-blue;
 $active-text: $purple;
 
+body {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
 
 .hide {
   display: none;
@@ -110,4 +121,74 @@ header {
       color: $dark-black;
     }
   }
+}
+
+#content {
+  margin-top: 27px;
+  margin-left: 27px;
+
+  font-family: 'Raleway-Light', sans-serif;
+}
+
+.news-list {
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+}
+
+.fold-content {
+  div {
+    p {
+      margin-left: 12px;
+    }
+    p:nth-child(1) {
+      margin-left: 0px;
+    }
+  }
+}
+
+form {
+  margin-bottom: 2rem;
+  max-width: 64rem;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+  }
+
+  label {
+    margin-bottom: 3px;
+  }
+
+  select, input, textarea {
+    border-radius: 3px;
+  }
+
+  textarea {
+    min-height: 4rem;
+  }
+
+}
+
+button {
+  font-family: Raleway, sans-serif;
+  width: 10rem;
+  height: 2rem;
+  background-color: $yellow;
+  color: $dark-black;
+  border-color: $dark-black;
+  border-radius: 3px;
+}
+
+footer {
+  background-image: linear-gradient($nav-top-bg, $nav-bottom-bg);
+  padding-left: 27px;
+  min-height: 10rem;
+  display: flex;
+  align-items: center;
+
+  font-family: 'Raleway-Light', sans-serif;
+
 }

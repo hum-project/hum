@@ -24,7 +24,12 @@
             {{ message }}
         </div>
     {% endfor %}
+    <div id="content">
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    </div>
+    <footer>
+        <a href="mailto:anders@femtearenan.se">anders@femtearenan.se</a>
+    </footer>
+    {% block javascripts %}{% endblock %}
     </body>
 </html>
