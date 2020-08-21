@@ -100,4 +100,10 @@ class NominalAnswer
         return $this;
     }
 
+    public function __toString()
+    {
+        return "Nominal type: " . $this->getValue();
+    }
+
+
 }

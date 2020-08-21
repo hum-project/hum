@@ -101,4 +101,9 @@ class OrdinalAnswer
         return $this;
     }
 
+    public function __toString()
+    {
+        return "Ordinal type: " . $this->getScale();
+    }
+
 }

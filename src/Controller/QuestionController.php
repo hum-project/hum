@@ -120,7 +120,7 @@ class QuestionController extends AbstractController
             }
         }
 
-        return $this->render('policy/delete.html.twig', [
+        return $this->render('question/delete.html.twig', [
             'question' => $question
         ]);
 
@@ -129,7 +129,7 @@ class QuestionController extends AbstractController
     /**
      * @Route("/hum/question/{question}/add-answer", name="question_add_answer")
      */
-    public function addQuestion(Question $question, Request $request)
+    public function addAnswer(Question $question, Request $request)
     {
         $form = $this->createForm(AnswerType::class);
         $form->add('submit', SubmitType::class);

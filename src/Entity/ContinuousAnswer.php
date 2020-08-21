@@ -115,5 +115,10 @@ class ContinuousAnswer
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return "Continuous type: " . $this->getMinimum() . " - " . $this->getMaximum();
+    }
     
 }

@@ -31,18 +31,18 @@ function updatedCategory() {
 function updateElementsShowing(category) {
     switch (category) {
         case 'Nominal':
-            textDiv.setAttribute('class', 'show');
+            textDiv.setAttribute('class', '');
             scaleDiv.setAttribute('class', 'hide');
             minDiv.setAttribute('class', 'hide');
             maxDiv.setAttribute('class', 'hide');
-            addButton.setAttribute('class', 'show');
+            addButton.setAttribute('class', '');
             if (addIncrementor > 0) {
-                removeButton.setAttribute('class', 'show');
+                removeButton.setAttribute('class', '');
             }
             break;
         case 'Ordinal':
             textDiv.setAttribute('class', 'hide');
-            scaleDiv.setAttribute('class', 'show');
+            scaleDiv.setAttribute('class', '');
             minDiv.setAttribute('class', 'hide');
             maxDiv.setAttribute('class', 'hide');
             addButton.setAttribute('class', 'hide');
@@ -52,8 +52,8 @@ function updateElementsShowing(category) {
         case 'Continuous':
             textDiv.setAttribute('class', 'hide');
             scaleDiv.setAttribute('class', 'hide');
-            minDiv.setAttribute('class', 'show');
-            maxDiv.setAttribute('class', 'show');
+            minDiv.setAttribute('class', '');
+            maxDiv.setAttribute('class', '');
             addButton.setAttribute('class', 'hide');
             removeButton.setAttribute('class', 'hide');
 
