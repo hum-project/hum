@@ -1,0 +1,18 @@
+{% for answer in question.nominalAnswers %}
+    <div>
+    {% include 'answer/_overview.html.twig' with {'answer' : answer}%}
+    <a href="{{ path('nominal_delete', {answer: answer.id}) }}">Delete</a>
+    </div>
+{% endfor %}
+{% for answer in question.ordinalAnswers %}
+    <div>
+        {% include 'answer/_overview.html.twig' with {'answer' : answer}%}
+        <a href="{{ path('ordinal_delete', {answer: answer.id}) }}">Delete</a>
+    </div>
+{% endfor %}
+{% for answer in question.continuousAnswers %}
+    <div>
+        {% include 'answer/_overview.html.twig' with {'answer' : answer}%}
+        <a href="{{ path('continuous_delete', {answer: answer.id}) }}">Delete</a>
+    </div>
+{% endfor %}

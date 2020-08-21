@@ -1,0 +1,7 @@
+<div>
+    <h4>{{ question|slice(0, 200) }}</h4>
+    <a class="button" href="{{ path("question_edit", {question: question.id}) }}">Edit</a>
+    <a class="button danger" href="{{ path("question_delete", {question: question.id}) }}">Delete</a>
+    <h5>Answers: </h5>
+    {% include "question/_answer_overview.html.twig" with {'question': question} %}
+</div>

@@ -37,7 +37,6 @@
     {% for answer in question.continuousAnswers %}
         {% include 'answer/_overview.html.twig' with {'answer' : answer}%}
         <a href="{{ path('continuous_delete', {answer: answer.id}) }}">Delete</a>
-
     {% endfor %}
     <a href="{{ path('question_add_answer', {question: question.id}) }}">Add answer option</a>
 

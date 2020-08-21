@@ -98,7 +98,7 @@ class Question
 
     public function __toString()
     {
-        return substr($this->getText(), 0, 40);
+        return $this->getText();
     }
 
     public function getTranslation(): ?self
