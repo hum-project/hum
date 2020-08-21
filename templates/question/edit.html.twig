@@ -42,4 +42,10 @@
     <a href="{{ path('question_add_answer', {question: question.id}) }}">Add answer option</a>
 
     {{ form_end(form) }}
+    {% if question.translation is not empty %}
+        <a class="button secondary" href="{{ path('question_edit', {question: question.translation.id}) }}">To root translation</a>
+    {% endif %}
+    {% if question.hum is not empty %}
+        <a class="button secondary" href="{{ path('hum_edit', {hum: question.hum.id}) }}">Back to Hum</a>
+    {% endif %}
 {% endblock %}

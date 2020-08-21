@@ -48,7 +48,7 @@ class QuestionController extends AbstractController
             $entitymanager->persist($question);
             $entitymanager->flush();
 
-            return $this->redirectToRoute('hum_edit', ["hum" => $question->getHum()->getId()]);
+            return $this->redirectToRoute('question_edit', ["question" => $question->getId()]);
         }
 
         return $this->render('question/add-translation.html.twig', [
@@ -76,7 +76,7 @@ class QuestionController extends AbstractController
             $entitymanager->persist($question);
             $entitymanager->flush();
 
-            return $this->redirectToRoute('hum_edit', ["hum" => $hum->getId()]);
+            return $this->redirectToRoute('question_edit', ["question" => $question->getId()]);
         }
 
         return $this->render('question/new.html.twig', [
