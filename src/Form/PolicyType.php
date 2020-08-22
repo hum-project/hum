@@ -23,9 +23,10 @@ class PolicyType extends AbstractType
             ->add('argument', EntityType::class, array(
                 'class' => Argument::class,
                 'query_builder' => function(EntityRepository $repository) {
-                    return $repository->createQueryBuilder('a')
+                    $qb = $repository->createQueryBuilder('a')
                         // find all users where 'deleted' is NOT '1'
                         ->andWhere('a.parent is NULL');
+                    return $qb;
                 },
             ))
             ->add('language')

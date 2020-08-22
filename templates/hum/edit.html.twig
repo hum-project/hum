@@ -8,11 +8,29 @@
     {{ form_row(form.date) }}
     <div>
         {{ form_row(form.policy) }}
-        <a class="button" href="{{ path('policy_add') }}">Add new policy</a>
+        {% if hum.policy is not empty %}
+            <p>
+                Current policy:
+                <a href="{{ path('policy_edit', {policy: hum.policy.id}) }}">
+                    {{ hum.policy }}
+                </a>
+            </p>
+        {% else %}
+            <p>No policy chosen.</p>
+            <a class="button" href="{{ path('policy_add') }}">Add new policy</a>
+        {% endif %}
     </div>
     <div>
         {{ form_row(form.institution) }}
-        <a class="button" href="{{ path('institution_add') }}">Add new institution</a>
+        {% if hum.institution is not empty %}
+            <p>
+                Current institution:
+                <a href="{{ path('institution_edit', {institution: hum.institution.id}) }}">{{ hum.institution }}</a>
+            </p>
+        {% else %}
+            <p>No institution chosen.</p>
+            <a class="button" href="{{ path('institution_add') }}">Add new institution</a>
+        {% endif %}
     </div>
     {% include "hum/_questions-list.html.twig" %}
     {{ form_end(form) }}
