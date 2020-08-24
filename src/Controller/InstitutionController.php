@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Hum;
 use App\Entity\Institution;
 use App\Form\InstitutionType;
 use App\Repository\InstitutionRepository;
@@ -36,6 +37,33 @@ class InstitutionController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entitymanager = $this->getDoctrine()->getManager();
+            $entitymanager->persist($institution);
+            $entitymanager->flush();
+
+            return $this->redirectToRoute('institution_edit', ['institution' => $institution->getId()]);
+        }
+
+        return $this->render('institution/new.html.twig', [
+            'form' => $form->createView(),
+            'institution' => $institution
+        ]);
+    }
+
+    /**
+     * @Route("/hum/institution/add-to-hum/{hum}", name="institution_hum_add")
+     */
+    public function addWithHum(Hum $hum, Request $request)
+    {
+        $institution = new Institution();
+        $hum->setInstitution($institution);
+
+        $form = $this->createForm(InstitutionType::class, $institution);
+        $form->add("submit", SubmitType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entitymanager = $this->getDoctrine()->getManager();
+            $entitymanager->persist($hum);
             $entitymanager->persist($institution);
             $entitymanager->flush();
 
