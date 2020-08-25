@@ -25,6 +25,15 @@
         {{ form_end(form) }}
 
     </div>
+    {% if hasParent %}
+        <div class="translation">
+            <h3>{{ blogPost.parent.title }}</h3>
+            <p>{{ blogPost.parent.text }}</p>
+            <p>Language: {{ blogPost.parent.language }}</p>
+        </div>
+    {% endif %}
+
+
 {% endblock %}
 {% block javascripts %}
     <script>

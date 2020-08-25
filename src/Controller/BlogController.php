@@ -81,6 +81,8 @@ class BlogController extends AbstractController
             $entitymanager->persist($blogPost);
             $entitymanager->flush();
 
+            $this->redirectToRoute('news_edit', ["slug" => $blogPost->getSlug()]);
+
         }
         return $this->render('blog/new.html.twig', [
             'form' => $form->createView()
@@ -151,6 +153,8 @@ class BlogController extends AbstractController
 
             $entitymanager->persist($blogPost);
             $entitymanager->flush();
+            $this->redirectToRoute('news_edit', ["slug" => $blogPost->getSlug()]);
+
 
         }
         return $this->render('blog/new.html.twig', [
