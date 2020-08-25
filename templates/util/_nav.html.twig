@@ -6,7 +6,12 @@
         <div id="home" {% if '/' in currentPath and currentPath|length<2 %}class="active"{% endif %}><a href="{{ path('start') }}">Home</a></div>
         <div id="news" {% if '/news' in currentPath %}class="active"{% endif %}><a href="{{ path('news') }}">News</a></div>
         <div id="hum" {% if '/hum' in currentPath %}class="active"{% endif %}><a href="{{ path('hum') }}">Hum</a></div>
-        <div id="logout"><a href="{{ path('app_logout', {page: 1}) }}">Logout</a></div>
+        {% if app.user %}
+            <div id="logout"><a href="{{ path('app_logout') }}">Logout</a></div>
+        {% else %}
+            <div id="login"><a href="{{ path('app_login') }}">Login</a></div>
+        {% endif %}
+
     </div>
     </div>
     <div>
