@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Vote{% endblock %}
+
+{% block body %}
+    <h1>Edit a vote</h1>
+    {% if vote.policies is not empty %}
+        {% for policy in vote.policies %}
+            {% if policy.parent is empty %}
+                <p>Parent policy: <a href="{{ path('policy_edit', {policy: policy.id}) }}">{{ policy }}</a></p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {{ form_start(form) }}
+    {{ form_row(form.yes) }}
+    {{ form_row(form.no) }}
+    {{ form_row(form.abstain) }}
+    {{ form_row(form.absent) }}
+    {{ form_end(form) }}
+    <a class="button" href="{{ path('vote_delete', {vote: vote.id}) }}">Delete</a>
+{% endblock %}

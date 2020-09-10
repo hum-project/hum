@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Institutions{% endblock %}
+
+{% block body %}
+
+    <div class="form-wrapper">
+        <h1>Institutions</h1>
+        <ul>
+            {% for institution in institutions %}
+                <li>
+                    <h2>{{ institution.name }}</h2>
+                    <div class="foldable">
+                        <h3 class="fold-action">Description</h3>
+                        <div class="fold-content">
+                            <p>Language: {{ institution.language.name }}</p>
+                            {% if institution.translation is empty %}
+                                <p>
+                                    Versions:
+                                    {% if institution.translations is not empty %}
+                                        {% for child in institution.translations %}
+                                            <a href="{{ path('institution_edit', {institution: child.id}) }}">{{ child.language.name }}</a>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <br />
+                                    <a href="{{ path("institution_add_translation", {institution: institution.id}) }}">Add translation</a>
+                                </p>
+                            {% endif %}
+                            <p>{{ institution.text }}</p>
+                            <p>
+                                <a href="{{ path("institution_edit", {institution: institution.id}) }}">Edit</a>
+                                <a href="{{ path("institution_delete", {institution: institution.id}) }}">Delete</a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+
+    </div>
+{% endblock %}

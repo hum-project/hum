@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Policy{% endblock %}
+
+{% block body %}
+
+    <div class="form-wrapper">
+        <h1>Policy Overview</h1>
+        <ul>
+            {% for policy in policies %}
+                <li>
+                    <h2>{{ policy.title }}</h2>
+                    <div class="foldable">
+                        <h3 class="fold-action">Description</h3>
+                        <div class="fold-content">
+                            <p>Language: {{ policy.language.name }}</p>
+                            <p>
+                                Versions:
+                                {% if policy.policies is not empty %}
+                                    {% for child in policy.policies %}
+                                        <a href="{{ path('policy_edit', {policy: child.id}) }}">{{ child.language.name }}</a>
+                                    {% endfor %}
+                                {% endif %}
+                                <br />
+                                <a href="{{ path("policy_add_child", {policy: policy.id}) }}">Add translation</a>
+                            </p>
+                            <p>Theme: {{ policy.policyTheme.title }}</p>
+                            <p>{{ policy.text }}</p>
+
+                            {% if policy.argument is not empty %}
+                                {% set arguments = policy.argument.descendants %}
+                                {% for argument in arguments %}
+                                    <p>{{ argument.text }}</p>
+                                {% endfor %}
+                            {% else %}
+                                <a class="button" href="{{ path('policy_add_argument', {policy: policy.id}) }}" >Add argument</a>
+                            {% endif %}
+                            <p>
+                                {% if policy.vote is empty %}
+                                    <a class="button" href="{{ path('policy_add_vote', {policy: policy.id}) }}" >Add vote</a>
+                                {% else %}
+                                    <div id="vote">
+                                        <h3>Vote on policy</h3>
+                                        <p>Yes: {{ policy.vote.yes }}</p>
+                                        <p>No: {{ policy.vote.no }}</p>
+                                        <p>Abstain: {{ policy.vote.abstain }}</p>
+                                        <p>Absent: {{ policy.vote.absent }}</p>
+                                        <p>
+                                            <a href="{{ path("vote_edit", {vote: policy.vote.id}) }}">Edit</a>
+                                            <a href="{{ path("vote_delete", {vote: policy.vote.id}) }}">Delete</a>
+                                        </p>
+                                    </div>
+                                {% endif %}
+                            </p>
+                            <p>
+                                <a href="{{ path("policy_edit", {policy: policy.id}) }}">Edit</a>
+                                <a href="{{ path("policy_delete", {policy: policy.id}) }}">Delete</a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+
+
+    </div>
+{% endblock %}

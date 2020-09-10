@@ -1,0 +1,140 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit News Post{% endblock %}
+
+{% block body %}
+    <style>
+        .form-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+        .form-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+    </style>
+
+    <div class="form-wrapper">
+        {% if hasParent %}
+            <h1>Add translation</h1>
+        {% else %}
+            <h1>Add news</h1>
+        {% endif %}
+        {{ form_start(form) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.text) }}
+        {{ form_row(form.language) }}
+
+        <div id="images-container">
+        <ol id="images-list" class="images" data-prototype="{{ form_widget(form.blogImages.vars.prototype)|e('html_attr') }}">
+        </ol>
+        </div>
+        {{ form_row(form.publishTime) }}
+
+
+
+        {{ form_end(form) }}
+        <div class="translations-area">
+            {% if hasParent %}
+                <a href="{{ path('news_edit', {slug: blogPost.parent.slug}) }}"><h2>Edit parent post. [{{ blogPost.parent.language.name }}]</h2></a>
+                {% include 'blog/_raw.html.twig' with {'post': blogPost.parent} %}
+            {% else %}
+                {% if blogPost.blogPosts is empty %}
+                    <a href="{{ path('news_add_child', {slug: blogPost.slug}) }}">Add a translation.</a>
+                {% else %}
+                    {% for post in blogPost.blogPosts %}
+                        <a href="{{ path('news_edit', {slug: post.slug}) }}" ><h2>Edit translation [{{ post.language.name }}]</h2></a>
+                        {% include 'blog/_raw.html.twig' with {'post': post} %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        </div>
+
+
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        var imagesContainer = document.getElementById('blog_post_blogImages');
+
+        var collectionContainer = document.getElementById('images-list');
+        var prototypeString = collectionContainer.dataset.prototype;
+
+        var imageList = document.createElement("ol");
+        imageList.setAttribute('data-index', 1);
+        imageList.setAttribute('data-prototype', prototypeString);
+
+        imagesContainer.innerHTML = '';
+        imagesContainer.appendChild(imageList);
+
+        var addButton = document.createElement("button");
+        var addButtonText = document.createTextNode("Add image");
+
+        addButton.appendChild(addButtonText);
+        addButton.type = "button";
+        addButton.addEventListener('click',addImageForm)
+
+        imagesContainer.appendChild(addButton);
+
+        {% if  blogPost.blogImages is not empty %}
+            let fileName = '';
+            let alt = '';
+            let subtext = '';
+            let index = 1;
+            {% for blogImage in blogPost.blogImages %}
+                fileName = '{{ blogImage.image.fileName }}';
+                alt = '{{ blogImage.image.alt }}';
+                subtext = '{{ blogImage.subtext }}';
+                setImageForm(index, fileName, alt, subtext);
+                index++;
+            {% endfor %}
+        {% endif %}
+
+        function addImageForm() {
+            let prototype = prototypeString;
+            let index = imageList.dataset.index;
+            let newForm = prototype;
+            newForm = newForm.replace(/__name__/g, index);
+            imageList.dataset.index =  1 + parseInt(index);
+
+            let removeButton = document.createElement("button");
+            let removeButtonText = document.createTextNode("Remove image");
+            removeButton.appendChild(removeButtonText);
+            removeButton.type = "button";
+            removeButton.setAttribute("id", "remove_" + index);
+            removeButton.addEventListener('click', removeImageForm);
+
+            let newFormLi = document.createElement('li');
+            newFormLi.innerHTML = newForm;
+            newFormLi.appendChild(removeButton);
+            imageList.appendChild(newFormLi);
+        }
+
+        function setImageForm(index, fileName, alt, subtext) {
+            addImageForm();
+            let objectIndex = index;
+            let imageInput = document.getElementById('blog_post_blogImages_' + objectIndex +'_image');
+            let imageInputDiv = imageInput.parentElement;
+            imageInputDiv.innerHTML =
+                '<input type="hidden" id="blog_post_blogImages_'+ objectIndex +'_image"'
+                + 'name="blog_post[blogImages]['+ objectIndex +'][image]" value="' + fileName +'">';
+            let imageInputP = document.createElement('p');
+            let pText = document.createTextNode(fileName);
+            imageInputP.appendChild(pText);
+            imageInputDiv.appendChild(imageInputP);
+
+            let imageAlt = document.getElementById('blog_post_blogImages_' + objectIndex + '_alt');
+            imageAlt.setAttribute('value', alt);
+
+            let imageSubtext = document.getElementById('blog_post_blogImages_' + objectIndex + '_subtext');
+            imageSubtext.innerHTML = subtext;
+
+            let imgElement = document.createElement('img');
+            imgElement.setAttribute('src', '/{{ filePath }}/' + fileName );
+            imgElement.setAttribute('alt', alt);
+            imageInputDiv.appendChild(imgElement);
+
+        }
+
+        function removeImageForm(event) {
+            let elementRemove = event.target;
+            let parentRemove = elementRemove.parentElement;
+            parentRemove.parentNode.removeChild(parentRemove);
+        }
+
+    </script>
+{% endblock %}

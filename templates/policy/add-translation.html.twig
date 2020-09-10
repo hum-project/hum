@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Policy Translation{% endblock %}
+
+{% block body %}
+    <h1>Add Policy Translation</h1>
+    <h2>Translation for {{ policy.parent }}</h2>
+    {{ form_start(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.text) }}
+    {{ form_row(form.source) }}
+    <div>
+        {{ form_row(form.policyTheme) }}
+        {% if not themeTranslation %}
+            <a href="{{ path('theme_add_translation', {theme: policy.policyTheme.id }) }}">Add translation for theme.</a>
+        {% endif %}
+    </div>
+    <div>
+        {{ form_row(form.argument) }}
+        {% if not argumentTranslation and argumentParent is not empty%}
+            <a href="{{ path('argument_add_translation', {argument: argumentParent.id }) }}">Add translation for theme.</a>
+        {% endif %}
+    </div>
+    {{ form_row(form.language) }}
+    {{ form_end(form) }}
+{% endblock %}

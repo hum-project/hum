@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\BlogPost;
+use App\Entity\Language;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,52 @@ class BlogPostRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, BlogPost::class);
+    }
+
+    /**
+     * @return BlogPost[]
+     */
+    public function getPostsByLanguageName($languageName, $page = 1, $results = 10)
+    {
+        $languageRepository = $this->getEntityManager()->getRepository(Language::class);
+        $language = $languageRepository->findOneByName($languageName);
+
+        $startIndex = ($page - 1) * $results;
+
+        return  $this->createQueryBuilder('b')
+            ->andWhere('b.language = :val')
+            ->setParameter('val', $language)
+            ->orderBy('b.publishTime', 'DESC')
+            ->setFirstResult($startIndex)
+            ->setMaxResults($results)
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getPageCountByLanguageName($languageName, $resultsPerPage = 10)
+    {
+        $languageRepository = $this->getEntityManager()->getRepository(Language::class);
+        $language = $languageRepository->findOneByName($languageName);
+
+        $count = $this->getTotalByLanguageName($languageName);
+        $pages = ceil($count/$resultsPerPage);
+
+        return (int)$pages;
+    }
+
+    public function getTotalByLanguageName($languageName)
+    {
+        $languageRepository = $this->getEntityManager()->getRepository(Language::class);
+        $language = $languageRepository->findOneByName($languageName);
+
+        return  $this->createQueryBuilder('b')
+            ->andWhere('b.language = :val')
+            ->setParameter('val', $language)
+            ->select('COUNT(b.language) as num')
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
     }
 
     // /**

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ArgumentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,26 @@ class Argument
      * @ORM\OneToOne(targetEntity=Argument::class, mappedBy="parent", cascade={"persist", "remove"})
      */
     private $child;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="arguments")
+     */
+    private $language;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Argument::class, inversedBy="translations")
+     */
+    private $translation;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Argument::class, mappedBy="translation")
+     */
+    private $translations;
+
+    public function __construct()
+    {
+        $this->translations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -87,10 +109,87 @@ class Argument
     {
         $this->child = $child;
 
-        // set (or unset) the owning side of the relation if necessary
-        $newParent = null === $child ? null : $this;
-        if ($child->getParent() !== $newParent) {
-            $child->setParent($newParent);
+        return $this;
+    }
+
+    public function getDescendants()
+    {
+        $result = null;
+        if (null !== $this->getChild()) {
+            $array = array();
+            $array[] = $this->getChild();
+            $result = Argument::traverseDescendants($array, $this->getChild());
+        }
+        return $result;
+    }
+
+    public static function traverseDescendants($array, Argument $decendant)
+    {
+        $child = $decendant->getChild();
+        if (null === $child) {
+            return $array;
+        }
+
+        array_push($array, $child);
+        return Argument::traverseDescendants($array, $child);
+
+    }
+
+    public function getLanguage(): ?Language
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?Language $language): self
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getSide() . ': ' . substr($this->getText(), 0, 40);
+    }
+
+    public function getTranslation(): ?self
+    {
+        return $this->translation;
+    }
+
+    public function setTranslation(?self $translation): self
+    {
+        $this->translation = $translation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getTranslations(): Collection
+    {
+        return $this->translations;
+    }
+
+    public function addTranslation(self $translation): self
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations[] = $translation;
+            $translation->setTranslation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTranslation(self $translation): self
+    {
+        if ($this->translations->contains($translation)) {
+            $this->translations->removeElement($translation);
+            // set the owning side to null (unless already changed)
+            if ($translation->getTranslation() === $this) {
+                $translation->setTranslation(null);
+            }
         }
 
         return $this;

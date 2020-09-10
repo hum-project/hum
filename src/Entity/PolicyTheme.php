@@ -44,10 +44,26 @@ class PolicyTheme
      */
     private $institutions;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="policyThemes")
+     */
+    private $language;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=PolicyTheme::class, inversedBy="translations")
+     */
+    private $translation;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PolicyTheme::class, mappedBy="translation")
+     */
+    private $translations;
+
     public function __construct()
     {
         $this->policies = new ArrayCollection();
         $this->institutions = new ArrayCollection();
+        $this->translations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -147,6 +163,66 @@ class PolicyTheme
             // set the owning side to null (unless already changed)
             if ($institution->getPolicyTheme() === $this) {
                 $institution->setPolicyTheme(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getTitle();
+    }
+
+    public function getLanguage(): ?Language
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(?Language $language): self
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    public function getTranslation(): ?self
+    {
+        return $this->translation;
+    }
+
+    public function setTranslation(?self $translation): self
+    {
+        $this->translation = $translation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|self[]
+     */
+    public function getTranslations(): Collection
+    {
+        return $this->translations;
+    }
+
+    public function addTranslation(self $translation): self
+    {
+        if (!$this->translations->contains($translation)) {
+            $this->translations[] = $translation;
+            $translation->setTranslation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTranslation(self $translation): self
+    {
+        if ($this->translations->contains($translation)) {
+            $this->translations->removeElement($translation);
+            // set the owning side to null (unless already changed)
+            if ($translation->getTranslation() === $this) {
+                $translation->setTranslation(null);
             }
         }
 

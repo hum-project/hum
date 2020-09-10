@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add answer for Question{% endblock %}
+
+{% block body %}
+    <h1>Add answer options for Question</h1>
+    <p>
+        {{ question.text }}
+    </p>
+    {{ form_start(form) }}
+    {{ form_row(form.type) }}
+    {{ form_row(form.text) }}
+    <button id="add-nominals">Add more answers</button>
+    <button id="remove-nominals" class="hide">Remove a field</button>
+
+    {{ form_row(form.scale) }}
+    {{ form_row(form.minimum) }}
+    {{ form_row(form.maximum) }}
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('javascript/question/updateCategory.js') }}"></script>
+{% endblock %}

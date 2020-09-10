@@ -14,7 +14,7 @@ class VoteTest extends TestCase
 
     public function testHasCorrectFields()
     {
-        $this->assertClassHasAttribute('policy', 'App\Entity\Vote');
+        $this->assertClassHasAttribute('policies', 'App\Entity\Vote');
         $this->assertClassHasAttribute('yes', 'App\Entity\Vote');
         $this->assertClassHasAttribute('no', 'App\Entity\Vote');
         $this->assertClassHasAttribute('abstain', 'App\Entity\Vote');

@@ -9,7 +9,6 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @method PolicyTheme|null find($id, $lockMode = null, $lockVersion = null)
  * @method PolicyTheme|null findOneBy(array $criteria, array $orderBy = null)
- * @method PolicyTheme[]    findAll()
  * @method PolicyTheme[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class PolicyThemeRepository extends ServiceEntityRepository
@@ -17,6 +16,15 @@ class PolicyThemeRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, PolicyTheme::class);
+    }
+
+    public function findAll()
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.translation is NULL')
+            ->getQuery()
+            ->getResult()
+            ;
     }
 
     // /**

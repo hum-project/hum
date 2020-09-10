@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}News{% endblock %}
+
+{% block body %}
+
+    <div class="overview">
+        <div class="news-list">
+            <h2>News status</h2>
+            {% include 'blog/_list.html.twig' with {'posts': blogPosts} %}
+            {% include 'util/_pagination.html.twig' with {'path': 'news_page'} %}
+        </div>
+    </div>
+{% endblock %}

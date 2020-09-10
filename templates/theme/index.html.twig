@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Policy Themes{% endblock %}
+
+{% block body %}
+
+<div class="form-wrapper">
+    <h1>Policy Themes</h1>
+    <ul>
+    {% for theme in themes %}
+        <li>
+            <img src="{{ filePath ~ '/' ~ theme.symbol.fileName }}" alt="{{ theme.symbol.alt }}" />
+            <h2>{{ theme.title }}</h2>
+            <div class="foldable">
+                <h3 class="fold-action">Description</h3>
+                <div class="fold-content">
+                    <p>Language: {{ theme.language.name }}</p>
+                    {% if theme.translation is empty %}
+                        <p>
+                            Versions:
+                            {% if theme.translations is not empty %}
+                                {% for child in theme.translations %}
+                                    <a href="{{ path('theme_edit', {theme: child.id}) }}">{{ child.language.name }}</a>
+                                {% endfor %}
+                            {% endif %}
+                            <br />
+                            <a href="{{ path("theme_add_translation", {theme: theme.id}) }}">Add translation</a>
+                        </p>
+                    {% endif %}
+                    <p>{{ theme.text }}</p>
+                    <p>
+                        <a href="{{ path("theme_edit", {theme: theme.id}) }}">Edit</a>
+                        <a href="{{ path("theme_delete", {theme: theme.id}) }}">Delete</a>
+                    </p>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+
+
+</div>
+{% endblock %}

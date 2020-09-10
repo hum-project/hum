@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Policy{% endblock %}
+
+{% block body %}
+    <h1>Edit a Policy</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.text) }}
+    {{ form_row(form.source) }}
+    {{ form_row(form.policyTheme) }}
+    {{ form_row(form.argument) }}
+    {{ form_row(form.language) }}
+    {{ form_end(form) }}
+    <p>
+        Versions:
+        {% if policy.policies is not empty %}
+            {% for child in policy.policies %}
+                <a href="{{ path('policy_edit', {policy: child.id}) }}">{{ child.language.name }}</a>
+            {% endfor %}
+        {% endif %}
+        <br />
+        <a href="{{ path("policy_add_child", {policy: policy.id}) }}">Add translation</a>
+    </p>
+    <p>
+        <a class="button" href="{{ path('policy_add_argument', {policy: policy.id}) }}" >Add argument</a>
+    </p>
+    {% if policy.vote is empty %}
+        {% if policy.parent is empty %}
+            <a class="button" href="{{ path('policy_add_vote', {policy: policy.id}) }}" >Add vote</a>
+        {% else %}
+            <a class="button" href="{{ path('policy_add_vote', {policy: policy.parent.id}) }}" >Add vote</a>
+        {% endif %}
+    {% else %}
+        <div id="vote">
+            <h3>Vote on policy</h3>
+            <p>Yes: {{ policy.vote.yes }}</p>
+            <p>No: {{ policy.vote.no }}</p>
+            <p>Abstain: {{ policy.vote.abstain }}</p>
+            <p>Absent: {{ policy.vote.absent }}</p>
+            <p>
+                <a href="{{ path("vote_edit", {vote: policy.vote.id}) }}">Edit</a>
+                <a href="{{ path("vote_delete", {vote: policy.vote.id}) }}">Delete</a>
+            </p>
+        </div>
+    {% endif %}
+{% endblock %}

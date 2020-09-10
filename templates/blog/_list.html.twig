@@ -1,0 +1,58 @@
+
+<div class="news-list">
+    <ul>
+    {% for post in posts %}
+        <li>
+            <h3>{{ post.title }}</h3>
+            <p>
+                <a href="{{ path('news_show', {slug: post.slug}) }}">View</a>
+                <a href="{{ path('news_edit', {slug: post.slug}) }}">Edit</a>
+            </p>
+            <p>
+                Publishing date:
+                <br />
+                <time>{{ post.publishTime|date("Y-m-d h:m") }}</time>
+            </p>
+
+            <p>
+            Languages:
+            <br />
+            {{ post.language.name }}
+            {% for child in post.blogPosts %}
+                {{ child.language.name }}
+            {% endfor %}
+            <br />
+            <a href="{{ path('news_add_child', {slug: post.slug}) }}">Add language</a>
+            </p>
+            <p>
+                Release status:
+                <br />
+                {% if post.isReleasable %}
+                    <span class="approved">
+                        {{ post.language.name|slice(0,3) }} approved
+                    </span>
+                {% else %}
+                    <span class="approved">
+                        {{ post.language.name|slice(0,3) }} pending
+                    </span>
+                {% endif %}
+                {% for child in post.blogPosts %}
+                    {% if child.isReleasable %}
+                        <span class="approved">
+                            {{ child.language.name|slice(0,3) }} approved
+                        </span>
+                    {% else %}
+                        <span class="approved">
+                            {{ child.language.name|slice(0,3) }} pending
+                        </span>
+                    {% endif %}
+                {% endfor %}
+                <br />
+                <a href="{{ path('news_release', {slug: post.slug}) }}">Adjust release status</a>
+            </p>
+        </li>
+    {% endfor %}
+        <li><a href="{{ path('news_page', {page: 1}) }}">Browse more news items</a></li>
+    </ul>
+
+</div>

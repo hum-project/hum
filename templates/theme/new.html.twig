@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Policy Theme{% endblock %}
+
+{% block body %}
+    {% if theme.translation is empty %}
+        <h1>Add a Policy Theme</h1>
+    {% else %}
+        <h1>Add a translation to Policy Theme</h1>
+        <h2>Original: {{ theme.translation }}</h2>
+    {% endif %}
+    {{ form_start(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.text) }}
+    {% if theme.symbol is not empty %}
+        <p>Inherited image</p>
+        <p>Filename: {{ theme.symbol.fileName }}</p>
+        <p>Alt: {{ theme.symbol.alt }}</p>
+    {% endif %}
+    {{ form_row(form.symbol) }}
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Delete Policy Theme{% endblock %}
+
+{% block body %}
+    <h1>Delete a Policy Theme</h1>
+    <form method="post">
+        <h2>{{ theme.title }}</h2>
+        {% if theme.policies %}
+            <p>Do you want to delete all translations as well?</p>
+            <label for="translations">Yes</label>
+            <input id="translations" name="translations" type="checkbox">
+        {% endif %}
+        <p>Are you sure you want to delete?</p>
+        <label for="confirmation">Yes</label>
+        <input id="confirmation" name="confirmation" type="checkbox">
+        <button type="submit">Delete</button>
+        <a class="button" href="{{ path('theme') }}" >Abort</a>
+    </form>
+{% endblock %}

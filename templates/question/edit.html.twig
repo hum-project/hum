@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Question{% endblock %}
+
+{% block body %}
+    <h1>Edit a Question</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.hum) }}
+    {{ form_row(form.language) }}
+    {{ form_row(form.text) }}
+    {% if question.translation is null %}
+        <p>
+            Translations:
+            {% if question.translations is not empty %}
+                {% for translation in question.translations %}
+                    <a href="{{ path('question_edit', {question: translation.id}) }}">{{ translation.language.name }}</a>
+                {% endfor %}
+            {% else %}
+                No translation available
+            {% endif %}
+            <a class="button" href="{{ path("question_add_translation", {question: question.id}) }}">Add translation</a>
+        </p>
+    {% else %}
+        <div>
+            <h2>Original text</h2>
+            <p>{{ question.translation.text }}</p>
+        </div>
+    {% endif %}
+    {% for answer in question.nominalAnswers %}
+        {% include 'answer/_overview.html.twig' with {'answer' : answer}%}
+        <a href="{{ path('nominal_delete', {answer: answer.id}) }}">Delete</a>
+    {% endfor %}
+    {% for answer in question.ordinalAnswers %}
+        {% include 'answer/_overview.html.twig' with {'answer' : answer}%}
+        <a href="{{ path('ordinal_delete', {answer: answer.id}) }}">Delete</a>
+    {% endfor %}
+    {% for answer in question.continuousAnswers %}
+        {% include 'answer/_overview.html.twig' with {'answer' : answer}%}
+        <a href="{{ path('continuous_delete', {answer: answer.id}) }}">Delete</a>
+    {% endfor %}
+    <a href="{{ path('question_add_answer', {question: question.id}) }}">Add answer option</a>
+
+    {{ form_end(form) }}
+    {% if question.translation is not empty %}
+        <a class="button secondary" href="{{ path('question_edit', {question: question.translation.id}) }}">To root translation</a>
+    {% endif %}
+    {% if question.hum is not empty %}
+        <a class="button secondary" href="{{ path('hum_edit', {hum: question.hum.id}) }}">Back to Hum</a>
+    {% endif %}
+{% endblock %}

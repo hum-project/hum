@@ -1,0 +1,14 @@
+{% if descendants is not empty %}
+    <div class="foldable">
+        <h3 class="fold-action">Sub-arguments</h3>
+        <div class="fold-content">
+            {% for descendant in descendants %}
+                <p>{{ descendant }}</p>
+                <p>
+                    <a href="{{ path('argument_edit', { argument: descendant.id }) }}">Edit</a>
+                    <a href="{{ path('argument_delete', { argument: descendant.id }) }}">Delete</a>
+                </p>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
