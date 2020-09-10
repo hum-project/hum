@@ -19,6 +19,14 @@ class PolicyRepository extends ServiceEntityRepository
         parent::__construct($registry, Policy::class);
     }
 
+    public function findAllParents()
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.parent is NULL')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Policy[] Returns an array of Policy objects
     //  */

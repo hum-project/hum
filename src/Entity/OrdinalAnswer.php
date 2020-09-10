@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrdinalAnswerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,40 +22,28 @@ class OrdinalAnswer
     /**
      * @ORM\Column(type="integer")
      */
-    private $value;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
     private $scale;
 
     /**
-     * @ORM\OneToOne(targetEntity=Question::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Question::class, inversedBy="ordinalAnswers")
      */
     private $question;
+
+    /**
+     * @ORM\OneToMany(targetEntity=ClientOrdinalAnswer::class, mappedBy="ordinalAnswer")
+     */
+    private $clientOrdinalAnswers;
+
 
     public function __construct()
     {
         $this->setScale(5);
+        $this->clientOrdinalAnswers = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getValue(): ?int
-    {
-        return $this->value;
-    }
-
-    public function setValue(int $value): self
-    {
-        if ($value <= $this->getScale() && $value > 0) {
-            $this->value = $value;
-        }
-
-        return $this;
     }
 
     public function getScale(): ?int
@@ -79,4 +69,41 @@ class OrdinalAnswer
 
         return $this;
     }
+
+    /**
+     * @return Collection|ClientOrdinalAnswer[]
+     */
+    public function getClientOrdinalAnswers(): Collection
+    {
+        return $this->clientOrdinalAnswers;
+    }
+
+    public function addClientOrdinalAnswer(ClientOrdinalAnswer $clientOrdinalAnswer): self
+    {
+        if (!$this->clientOrdinalAnswers->contains($clientOrdinalAnswer)) {
+            $this->clientOrdinalAnswers[] = $clientOrdinalAnswer;
+            $clientOrdinalAnswer->setOrdinalAnswer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientOrdinalAnswer(ClientOrdinalAnswer $clientOrdinalAnswer): self
+    {
+        if ($this->clientOrdinalAnswers->contains($clientOrdinalAnswer)) {
+            $this->clientOrdinalAnswers->removeElement($clientOrdinalAnswer);
+            // set the owning side to null (unless already changed)
+            if ($clientOrdinalAnswer->getOrdinalAnswer() === $this) {
+                $clientOrdinalAnswer->setOrdinalAnswer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return "Ordinal type: " . $this->getScale();
+    }
+
 }

@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Policy Theme{% endblock %}
+
+{% block body %}
+
+<div class="form-wrapper">
+    <h1>Edit Policy Theme: {{ theme.title }}</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.text) }}
+    {{ form_row(form.symbol) }}
+    {{ form_end(form) }}
+
+    {% if theme.translation is empty %}
+        <p>
+            Versions:
+            {% if theme.translations is not empty %}
+                {% for child in theme.translations %}
+                    <a href="{{ path('theme_edit', {theme: child.id}) }}">{{ child.language.name }}</a>
+                {% endfor %}
+            {% endif %}
+            <br />
+            <a href="{{ path("theme_add_translation", {theme: theme.id}) }}">Add translation</a>
+        </p>
+    {% endif %}
+    <a href="{{ path("theme_delete", {theme: theme.id}) }}">Delete</a>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    altElement = document.getElementById("policy_theme_alt");
+    altElement.setAttribute("value", "{{ theme.symbol.alt }}");
+
+    imageDiv = document.querySelector("form div:nth-child(3)");
+    textElement = document.createElement("p");
+    textElementContent = document.createTextNode("{{ theme.symbol.fileName }}");
+    textElement.appendChild(textElementContent);
+    imageDiv.appendChild(textElement);
+    imageElement = document.createElement("img");
+    imageElement.setAttribute("src", "{{ fileShowPath ~ "/" ~ theme.symbol.fileName }}");
+    imageElement.setAttribute("alt", "{{ theme.symbol.alt }}");
+    imageDiv.appendChild(imageElement);
+
+    labelElement = document.querySelector("form div:nth-child(3) label");
+    labelElement.innerHTML = "Replace image";
+    console.log(labelElement);
+
+</script>
+{% endblock %}

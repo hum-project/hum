@@ -26,7 +26,7 @@ class UserRepositoryTest extends \Symfony\Bundle\FrameworkBundle\Test\KernelTest
     {
         $user = $this->entityManager
             ->getRepository(User::class)
-            ->findOneBy(['username' => 'user'])
+            ->findOneBy(['username' => 'user0'])
         ;
 
         $this->assertNotEmpty($user);

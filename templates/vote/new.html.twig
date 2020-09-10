@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add Vote{% endblock %}
+
+{% block body %}
+    <h1>Add a vote</h1>
+    {% if vote.policies is not empty %}
+        {% for policy in vote.policies %}
+            {% if policy.parent is empty %}
+                <p>Parent policy: {{ policy }}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {{ form_start(form) }}
+    {{ form_row(form.yes) }}
+    {{ form_row(form.no) }}
+    {{ form_row(form.abstain) }}
+    {{ form_row(form.absent) }}
+    {{ form_end(form) }}
+{% endblock %}

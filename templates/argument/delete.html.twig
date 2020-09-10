@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Delete Argument{% endblock %}
+
+{% block body %}
+    <h1>Delete an Argument</h1>
+    <form method="post">
+        <h2>{{ argument }}</h2>
+        {% if argument.descendants is not empty %}
+            <div>
+                <p>Do you want to delete all decendants?</p>
+                <label for="delete-all">Yes, delete all!</label>
+                <input id="delete-all" name="delete-all" type="checkbox">
+                {% include "argument/_list-descendants.html.twig" with {'descendants': argument.descendants} %}
+            </div>
+        {% else %}
+            <div>
+                <p>No descendant for this argument. No chain effect expected.</p>
+            </div>
+        {% endif %}
+        <div>
+            <p>Are you sure you want to delete?</p>
+            <label for="confirmation">Yes</label>
+            <input id="confirmation" name="confirmation" type="checkbox">
+        </div>
+        <button type="submit">Delete</button>
+        <a class="button" href="{{ path('argument') }}" >Abort</a>
+    </form>
+{% endblock %}

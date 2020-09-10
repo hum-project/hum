@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hum{% endblock %}
+
+{% block body %}
+
+    <div class="form-wrapper">
+        <h1>Hum Overview</h1>
+        <ul>
+            {% for hum in hums %}
+                <li>
+                    <h2>{{ hum.policy ~ ' : ' ~ hum.date|date }}</h2>
+                    <div class="<foldable">
+                        <h3 class="fold-action">Description</h3>
+                        <div class="fold-content">
+                            <p>
+                                Theme: <a href="{{ path('theme_edit', {theme: hum.policy.policyTheme.id}) }}">{{ hum.policy.policyTheme }}</a>
+                                {% if hum.policy.policyTheme.translations is empty %}
+                                    <span>No translations added.</span>
+                                {% else %}
+                                    <br />Translations:
+                                    {% for translation in hum.policy.policyTheme.translations %}
+                                        <a href="{{ path('theme_edit', {theme: translation.id}) }}">{{ translation }}</a>
+                                    {% endfor %}
+                                {% endif %}
+                                <a href="{{ path('theme_add_translation', {theme: hum.policy.policyTheme.id}) }}">Add translation</a>
+                            </p>
+                            <p>
+                                Policy: <a href="{{ path("policy_edit", {policy: hum.policy.id}) }}">{{ hum.policy }}</a>
+                                {% if hum.policy.policies is empty %}
+                                    <span>No translations added.</span>
+                                {% else %}
+                                    <br />Translations:
+                                    {% for translation in hum.policy.policies %}
+                                        <a href="{{ path('policy_edit', {policy: translation.id}) }}">{{ translation }}</a>
+                                    {% endfor %}
+                                {% endif %}
+                                <a href="{{ path('policy_add_child', {policy: hum.policy.id}) }}">Add translation</a>
+                            </p>
+                            <p>
+                                Institution:
+                                {% if hum.institution is not empty %}
+                                    <a href="{{ path('institution_edit', {institution: hum.institution.id}) }}">{{ hum.institution.name }}</a>
+                                    {% if hum.institution.translations is empty %}
+                                        <br /><span>No translations added.</span>
+                                    {% else %}
+                                        <br />Translations:
+                                        {% for translation in hum.institution.translations %}
+                                            <a href="{{ path('institution_edit', {institution: translation.id}) }}">{{ translation.name }}</a>
+                                        {% endfor %}
+                                    {% endif %}
+                                    <a href="{{ path('institution_add_translation', {institution: hum.institution.id}) }}">Add translation</a>
+                                {% else %}
+                                    <a href="{{ path('institution_hum_add', {hum: hum.id}) }}">Add institution</a>
+                                {% endif %}
+                            </p>
+
+                            {% include "hum/_questions-list.html.twig" %}
+
+                            <p><a class="button" href="{{ path("hum_edit", {hum: hum.id}) }}">Edit Hum</a></p>
+                            <p><a class="button" href="{{ path("hum_delete", {hum: hum.id}) }}">Delete Hum</a></p>
+                        </div>
+                    </div>
+
+                </li>
+            {% endfor %}
+        </ul>
+
+
+    </div>
+{% endblock %}

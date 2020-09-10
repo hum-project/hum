@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Argument{% endblock %}
+
+{% block body %}
+    <h1>Edit an argument</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.side) }}
+    {{ form_row(form.text) }}
+    {{ form_row(form.parent) }}
+    {{ form_row(form.language) }}
+    {{ form_end(form) }}
+    {% if argument.id is not empty %}
+        <a href="{{ path('argument_add_child', {argument: argument.id}) }}">Add child</a>
+        <a href="{{ path('argument_delete', { argument: argument.id }) }}">Delete</a>
+    {% endif %}
+
+    {% include 'argument/_list-descendants.html.twig' with {'descendants': argument.descendants} %}
+{% endblock %}

@@ -25,19 +25,44 @@ class Language
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Hum::class, mappedBy="language")
-     */
-    private $hums;
-
-    /**
      * @ORM\OneToMany(targetEntity=BlogPost::class, mappedBy="language")
      */
     private $blogPosts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PolicyTheme::class, mappedBy="language")
+     */
+    private $policyThemes;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Institution::class, mappedBy="language")
+     */
+    private $institutions;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Policy::class, mappedBy="language")
+     */
+    private $policies;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Argument::class, mappedBy="language")
+     */
+    private $arguments;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Question::class, mappedBy="language")
+     */
+    private $questions;
 
     public function __construct()
     {
         $this->hums = new ArrayCollection();
         $this->blogPosts = new ArrayCollection();
+        $this->policyThemes = new ArrayCollection();
+        $this->institutions = new ArrayCollection();
+        $this->policies = new ArrayCollection();
+        $this->arguments = new ArrayCollection();
+        $this->questions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -53,37 +78,6 @@ class Language
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Hum[]
-     */
-    public function getHums(): Collection
-    {
-        return $this->hums;
-    }
-
-    public function addHum(Hum $hum): self
-    {
-        if (!$this->hums->contains($hum)) {
-            $this->hums[] = $hum;
-            $hum->setLanguage($this);
-        }
-
-        return $this;
-    }
-
-    public function removeHum(Hum $hum): self
-    {
-        if ($this->hums->contains($hum)) {
-            $this->hums->removeElement($hum);
-            // set the owning side to null (unless already changed)
-            if ($hum->getLanguage() === $this) {
-                $hum->setLanguage(null);
-            }
-        }
 
         return $this;
     }
@@ -113,6 +107,166 @@ class Language
             // set the owning side to null (unless already changed)
             if ($blogPost->getLanguage() === $this) {
                 $blogPost->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
+    /**
+     * @return Collection|PolicyTheme[]
+     */
+    public function getPolicyThemes(): Collection
+    {
+        return $this->policyThemes;
+    }
+
+    public function addPolicyTheme(PolicyTheme $policyTheme): self
+    {
+        if (!$this->policyThemes->contains($policyTheme)) {
+            $this->policyThemes[] = $policyTheme;
+            $policyTheme->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePolicyTheme(PolicyTheme $policyTheme): self
+    {
+        if ($this->policyThemes->contains($policyTheme)) {
+            $this->policyThemes->removeElement($policyTheme);
+            // set the owning side to null (unless already changed)
+            if ($policyTheme->getLanguage() === $this) {
+                $policyTheme->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Institution[]
+     */
+    public function getInstitutions(): Collection
+    {
+        return $this->institutions;
+    }
+
+    public function addInstitution(Institution $institution): self
+    {
+        if (!$this->institutions->contains($institution)) {
+            $this->institutions[] = $institution;
+            $institution->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInstitution(Institution $institution): self
+    {
+        if ($this->institutions->contains($institution)) {
+            $this->institutions->removeElement($institution);
+            // set the owning side to null (unless already changed)
+            if ($institution->getLanguage() === $this) {
+                $institution->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Policy[]
+     */
+    public function getPolicies(): Collection
+    {
+        return $this->policies;
+    }
+
+    public function addPolicy(Policy $policy): self
+    {
+        if (!$this->policies->contains($policy)) {
+            $this->policies[] = $policy;
+            $policy->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePolicy(Policy $policy): self
+    {
+        if ($this->policies->contains($policy)) {
+            $this->policies->removeElement($policy);
+            // set the owning side to null (unless already changed)
+            if ($policy->getLanguage() === $this) {
+                $policy->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Argument[]
+     */
+    public function getArguments(): Collection
+    {
+        return $this->arguments;
+    }
+
+    public function addArgument(Argument $argument): self
+    {
+        if (!$this->arguments->contains($argument)) {
+            $this->arguments[] = $argument;
+            $argument->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArgument(Argument $argument): self
+    {
+        if ($this->arguments->contains($argument)) {
+            $this->arguments->removeElement($argument);
+            // set the owning side to null (unless already changed)
+            if ($argument->getLanguage() === $this) {
+                $argument->setLanguage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Question[]
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question): self
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions[] = $question;
+            $question->setLanguage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): self
+    {
+        if ($this->questions->contains($question)) {
+            $this->questions->removeElement($question);
+            // set the owning side to null (unless already changed)
+            if ($question->getLanguage() === $this) {
+                $question->setLanguage(null);
             }
         }
 

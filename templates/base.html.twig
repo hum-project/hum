@@ -2,16 +2,34 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>Hum Admin - {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
         {% block stylesheets %}{% endblock %}
     </head>
     <body>
+    <header>
+        <div id="logo">
+            <a href="{{ path('start') }}">
+                <img id="logo-image" src="{{ asset('images/hum-logo.svg') }}" alt="Logo for Hum, a bumblebee in flight">
+                <div id="logo-text-container">
+                    <p id="logo-text">Hum</p>
+                    <p id="logo-description">Policies made easy</p>
+                </div>
+            </a>
+        </div>
+        {% include "util/_nav.html.twig" %}
+    </header>
     {% for message in app.flashes('success') %}
         <div class="flash-notice">
             {{ message }}
         </div>
     {% endfor %}
+    <div id="content">
         {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+    </div>
+    <footer>
+        <a href="mailto:anders@femtearenan.se">anders@femtearenan.se</a>
+    </footer>
+    {% block javascripts %}{% endblock %}
     </body>
 </html>

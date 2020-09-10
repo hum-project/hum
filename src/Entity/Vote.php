@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VoteRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,11 +18,6 @@ class Vote
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Policy::class, cascade={"persist", "remove"})
-     */
-    private $policy;
 
     /**
      * @ORM\Column(type="integer")
@@ -42,21 +39,19 @@ class Vote
      */
     private $absent;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Policy::class, mappedBy="vote")
+     */
+    private $policies;
+
+    public function __construct()
+    {
+        $this->policies = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getPolicy(): ?Policy
-    {
-        return $this->policy;
-    }
-
-    public function setPolicy(?Policy $policy): self
-    {
-        $this->policy = $policy;
-
-        return $this;
     }
 
     public function getYes(): ?int
@@ -105,5 +100,48 @@ class Vote
         $this->absent = $absent;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Policy[]
+     */
+    public function getPolicies(): Collection
+    {
+        return $this->policies;
+    }
+
+    public function addPolicy(Policy $policy): self
+    {
+        if (!$this->policies->contains($policy)) {
+            $this->policies[] = $policy;
+            $policy->setVote($this);
+        }
+
+        return $this;
+    }
+
+    public function removePolicy(Policy $policy): self
+    {
+        if ($this->policies->contains($policy)) {
+            $this->policies->removeElement($policy);
+            // set the owning side to null (unless already changed)
+            if ($policy->getVote() === $this) {
+                $policy->setVote(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getRootPolicy()
+    {
+        $rootPolicy = null;
+        foreach ($this->getPolicies() as $policy) {
+            if (null === $policy->getParent()) {
+                $rootPolicy = $policy;
+                break;
+            }
+        }
+        return $rootPolicy;
     }
 }

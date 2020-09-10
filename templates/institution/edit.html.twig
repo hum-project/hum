@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Institution{% endblock %}
+
+{% block body %}
+    <h1>Edit an Institution</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.text) }}
+    {{ form_row(form.policyTheme) }}
+    {{ form_end(form) }}
+    {% if institution.id is not empty %}
+        <a href="{{ path('institution_add_translation', {institution: institution.id}) }}">Add translation</a>
+        <a href="{{ path('institution_delete', { institution: institution.id }) }}">Delete</a>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Argument{% endblock %}
+
+{% block body %}
+
+    <div class="form-wrapper">
+        <h1>Argument Overview</h1>
+        <ul>
+            {% for argument in arguments %}
+                <li>
+                    <h2>{{ argument.side ~ ': ' ~ argument.text|slice(0, 20) }}</h2>
+                    <p>Language: {{ argument.language.name }}</p>
+                    {% if argument.translation is empty %}
+                    <p>
+                        Versions:
+                        {% if argument.translations is not empty %}
+                            {% for child in argument.translations %}
+                                <a href="{{ path('argument_edit', {argument: child.id}) }}">{{ child.language.name }}</a>
+                            {% endfor %}
+                        {% endif %}
+                        <br />
+                        <a href="{{ path("argument_add_translation", {argument: argument.id}) }}">Add translation</a>
+                    </p>
+                    {% endif %}
+                    <p>
+                        <a href="{{ path('argument_edit', { argument: argument.id }) }}">Edit</a>
+                        <a href="{{ path('argument_delete', { argument: argument.id }) }}">Delete</a>
+                    </p>
+                    {% set subArguments = argument.descendants %}
+                    {% include 'argument/_list-descendants.html.twig' with {'descendants': subArguments} %}
+                </li>
+            {% endfor %}
+        </ul>
+
+
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Delete Answer{% endblock %}
+
+{% block body %}
+    <h1>Delete answer</h1>
+    <form method="post">
+        <h2>{{ answer }}</h2>
+        <p>Answer to {{ answer.question }}</p>
+        <p>Are you sure you want to delete?</p>
+        <label for="confirmation">Yes</label>
+        <input id="confirmation" name="confirmation" type="checkbox">
+        <button type="submit">Delete</button>
+        <a class="button" href="{{ path('hum') }}" >Abort</a>
+    </form>
+{% endblock %}

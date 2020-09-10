@@ -1,0 +1,24 @@
+<div>
+    {% if hum.questions is not empty %}
+        <h3>Question</h3>
+        {% for question in hum.questions %}
+            {% if question.translation is null %}
+                <div class="question-overview">
+                    {% include 'question/_overview.html.twig' with {'question' : question} %}
+                    <p>
+                        Translations:
+                        {% if question.translations is not empty %}
+                            {% for translation in question.translations %}
+                                <a href="{{ path('question_edit', {question: translation.id}) }}">{{ translation.language.name }}</a>
+                            {% endfor %}
+                        {% else %}
+                            No translation available
+                        {% endif %}
+                        <a class="button" href="{{ path("question_add_translation", {question: question.id}) }}">Add translation</a>
+                    </p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <p><a class="button" href="{{ path("question_add_hum", {hum: hum.id}) }}">Add Question</a></p>
+</div>
