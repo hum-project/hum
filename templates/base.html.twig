@@ -17,7 +17,11 @@
                 </div>
             </a>
         </div>
-        {% include "util/_nav.html.twig" %}
+        {% if app.user %}
+            {% include "util/_admin_nav.html.twig" %}
+        {% else %}
+            {% include "util/_nav.html.twig" %}
+        {% endif %}
     </header>
     {% for message in app.flashes('success') %}
         <div class="flash-notice">
