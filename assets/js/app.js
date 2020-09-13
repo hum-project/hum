@@ -13,7 +13,14 @@ import '../css/app.css';
 
 import React from 'react';
 import { render } from 'react-dom';
+import { Provider } from 'react-redux';
 import HumApp from "./Hum/HumApp";
+import store from "./Hum/redux/store";
+
+
 render(
-    <HumApp humData={"Here's your data!"}/>,
-    document.getElementById('react-app'));
+    <Provider store={store}>
+        <HumApp humData={"Here's your data!"}/>,
+    </Provider>,
+    document.getElementById('react-app')
+);

@@ -1,8 +1,9 @@
 import React, {Component} from "react";
 import Nav from "./components/Nav";
 import Content from "./components/Content";
+import {connect} from 'react-redux';
 
-export default class HumApp extends Component {
+class HumApp extends Component {
     render() {
         return (
         <div>
@@ -12,3 +13,9 @@ export default class HumApp extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    ...state
+});
+
+export default connect(mapStateToProps)(HumApp);
