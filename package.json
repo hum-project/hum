@@ -3,7 +3,9 @@
         "@babel/preset-react": "^7.10.4",
         "@symfony/webpack-encore": "^0.30.0",
         "babel-preset-react": "^6.24.1",
+        "chart.js": "^2.9.3",
         "core-js": "^3.0.0",
+        "react-chartjs-2": "^2.10.0",
         "regenerator-runtime": "^0.13.2",
         "webpack-notifier": "^1.6.0"
     },
