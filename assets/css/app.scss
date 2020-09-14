@@ -133,14 +133,15 @@ $voteAbstainColor: #e0e0e0;
 
     .vote-sign-container {
         font-size: 10rem;
+        font-weight: bold;
     }
 
     .yes {
-        color: #5eb5e0;
+        color: $voteYesColor;
     }
 
     .no {
-        color: #e0695e;
+        color: $voteNoColor;
     }
 }
 
@@ -192,4 +193,11 @@ $voteAbstainColor: #e0e0e0;
         position: absolute;
         font-size: 3rem;
     }
+}
+
+button.select {
+    background-color: #FFFB88;
+}
+button.deselect {
+    background-color: #f3f3f3;
 }

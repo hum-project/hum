@@ -5,6 +5,12 @@ export default class GenericItem extends Component {
     render() {
         let image = "";
         let contentIterator = 0;
+        let heading;
+        if (this.props.headingLevel && this.props.headingLevel === 1) {
+            heading = <h1>{this.props.heading}</h1>
+        } else {
+            <h2>{this.props.heading}</h2>
+        }
         const content = this.props.content.split('\n').map( (key) => {
             return (
                 <span key={"key" + (contentIterator++)}>
@@ -19,7 +25,7 @@ export default class GenericItem extends Component {
         return (
             <div id={this.props.id ? this.props.id : ""} className="content-item">
                 <div className="item-header">
-                    <h1>{this.props.heading}</h1>
+                    {heading}
                     <p className="sub-heading">{this.props.subheading}</p>
                     { image }
                 </div>

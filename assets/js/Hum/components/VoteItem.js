@@ -1,43 +1,27 @@
 import React, {Component} from "react";
+import {connect} from 'react-redux';
+
 import CircleDiagram from "./CircleDiagram";
 
-export default class VoteItem extends Component {
+class VoteItem extends Component {
 
     render() {
-        const svenska = {
-            yes: 'Ja',
-            no: 'Nej',
-            abstain: 'Avstår',
-            absent: 'Frånvaro',
-            source: 'Källa'
-        }
-        const english = {
-            yes: 'Yes',
-            no: 'No',
-            abstain: 'Abstain',
-            absent: 'Absent',
-            source: 'Source'
-        }
-        let translation;
         let source;
         let voteSign;
-        if (this.props.language) {
-            translation = this.props.language.toLowerCase() === "swedish" ||
-                this.props.language.toLowerCase() === "svenska" ?
-                svenska : english;
-        } else {
-            translation = english;
-        }
-        voteSign = this.props.vote.yes > this.props.vote.no ? <span className="vote-sign yes">✓</span> : <span className="vote-sign no">✕</span>;
 
-        source = this.props.source ? <p>{translation.source}: <a href={this.props.source}>{this.props.source}</a></p> : "";
+        voteSign = this.props.contentReducer.vote.yes > this.props.contentReducer.vote.no ? <span className="vote-sign yes">✓</span> : <span className="vote-sign no">✕</span>;
+
+        source = this.props.contentReducer.policy.source ?
+            <p>{this.props.contentReducer.translation.source + ": "}
+                <a href={this.props.contentReducer.policy.source} target="_blank">{this.props.contentReducer.policy.source}</a></p>
+            : "";
         return (
             <div className="vote-item content-item">
                 <div className="item-header">
-                    <h1>{this.props.heading}</h1>
-                    <p className="sub-heading">{this.props.subheading}</p>
+                    <h2>{this.props.contentReducer.policy.title}</h2>
+                    <p className="sub-heading">{this.props.contentReducer.translation.policySubheading}</p>
                 </div>
-                <p>{this.props.content}</p>
+                <p>{this.props.contentReducer.policy.content}</p>
                 { source }
 
                 <div className="vote-result">
@@ -45,15 +29,19 @@ export default class VoteItem extends Component {
                         { voteSign }
                     </div>
                     <div className="result-summary">
-                        <p>{translation.yes}:</p><p>{this.props.vote.yes}</p>
-                        <p>{translation.no}:</p><p>{this.props.vote.no}</p>
-                        <p>{translation.abstain}:</p><p>{this.props.vote.abstain}</p>
-                        <p className="cursive">{translation.absent}:</p><p>{this.props.vote.absent}</p>
+                        <p>{this.props.contentReducer.translation.yes}:</p><p>{this.props.contentReducer.vote.yes}</p>
+                        <p>{this.props.contentReducer.translation.no}:</p><p>{this.props.contentReducer.vote.no}</p>
+                        <p>{this.props.contentReducer.translation.abstain}:</p><p>{this.props.contentReducer.vote.abstain}</p>
+                        <p className="cursive">{this.props.contentReducer.translation.absent}:</p><p>{this.props.contentReducer.vote.absent}</p>
                     </div>
                     <CircleDiagram />
                 </div>
             </div>
         );
     }
-
 }
+
+const mapStateToProps = state => ({
+    ...state
+});
+export default connect(mapStateToProps)(VoteItem);
