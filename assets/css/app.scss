@@ -79,6 +79,48 @@ $voteAbstainColor: #e0e0e0;
     background-color: #fefefe;
 }
 
+.relative {
+    position: relative;
+}
+
+.question-bee {
+    width: 2rem;
+    position: absolute;
+}
+
+#bee-scatter-0 {
+    left: 1rem;
+    top: 1rem;
+    transform: rotate(15deg);
+}
+#bee-scatter-1 {
+    top: 1.5rem;
+    left: 2.9rem;
+    transform: rotate(0deg);
+}
+#bee-scatter-2 {
+    bottom: 0;
+    left: 1.5rem;
+    transform: rotate(273deg);
+
+}
+#bee-scatter-3 {
+    bottom: 0.8rem;
+    left: 1.9rem;
+    transform: rotate(252deg);
+
+}
+#bee-scatter-4 {
+    bottom: 0.2rem;
+    left: 5rem;
+    transform: rotate(300deg);
+}
+#bee-scatter-5 {
+    top: 0.7rem;
+    left: 7rem;
+    transform: rotate(20deg);
+}
+
 .question-item {
     position: relative;
     margin-top: 5rem;

@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 
+import bee from "../../../images/small-bee@2x.png"
+
 class AnswersItem extends Component {
 
     render() {
@@ -18,12 +20,19 @@ class AnswersItem extends Component {
             let key = "answer_" + question.id;
            return <input type={"hidden"} id={key} name={key} key={key} value={question.answer}/>;
         });
+        let bees = [];
+        for (let i = 0; i < number; i++) {
+            bees.push(
+                <img id={"bee-scatter-" + i} key={"beesum-"+i} className={"question-bee"} src={bee} alt="A small bumblebee"/>
+            );
+        }
 
         return (
-            <form id={this.props.id ? this.props.id : ""} className="content-item center-align" method="post">
+            <form id={this.props.id ? this.props.id : ""} className="content-item center-align relative" method="post">
                 <div className="item-header center">
                     <h2 className="bold">{heading}</h2>
                 </div>
+                {bees}
                 <p>{this.props.contentReducer.translation.answersContent}</p>
                 {hiddenInputs}
                 <button className="answer-option">{this.props.contentReducer.translation.answersButton}</button>
