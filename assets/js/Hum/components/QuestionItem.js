@@ -8,7 +8,18 @@ class QuestionItem extends Component {
     render() {
         let answer = "";
         let index = 0;
-        let cards = <div className="card">?</div>
+        let numOfCards;
+        let cards = [];
+        if (this.props.numOfCards) {
+            numOfCards = this.props.numOfCards;
+            for (let i = 0; i < numOfCards; i++) {
+                cards.push(<div className={"card rot-" + i}>?</div>)
+            }
+        } else {
+            cards = <div className={"card"}>?</div>;
+        }
+
+
         let beeClass = this.props.beeClass ? this.props.beeClass : "";
 
         if (this.props.questionObject.answerOptions.category === "nominal") {
