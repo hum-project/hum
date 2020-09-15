@@ -57,6 +57,7 @@ class Content extends Component {
 
                     <GenericItem
                         id={"theme-content"}
+                        className={"mt-0"}
                         heading={"Public Health"}
                         headingLevel={1}
                         subheading={this.props.contentReducer.translation.humSubheading}

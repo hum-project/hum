@@ -20,7 +20,7 @@ import store from "./Hum/redux/store";
 
 render(
     <Provider store={store}>
-        <HumApp humData={"Here's your data!"}/>,
+        <HumApp humData={"Here's your data!"}/>
     </Provider>,
     document.getElementById('react-app')
 );

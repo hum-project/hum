@@ -12,8 +12,10 @@ const initialState = {
         policySubheading: 'Parliamentary Vote',
         institutionSubheading: 'Institution in focus',
         humSubheading: 'Hum of the day',
-        answersHeading: `You've answered 0 questions`,
-        answersContent: 'Would you like to submit your answers to us?'
+        answersHeading: `You've answered [] question`,
+        answersContent: "Would you like to submit these answers to us? By the release of the next Hum we will also share how people generally has answered. You don't have to do anything if you don't want to share them.",
+        answersButton: "I'm intrigued, share them!"
+
     },
     questions: [
         {
@@ -52,7 +54,7 @@ const initialState = {
     ],
     numOfAnswers: 0,
     institution: {
-        header: "Ministry of Health and Social Services",
+        header: "Ministry of Health and' Social Services",
         content: "A Ministry is the governments expert organisation on how a policy should be implemented. The Ministry of Health and Social Services keeps track of governmental authorities that provide health services and social services. This ministry is responsible for directing each agency on what they are supposed to do as well as proving the funds they need. Some agencies that are under the umbrella of this ministry is:\n" +
             "\n" +
             "- Public Health Agency \n" +
@@ -75,12 +77,19 @@ const initialState = {
 function contentReducer(state = initialState, action) {
     let target;
     let questions;
+    let numOfAnswers;
+    let currentQuestion;
     switch (action.type) {
         case ANSWERING:
+            numOfAnswers = state.numOfAnswers;
             target = action.payload.event.target;
             questions = [...state.questions]
             questions = questions.map(question => {
                 if (question.id === action.payload.data.questionId) {
+                    currentQuestion = question;
+                    if (!currentQuestion.answerOptions.isClicked) {
+                        numOfAnswers++;
+                    }
                     return Object.assign({}, question, {
                         answerOptions: Object.assign({}, question.answerOptions, {
                             isClicked: true
@@ -91,9 +100,10 @@ function contentReducer(state = initialState, action) {
                 return ({...question});
             });
 
+
             return Object.assign({}, state, {
                 questions: [...questions],
-                numOfAnswers: state.numOfAnswers + 1
+                numOfAnswers: numOfAnswers
             })
         default:
             return state;
