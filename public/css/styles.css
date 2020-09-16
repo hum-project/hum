@@ -7,6 +7,10 @@
   src: url("../fonts/Raleway-Light.ttf");
 }
 @font-face {
+  font-family: "Raleway-Black";
+  src: url("../fonts/Raleway-Black.ttf");
+}
+@font-face {
   font-family: Sniglet;
   src: url("../fonts/Sniglet-Regular.ttf");
 }
@@ -51,9 +55,9 @@ header #logo a {
 }
 header #logo p {
   font-family: Sniglet, sans-serif;
-  margin: 0px;
-  margin-block-start: 0rem;
-  margin-block-end: 0rem;
+  margin: 0;
+  margin-block-start: 0;
+  margin-block-end: 0;
 }
 header #logo #logo-text-container {
   position: relative;
@@ -111,7 +115,7 @@ header nav a {
   margin-left: 12px;
 }
 .fold-content div p:nth-child(1) {
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 form {
@@ -131,6 +135,12 @@ form select, form input, form textarea {
 }
 form textarea {
   min-height: 4rem;
+}
+
+.center-align {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 button {
