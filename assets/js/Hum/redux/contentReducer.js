@@ -107,10 +107,9 @@ function contentReducer(state = initialState, action) {
                 numOfAnswers: numOfAnswers
             })
         case UPDATE_CONTENT:
-            let languageIRI = state['language'] === 'english' ? '/api/languages/6' : '/api/languages/5'
             let updateData = {...action.payload.data};
             let humData = updateData['hydra:member'][0];
-            let questionsData = humData['questions'].filter(question => question['language'] === languageIRI );
+            let questionsData = humData['questions'].filter(question => question['language']['name'].toLowerCase() === state['language'].toLowerCase() );
             let institutionData = humData['institution'];
             console.log(humData);
             console.log(questionsData);
