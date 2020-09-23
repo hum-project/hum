@@ -133,7 +133,8 @@ function transformQuestionHydra(question) {
             break;
         case 'ordinal':
             if (question['ordinalAnswers'].length > 0) {
-                values = [1, question['ordinalAnswers'][0]];
+                values = [1, question['ordinalAnswers'][0]['scale']];
+                console.log(values);
             } else {
                 values = [1, 5];
             }

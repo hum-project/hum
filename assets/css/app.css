@@ -183,6 +183,11 @@
   transform: rotate(8deg);
 }
 
+.range-container {
+  display: flex;
+  flex-direction: row;
+}
+
 .vote-result {
   display: flex;
   align-items: center;

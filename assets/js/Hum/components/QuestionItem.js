@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import AnswerButton from "./AnswerButton";
 import bee from "../../../images/small-bee@2x.png"
+import AnswerOrdinal from "./AnswerOrdinal";
 
 class QuestionItem extends Component {
 
@@ -24,8 +25,13 @@ class QuestionItem extends Component {
 
         if (this.props.questionObject.answerOptions.category === "nominal") {
             answer = this.props.questionObject.answerOptions.values.map(option => <AnswerButton key={option + (index++)} questionObject={this.props.questionObject} text={option}/>)
-        } else if (this.props.questionType === "ordinal") {
+        } else if (this.props.questionObject.answerOptions.category === "ordinal") {
+            answer = <AnswerOrdinal
+                questionObject={this.props.questionObject}
+                min={this.props.questionObject.answerOptions.values[0]}
+                max={this.props.questionObject.answerOptions.values[1]}
 
+                />
         } else {
 
         }

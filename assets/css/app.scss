@@ -198,6 +198,11 @@ $voteAbstainColor: #e0e0e0;
     }
 }
 
+.range-container {
+    display: flex;
+    flex-direction: row;
+}
+
 .vote-result {
     display: flex;
     align-items: center;
