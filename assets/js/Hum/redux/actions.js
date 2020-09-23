@@ -7,6 +7,8 @@ import axios from 'axios';
 export const ANSWERING = "ANSWERING";
 export const RESOLVED_HUM = "RESOLVED_HUM";
 export const REQUEST_HUM = "REQUEST_HUM";
+export const FAILED_REQUEST = "FAILED_REQUEST";
+export const UPDATE_CONTENT = "UPDATE_CONTENT";
 
 
 // Actions should have a basic structure like this, optionally with some payload for "someData":
@@ -31,9 +33,14 @@ export const getHum = () => {
         dispatch(requestHum());
         return axios.get('https://localhost:8000/api/hums?page=1')
             .then(response => {
-                console.log(response)
+                dispatch(resolvedGetHum());
+                dispatch(updateContent(response.data));
             })
-            .then(dispatch(resolvedGetHum()));
+            .catch(function (error) {
+                dispatch(failedRequest());
+                console.log(error);
+            })
+            .then();
 
     }
 }
@@ -44,11 +51,23 @@ export const requestHum = () => {
     }
 }
 
-export const resolvedGetHum = (json) => {
+export const failedRequest = () => {
+    return {
+        type: FAILED_REQUEST
+    }
+}
+
+export const resolvedGetHum = () => {
     return {
         type: RESOLVED_HUM,
+    }
+}
+
+export const updateContent = (data) => {
+    return {
+        type: UPDATE_CONTENT,
         payload: {
-            data: json
+            data: data
         }
     }
 }

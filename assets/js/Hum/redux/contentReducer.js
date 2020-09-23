@@ -1,4 +1,4 @@
-import {ANSWERING} from "./actions";
+import {ANSWERING, UPDATE_CONTENT} from "./actions";
 
 const initialState = {
     language: "english",
@@ -71,7 +71,8 @@ const initialState = {
         title: "A Regular Designated Doctor",
         content: "The representatives of the Parliament has voted to promote that each caretaker gets to have a say on the doctor they receive. The vote on a Regular Doctor Contact was also paired with two other propositions. A No-vote can mean that they oppose the other propositions.",
         source: "https://riksdagen.se"
-    }
+    },
+    raw: []
 };
 
 function contentReducer(state = initialState, action) {
@@ -105,6 +106,20 @@ function contentReducer(state = initialState, action) {
                 questions: [...questions],
                 numOfAnswers: numOfAnswers
             })
+        case UPDATE_CONTENT:
+            let languageIRI = state['language'] === 'english' ? '/api/languages/6' : '/api/languages/5'
+            let updateData = {...action.payload.data};
+            let humData = updateData['hydra:member'][0];
+            let questionsData = humData['questions'].filter(question => question['language'] === languageIRI );
+            let institutionData = humData['institution'];
+            console.log(humData);
+            console.log(questionsData);
+            console.log(institutionData);
+
+            return Object.assign({}, state, {
+                //questions: questionsData,
+                raw: humData
+            });
         default:
             return state;
     }
