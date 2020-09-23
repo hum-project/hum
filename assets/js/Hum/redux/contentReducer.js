@@ -110,18 +110,53 @@ function contentReducer(state = initialState, action) {
             let updateData = {...action.payload.data};
             let humData = updateData['hydra:member'][0];
             let questionsData = humData['questions'].filter(question => question['language']['name'].toLowerCase() === state['language'].toLowerCase() );
+            let transformedQuestions = questionsData.map(question => transformQuestionHydra(question));
             let institutionData = humData['institution'];
             console.log(humData);
             console.log(questionsData);
-            console.log(institutionData);
 
             return Object.assign({}, state, {
-                //questions: questionsData,
+                questions: transformedQuestions,
                 raw: humData
             });
         default:
             return state;
     }
+}
+
+function transformQuestionHydra(question) {
+    let category = parseQuestionCategory(question);
+    let values;
+    switch (category) {
+        case 'nominal':
+            values = question['nominalAnswers'].map(answer => answer.value);
+            break;
+        default:
+            values = ["0", "0"];
+    }
+    return {
+        id: question['id'],
+        category: category,
+        content: question['text'],
+        answerOptions: {
+            category: category,
+            values: values,
+            isClicked: false
+        },
+        answer: null
+    }
+}
+
+function parseQuestionCategory(question) {
+    let category;
+    if (question['continuousAnswers'].length > 0) {
+        category = 'continuous';
+    } else if (question['ordinalAnswers'].length > 0) {
+        category = 'ordinal';
+    } else {
+        category = 'nominal';
+    }
+    return category;
 }
 
 export default contentReducer;
