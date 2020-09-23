@@ -131,6 +131,16 @@ function transformQuestionHydra(question) {
         case 'nominal':
             values = question['nominalAnswers'].map(answer => answer.value);
             break;
+        case 'ordinal':
+            if (question['ordinalAnswers'].length > 0) {
+                values = [1, question['ordinalAnswers'][0]];
+            } else {
+                values = [1, 5];
+            }
+            break;
+        case 'continuous':
+            values = [question['continuousAnswers'][0]['minimum'], question['continuousAnswers'][0]['maximum']];
+            break;
         default:
             values = ["0", "0"];
     }
