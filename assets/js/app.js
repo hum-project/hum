@@ -16,6 +16,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import HumApp from "./Hum/HumApp";
 import store from "./Hum/redux/store";
+import {getHum} from "./Hum/redux/actions";
 
 
 render(
@@ -24,3 +25,5 @@ render(
     </Provider>,
     document.getElementById('react-app')
 );
+
+store.dispatch(getHum());
