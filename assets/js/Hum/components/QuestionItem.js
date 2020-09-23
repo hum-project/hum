@@ -13,7 +13,7 @@ class QuestionItem extends Component {
         if (this.props.numOfCards) {
             numOfCards = this.props.numOfCards;
             for (let i = 0; i < numOfCards; i++) {
-                cards.push(<div className={"card rot-" + i}>?</div>)
+                cards.push(<div key={i.toString()} className={"card rot-" + i}>?</div>)
             }
         } else {
             cards = <div className={"card"}>?</div>;
@@ -23,7 +23,7 @@ class QuestionItem extends Component {
         let beeClass = this.props.beeClass ? this.props.beeClass : "";
 
         if (this.props.questionObject.answerOptions.category === "nominal") {
-            answer = this.props.questionObject.answerOptions.values.map(option => <AnswerButton questionObject={this.props.questionObject} key={option + (index++)} text={option}/>)
+            answer = this.props.questionObject.answerOptions.values.map(option => <AnswerButton key={option + (index++)} questionObject={this.props.questionObject} text={option}/>)
         } else if (this.props.questionType === "ordinal") {
 
         } else {

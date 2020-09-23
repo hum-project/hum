@@ -17,6 +17,7 @@ class Content extends Component {
 
         let i = 0;
         let j = 0;
+        let questionKey = 0;
         const questions = this.props.contentReducer.questions.map(question => {
             let beeClass;
             if (i % 2 === 0) {
@@ -39,8 +40,10 @@ class Content extends Component {
                 j++;
             }
             i++;
+            questionKey++;
             return (
-                <QuestionItem
+                <QuestionItem key={questionKey.toString()}
+                    questionKey={"question-" + questionKey}
                     numOfCards={i}
                     beeClass={beeClass}
                     questionType={question.category}
