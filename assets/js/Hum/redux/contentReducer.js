@@ -1,23 +1,41 @@
 import {ANSWERING, INVALID, UNINVALIDATE, UPDATE_CONTENT} from "./actions";
 
+const translationSwedish = {
+    yes: 'Ja',
+    no: 'Nej',
+    abstain: 'Avstår',
+    absent: 'Frånvarande',
+    source: 'Källa',
+    policySubheading: 'Riksdagens omröstning',
+    institutionSubheading: 'Institution i fokus',
+    humSubheading: 'Hum för dagen',
+    answersHeading: `Du har svarat [] fråga`,
+    answersContent: "Vill du dela dina svar med oss? När det är dags för nästa Hum så presenterar vi resultaten. Om du inte vill dela dina svar med oss så behöver du helt enkelt inte göra någonting.",
+    answersButton: "Låter intressant. Dela svaren!",
+    invalidInput: "Fel värde"
+
+};
+
+const translationEnglish = {
+    yes: 'Yes',
+    no: 'No',
+    abstain: 'Abstain',
+    absent: 'Absent',
+    source: 'Source',
+    policySubheading: 'Parliamentary Vote',
+    institutionSubheading: 'Institution in focus',
+    humSubheading: 'Hum of the day',
+    answersHeading: `You've answered [] question`,
+    answersContent: "Would you like to submit these answers to us? By the release of the next Hum we will also share how people generally has answered. You don't have to do anything if you don't want to share them.",
+    answersButton: "I'm intrigued, share them!",
+    invalidInput: "Invalid input"
+}
+
 const initialState = {
     imageFolder: "/uploads/images/",
     language: "english",
     nominals: ["Yes", "No"],
-    translation: {
-        yes: 'Yes',
-        no: 'No',
-        abstain: 'Abstain',
-        absent: 'Absent',
-        source: 'Source',
-        policySubheading: 'Parliamentary Vote',
-        institutionSubheading: 'Institution in focus',
-        humSubheading: 'Hum of the day',
-        answersHeading: `You've answered [] question`,
-        answersContent: "Would you like to submit these answers to us? By the release of the next Hum we will also share how people generally has answered. You don't have to do anything if you don't want to share them.",
-        answersButton: "I'm intrigued, share them!"
-
-    },
+    translation: {...translationEnglish},
     questions: [],
     invalidInput: [],
     numOfAnswers: 0,

@@ -51,7 +51,7 @@ class AnswerContinuous extends Component {
         });
         let invalidInfo = "";
         if (isInvalid) {
-            invalidInfo = <p className={"info-status"}>Invalid input.</p>;
+            invalidInfo = <p className={"info-status"}>{this.props.contentReducer.translation.invalidInput}.</p>;
         }
         return (
             <div key={"continuous-" + questionObject.id} className={"flex-row"}>
