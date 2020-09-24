@@ -1,4 +1,4 @@
-import {ANSWERING, UPDATE_CONTENT} from "./actions";
+import {ANSWERING, INVALID, UNINVALIDATE, UPDATE_CONTENT} from "./actions";
 
 const initialState = {
     language: "english",
@@ -52,6 +52,7 @@ const initialState = {
             answer: null
         }
     ],
+    invalidInput: [],
     numOfAnswers: 0,
     institution: {
         header: "Ministry of Health and' Social Services",
@@ -80,6 +81,7 @@ function contentReducer(state = initialState, action) {
     let questions;
     let numOfAnswers;
     let currentQuestion;
+    let invalids
     switch (action.type) {
         case ANSWERING:
             numOfAnswers = state.numOfAnswers;
@@ -106,6 +108,18 @@ function contentReducer(state = initialState, action) {
                 questions: [...questions],
                 numOfAnswers: numOfAnswers
             })
+        case INVALID:
+            invalids = [...state.invalidInput];
+            invalids.push(action.payload.componentId);
+            return Object.assign({}, state, {
+                invalidInput: invalids
+            });
+        case UNINVALIDATE:
+            invalids = [...state.invalidInput];
+            invalids = invalids.filter(idOfInvalid => idOfInvalid !== action.payload.componentId);
+            return Object.assign({}, state, {
+                invalidInput: invalids
+            });
         case UPDATE_CONTENT:
             let updateData = {...action.payload.data};
             let humData = updateData['hydra:member'][0];

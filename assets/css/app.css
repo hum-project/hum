@@ -55,7 +55,7 @@
 }
 
 .answer-option:hover {
-  background-color: #FFFB88;
+  background-color: #fffb88;
 }
 
 .answer-option.active {
@@ -181,6 +181,27 @@
 }
 .cards-container .rot-4 {
   transform: rotate(8deg);
+}
+
+input[type=number] {
+  background-color: #fffee8;
+  width: 100%;
+  height: 2rem;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+input[type=number].blurred {
+  background-color: #fffb88;
+}
+
+input[type=number].invalid {
+  background-color: #ffe1d0;
+}
+
+.info-status {
+  position: absolute;
+  color: #d44040;
 }
 
 .range-container {

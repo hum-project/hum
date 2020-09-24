@@ -3,11 +3,12 @@ import {connect} from "react-redux";
 import AnswerButton from "./AnswerButton";
 import bee from "../../../images/small-bee@2x.png"
 import AnswerOrdinal from "./AnswerOrdinal";
+import AnswerContinuous from "./AnswerContinuous";
 
 class QuestionItem extends Component {
 
     render() {
-        let answer = "";
+        let answer;
         let index = 0;
         let numOfCards;
         let cards = [];
@@ -33,7 +34,12 @@ class QuestionItem extends Component {
 
                 />
         } else {
+            answer = <AnswerContinuous
+                questionObject={this.props.questionObject}
+                min={this.props.questionObject.answerOptions.values[0]}
+                max={this.props.questionObject.answerOptions.values[1]}
 
+            />
         }
         return (
             <div className="question-item">

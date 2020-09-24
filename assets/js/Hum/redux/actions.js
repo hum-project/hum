@@ -5,6 +5,8 @@ import axios from 'axios';
 // Action constants can be defined like this:
 // export const AN_ACTION = "AN_ACTION";
 export const ANSWERING = "ANSWERING";
+export const INVALID = "INVALID";
+export const UNINVALIDATE = "UNINVALIDATE";
 export const RESOLVED_HUM = "RESOLVED_HUM";
 export const REQUEST_HUM = "REQUEST_HUM";
 export const FAILED_REQUEST = "FAILED_REQUEST";
@@ -26,6 +28,20 @@ export const answerAction = (event, data) => ({
         data: data
     }
 });
+
+export const answerInvalid = (componentId) => ({
+    type: INVALID,
+    payload: {
+        componentId: componentId
+    }
+});
+
+export const answerUninvalid = (componentId) => ({
+    type: UNINVALIDATE,
+    payload: {
+        componentId: componentId
+    }
+})
 
 export const getHum = () => {
 

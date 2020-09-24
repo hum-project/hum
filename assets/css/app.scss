@@ -4,6 +4,16 @@ $voteYesColor: #5eb5e0;
 $voteNoColor: #e0695e;
 $voteAbstainColor: #e0e0e0;
 
+$lightGrey: #fefefe;
+$lightRed: #ffe1d0;
+$red: #d44040;
+
+$softerYellow: #fffee8;
+$softYellow: #fdfcd5;
+$standardYellow: #fffb88;
+
+$invalidTextBackground: $lightRed;
+
 #content {
     display: flex;
     flex-direction: initial;
@@ -64,19 +74,19 @@ $voteAbstainColor: #e0e0e0;
     min-width: max-content;
     margin-right: 1rem;
     font-size: 1rem;
-    background-color: #fdfcd5;
+    background-color: $softYellow;
 }
 
 .answer-option:hover {
-    background-color: #FFFB88;
+    background-color: $standardYellow;
 }
 
 .answer-option.active {
-    background-color: #fffb88;
+    background-color: $standardYellow;
 }
 
 .answer-option.inactive {
-    background-color: #fefefe;
+    background-color: $lightGrey;
 }
 
 .relative {
@@ -196,6 +206,26 @@ $voteAbstainColor: #e0e0e0;
     .rot-4 {
         transform: rotate(8deg);
     }
+}
+
+input[type="number"] {
+    background-color: $softerYellow;
+    width: 100%;
+    height: 2rem;
+    font-size: 1.3rem;
+    text-align: center;
+}
+input[type="number"].blurred {
+    background-color: $standardYellow;
+}
+
+input[type="number"].invalid {
+    background-color: $invalidTextBackground;
+}
+
+.info-status {
+    position: absolute;
+    color: $red;
 }
 
 .range-container {
