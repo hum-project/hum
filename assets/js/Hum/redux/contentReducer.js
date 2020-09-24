@@ -87,23 +87,41 @@ function contentReducer(state = initialState, action) {
             let humData = updateData['hydra:member'][0];
             let questionsData = humData['questions'].filter(question => question['language']['name'].toLowerCase() === state['language'].toLowerCase() );
             let transformedQuestions = questionsData.map(question => transformQuestionHydra(question));
-            let institutionData = humData['institution'];
-            let vote = humData.policy.vote;
             console.log(humData);
 
             return Object.assign({}, state, {
                 questions: transformedQuestions,
-                vote: {
-                    yes: vote.yes,
-                    no: vote.no,
-                    abstain: vote.abstain,
-                    absent: vote.absent
-                },
+                policy: transformPolicy(humData.policy),
+                vote: transformVote(humData.policy.vote),
+                institution: transformInstitution(humData.institution),
                 raw: humData
             });
         default:
             return state;
     }
+}
+
+function transformInstitution(institution) {
+    return {
+        header: institution.name,
+        content: institution.text
+    }
+}
+function transformPolicy(policy) {
+    return {
+        title: policy.title,
+        content: policy.text,
+        source: policy.source
+    }
+}
+
+function transformVote(vote) {
+    return {
+        yes: vote.yes,
+        no: vote.no,
+        abstain: vote.abstain,
+        absent: vote.absent
+    };
 }
 
 function transformQuestionHydra(question) {
@@ -116,7 +134,6 @@ function transformQuestionHydra(question) {
         case 'ordinal':
             if (question['ordinalAnswers'].length > 0) {
                 values = [1, question['ordinalAnswers'][0]['scale']];
-                console.log(values);
             } else {
                 values = [1, 5];
             }
