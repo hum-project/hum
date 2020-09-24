@@ -1,6 +1,10 @@
 import {ANSWERING, INVALID, SWITCH_LANGUAGE, UNINVALIDATE, UPDATE_CONTENT} from "./actions";
 
 const translationSwedish = {
+    home: 'Hem',
+    library: 'Arkiv',
+    about: 'Om',
+    contact: 'Kontakt',
     yes: 'Ja',
     no: 'Nej',
     abstain: 'Avstår',
@@ -9,7 +13,7 @@ const translationSwedish = {
     policySubheading: 'Riksdagens omröstning',
     institutionSubheading: 'Institution i fokus',
     humSubheading: 'Hum för dagen',
-    answersHeading: `Du har svarat [] fråga`,
+    answersHeading: `Du har svarat på [] fråga`,
     answersContent: "Vill du dela dina svar med oss? När det är dags för nästa Hum så presenterar vi resultaten. Om du inte vill dela dina svar med oss så behöver du helt enkelt inte göra någonting.",
     answersButton: "Låter intressant. Dela svaren!",
     invalidInput: "Fel värde"
@@ -17,6 +21,10 @@ const translationSwedish = {
 };
 
 const translationEnglish = {
+    home: 'Home',
+    library: 'Library',
+    about: 'About',
+    contact: 'Contact',
     yes: 'Yes',
     no: 'No',
     abstain: 'Abstain',
@@ -125,22 +133,14 @@ function contentReducer(state = initialState, action) {
         case SWITCH_LANGUAGE:
             let language = action.payload.language.toLowerCase();
             let translation = language === 'english' ? translationEnglish : translationSwedish;
-            console.log(translation);
-            let policyRaw;
-            if (language === 'english') {
-                policyRaw = state.raw.policy;
-            } else {
-                let policyResults = state.raw.policy.policies.filter(tempPolicy => tempPolicy.language.name.toLowerCase() === language);
-                policyRaw = policyResults.length > 0 ? policyResults[0] : null;
-            }
 
-            let policy = null === policyRaw ? state.policy : transformPolicy(policyRaw);
-            console.log(policy);
             return Object.assign({}, state, {
                 language: language,
                 translation: translation,
+                theme: toggleThemeByLanguage(language, state),
                 questions: transformQuestions(language, state.raw.questions),
-                policy: policy
+                policy: togglePolicyByLanguage(language, state),
+                institution: toggleInstitutionByLanguage(language, state)
             });
         default:
             return state;
@@ -163,12 +163,49 @@ function transformTheme(theme) {
     }
 }
 
+function toggleInstitutionByLanguage(language, state) {
+    let institutionRaw;
+    if (language === 'english') {
+        institutionRaw = state.raw.institution;
+    } else {
+        let institutionResults = state.raw.institution.translations.filter(tempInstitution => tempInstitution.language.name.toLowerCase() === language);
+        institutionRaw = institutionResults.length > 0 ? institutionResults[0] : null;
+    }
+
+    return null === institutionRaw ? state.institution : transformInstitution(institutionRaw);
+}
+
+function toggleThemeByLanguage(language, state) {
+    let policyThemeRaw;
+    if (language === 'english') {
+        policyThemeRaw = state.raw.policy.policyTheme;
+    } else {
+        let policyThemeResults = state.raw.policy.policyTheme.translations.filter(tempTheme => tempTheme.language.name.toLowerCase() === language);
+        policyThemeRaw = policyThemeResults.length > 0 ? policyThemeResults[0] : null;
+    }
+
+    return null === policyThemeRaw ? state.theme : transformTheme(policyThemeRaw);
+}
+
+function togglePolicyByLanguage(language, state) {
+    let policyRaw;
+    if (language === 'english') {
+        policyRaw = state.raw.policy;
+    } else {
+        let policyResults = state.raw.policy.policies.filter(tempPolicy => tempPolicy.language.name.toLowerCase() === language);
+        policyRaw = policyResults.length > 0 ? policyResults[0] : null;
+    }
+
+    return null === policyRaw ? state.policy : transformPolicy(policyRaw);
+}
+
 function transformInstitution(institution) {
     return {
         header: institution.name,
         content: institution.text
     }
 }
+
 function transformPolicy(policy) {
     return {
         title: policy.title,
