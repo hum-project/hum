@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 
 
 import QuestionItem from "./QuestionItem";
-import heartImage from'../../../images/Heart.png'
 import VoteItem from "./VoteItem";
 import GenericItem from "./GenericItem";
 import AnswersItem from "./AnswersItem";
@@ -12,7 +11,6 @@ import AnswersItem from "./AnswersItem";
 class Content extends Component {
 
     render() {
-        const content = "General public health in Sweden is generally good. Different political parties sees different challenges however. Some parties sees how health in some groups are much better than in others. This has led to debate on how to improve health in the groups that are not as well off as others.";
         const nominals = this.props.contentReducer.nominals;
 
         let i = 0;
@@ -61,11 +59,11 @@ class Content extends Component {
                     <GenericItem
                         id={"theme-content"}
                         className={"mt-0"}
-                        heading={"Public Health"}
+                        heading={this.props.contentReducer.theme.header}
                         headingLevel={1}
                         subheading={this.props.contentReducer.translation.humSubheading}
-                        content={ content }
-                        image={heartImage}
+                        content={ this.props.contentReducer.theme.content }
+                        image={ this.props.contentReducer.theme.symbol }
                     />
                     {questions[questionsIndex] ? questions[questionsIndex++] : ""}
                     <VoteItem />

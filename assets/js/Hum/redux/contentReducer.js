@@ -1,6 +1,7 @@
 import {ANSWERING, INVALID, UNINVALIDATE, UPDATE_CONTENT} from "./actions";
 
 const initialState = {
+    imageFolder: "/uploads/images/",
     language: "english",
     nominals: ["Yes", "No"],
     translation: {
@@ -20,6 +21,14 @@ const initialState = {
     questions: [],
     invalidInput: [],
     numOfAnswers: 0,
+    theme: {
+        header: "",
+        content: "",
+        symbol: {
+            src: "",
+            alt: ""
+        },
+    },
     institution: {
         header: "",
         content: ""
@@ -86,7 +95,7 @@ function contentReducer(state = initialState, action) {
             let updateData = {...action.payload.data};
             let humData = updateData['hydra:member'][0];
             let questionsData = humData['questions'].filter(question => question['language']['name'].toLowerCase() === state['language'].toLowerCase() );
-            let transformedQuestions = questionsData.map(question => transformQuestionHydra(question));
+            let transformedQuestions = questionsData.map(question => transformQuestion(question));
             console.log(humData);
 
             return Object.assign({}, state, {
@@ -94,10 +103,22 @@ function contentReducer(state = initialState, action) {
                 policy: transformPolicy(humData.policy),
                 vote: transformVote(humData.policy.vote),
                 institution: transformInstitution(humData.institution),
+                theme: transformTheme(humData.policy.policyTheme),
                 raw: humData
             });
         default:
             return state;
+    }
+}
+
+function transformTheme(theme) {
+    return {
+        header: theme.title,
+        content: theme.text,
+        symbol: {
+            src: theme.symbol.fileName,
+            alt: theme.symbol.alt,
+        }
     }
 }
 
@@ -124,7 +145,7 @@ function transformVote(vote) {
     };
 }
 
-function transformQuestionHydra(question) {
+function transformQuestion(question) {
     let category = parseQuestionCategory(question);
     let values;
     switch (category) {

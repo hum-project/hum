@@ -1,6 +1,7 @@
 import React, {Component} from "react";
+import {connect} from "react-redux";
 
-export default class GenericItem extends Component {
+class GenericItem extends Component {
 
     render() {
         let image = "";
@@ -20,7 +21,7 @@ export default class GenericItem extends Component {
             );
         });
         if (this.props.image) {
-            image = <img id="theme-image" src={this.props.image} alt={"theme image for " + this.props.heading} />;
+            image = <img id="theme-image" src={this.props.contentReducer.imageFolder + this.props.image.src} alt={this.props.image.alt} />;
         }
         return (
             <div id={this.props.id ? this.props.id : ""} className={this.props.className ? "content-item " + this.props.className : "content-item"}>
@@ -37,3 +38,9 @@ export default class GenericItem extends Component {
     }
 
 }
+
+const mapStateToProps = state => ({
+    ...state
+});
+
+export default connect(mapStateToProps)(GenericItem);
