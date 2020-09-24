@@ -17,61 +17,23 @@ const initialState = {
         answersButton: "I'm intrigued, share them!"
 
     },
-    questions: [
-        {
-            id: 0,
-            category: "nominal",
-            content: "Have you gotten the opportunity to choose a doctor when in contact with healthcare?",
-            answerOptions: {
-                category: "nominal",
-                values: ["Yes", "No"],
-                isClicked: false
-            },
-            answer: null
-        },
-        {
-            id: 1,
-            category: "nominal",
-            content: "87% of Swedes voted in the latest election, 2018. But not all voted on election day. Did you know that you can vote up to 18 days early?",
-            answerOptions: {
-                category: "nominal",
-                values: ["Yes", "No"],
-                isClicked: false
-            },
-            answer: null
-        },
-        {
-            id: 2,
-            category: "nominal",
-            content: "Have you ever been in contact with an agency under the umbrella of the Ministry of Health and Social Services?",
-            answerOptions: {
-                category: "nominal",
-                values: ["Yes", "No"],
-                isClicked: false
-            },
-            answer: null
-        }
-    ],
+    questions: [],
     invalidInput: [],
     numOfAnswers: 0,
     institution: {
-        header: "Ministry of Health and' Social Services",
-        content: "A Ministry is the governments expert organisation on how a policy should be implemented. The Ministry of Health and Social Services keeps track of governmental authorities that provide health services and social services. This ministry is responsible for directing each agency on what they are supposed to do as well as proving the funds they need. Some agencies that are under the umbrella of this ministry is:\n" +
-            "\n" +
-            "- Public Health Agency \n" +
-            "- Social Insurance Agency\n" +
-            "- National Board of Health and Welfare"
+        header: "",
+        content: ""
     },
     vote: {
-        yes: 233,
-        no: 54,
-        abstain: 11,
-        absent: 51
+        yes: 0,
+        no: 0,
+        abstain: 0,
+        absent: 0
     },
     policy: {
-        title: "A Regular Designated Doctor",
-        content: "The representatives of the Parliament has voted to promote that each caretaker gets to have a say on the doctor they receive. The vote on a Regular Doctor Contact was also paired with two other propositions. A No-vote can mean that they oppose the other propositions.",
-        source: "https://riksdagen.se"
+        title: "",
+        content: "",
+        source: ""
     },
     raw: []
 };
@@ -126,11 +88,17 @@ function contentReducer(state = initialState, action) {
             let questionsData = humData['questions'].filter(question => question['language']['name'].toLowerCase() === state['language'].toLowerCase() );
             let transformedQuestions = questionsData.map(question => transformQuestionHydra(question));
             let institutionData = humData['institution'];
+            let vote = humData.policy.vote;
             console.log(humData);
-            console.log(questionsData);
 
             return Object.assign({}, state, {
                 questions: transformedQuestions,
+                vote: {
+                    yes: vote.yes,
+                    no: vote.no,
+                    abstain: vote.abstain,
+                    absent: vote.absent
+                },
                 raw: humData
             });
         default:

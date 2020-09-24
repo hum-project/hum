@@ -1,9 +1,15 @@
 import React, { Component } from "react";
 import { Doughnut } from "react-chartjs-2";
+import {connect} from "react-redux";
 
-export default class CircleDiagram extends Component {
+class CircleDiagram extends Component {
     render() {
-        const percentage = Math.round(233.0 / (233.0 + 54.0 + 11.0) * 100);
+        let yes = this.props.contentReducer.vote.yes;
+        let no = this.props.contentReducer.vote.no;
+        let abstain = this.props.contentReducer.vote.abstain;
+        let total = yes + no + abstain;
+        total = total === 0 ? 1 : total;
+        const percentage = Math.round(yes / total * 100);
         const data = {
             labels: ['Yes', 'No', 'Abstain' ],
             datasets: [
@@ -19,7 +25,7 @@ export default class CircleDiagram extends Component {
                         '#602d28',
                         '#5a5a5a'
                     ],
-                    data: [ 233, 54, 11 ]
+                    data: [yes, no, abstain]
                 }
             ]
         };
@@ -43,3 +49,8 @@ export default class CircleDiagram extends Component {
         );
     }
 }
+
+const mapStateToProps = state => ({
+    ...state
+});
+export default connect(mapStateToProps)(CircleDiagram);
