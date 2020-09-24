@@ -1,4 +1,4 @@
-import {ANSWERING, INVALID, UNINVALIDATE, UPDATE_CONTENT} from "./actions";
+import {ANSWERING, INVALID, SWITCH_LANGUAGE, UNINVALIDATE, UPDATE_CONTENT} from "./actions";
 
 const translationSwedish = {
     yes: 'Ja',
@@ -123,6 +123,14 @@ function contentReducer(state = initialState, action) {
                 institution: transformInstitution(humData.institution),
                 theme: transformTheme(humData.policy.policyTheme),
                 raw: humData
+            });
+        case SWITCH_LANGUAGE:
+            let language = action.payload.language.toLowerCase();
+            let translation = language === 'english' ? translationEnglish : translationSwedish;
+            console.log(translation);
+            return Object.assign({}, state, {
+                language: language,
+                translation: translation
             });
         default:
             return state;

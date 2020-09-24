@@ -11,6 +11,7 @@ export const RESOLVED_HUM = "RESOLVED_HUM";
 export const REQUEST_HUM = "REQUEST_HUM";
 export const FAILED_REQUEST = "FAILED_REQUEST";
 export const UPDATE_CONTENT = "UPDATE_CONTENT";
+export const SWITCH_LANGUAGE = "SWITCH_LANGUAGE";
 
 
 // Actions should have a basic structure like this, optionally with some payload for "someData":
@@ -84,6 +85,15 @@ export const updateContent = (data) => {
         type: UPDATE_CONTENT,
         payload: {
             data: data
+        }
+    }
+}
+
+export const switchLanguage = language => {
+    return {
+        type: SWITCH_LANGUAGE,
+        payload: {
+            language: language
         }
     }
 }
