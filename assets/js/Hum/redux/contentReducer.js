@@ -112,12 +112,10 @@ function contentReducer(state = initialState, action) {
         case UPDATE_CONTENT:
             let updateData = {...action.payload.data};
             let humData = updateData['hydra:member'][0];
-            let questionsData = humData['questions'].filter(question => question['language']['name'].toLowerCase() === state['language'].toLowerCase() );
-            let transformedQuestions = questionsData.map(question => transformQuestion(question));
             console.log(humData);
 
             return Object.assign({}, state, {
-                questions: transformedQuestions,
+                questions: transformQuestions(state.language, humData.questions),
                 policy: transformPolicy(humData.policy),
                 vote: transformVote(humData.policy.vote),
                 institution: transformInstitution(humData.institution),
@@ -128,13 +126,30 @@ function contentReducer(state = initialState, action) {
             let language = action.payload.language.toLowerCase();
             let translation = language === 'english' ? translationEnglish : translationSwedish;
             console.log(translation);
+            let policyRaw;
+            if (language === 'english') {
+                policyRaw = state.raw.policy;
+            } else {
+                let policyResults = state.raw.policy.policies.filter(tempPolicy => tempPolicy.language.name.toLowerCase() === language);
+                policyRaw = policyResults.length > 0 ? policyResults[0] : null;
+            }
+
+            let policy = null === policyRaw ? state.policy : transformPolicy(policyRaw);
+            console.log(policy);
             return Object.assign({}, state, {
                 language: language,
-                translation: translation
+                translation: translation,
+                questions: transformQuestions(language, state.raw.questions),
+                policy: policy
             });
         default:
             return state;
     }
+}
+
+function transformQuestions(language, questionsArray){
+    let questionsData = questionsArray.filter(question => question.language.name.toLowerCase() === language.toLowerCase() );
+    return questionsData.map(question => transformQuestion(question));
 }
 
 function transformTheme(theme) {
