@@ -12,8 +12,6 @@ import LanguageToggle from "./LanguageToggle";
 class Content extends Component {
 
     render() {
-        const nominals = this.props.contentReducer.nominals;
-
         let i = 0;
         let j = 0;
         let questionKey = 0;
@@ -47,7 +45,6 @@ class Content extends Component {
                     beeClass={beeClass}
                     questionType={question.category}
                     question={question.content}
-                    nominals={nominals}
                     questionObject={question}
                 />
             );

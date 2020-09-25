@@ -42,7 +42,6 @@ const translationEnglish = {
 const initialState = {
     imageFolder: "/uploads/images/",
     language: "english",
-    nominals: ["Yes", "No"],
     translation: {...translationEnglish},
     questions: [],
     invalidInput: [],
