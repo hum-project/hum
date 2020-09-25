@@ -214,6 +214,7 @@ input[type="number"] {
     height: 2rem;
     font-size: 1.3rem;
     text-align: center;
+    height: 1rem;
 }
 input[type="number"].blurred {
     background-color: $standardYellow;
@@ -231,6 +232,7 @@ input[type="number"].invalid {
 .range-container {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .vote-result {

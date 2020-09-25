@@ -33,6 +33,7 @@ class AnswerOrdinal extends Component {
                     id={"range-" + questionObject.id}
                     className={className}
                     onClick={this.answering}
+                    onTouchEnd={this.answering}
                     min={this.props.min}
                     max={this.props.max}
                     step={"1"}
