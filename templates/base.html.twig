@@ -1,15 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>Hum Admin - {% block title %}{% endblock %}</title>
         <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
         {% block stylesheets %}
-            {# 'app' must match the first argument to addEntry() in webpack.config.js #}
-            {{ encore_entry_link_tags('app') }}
-
-            <!-- Renders a link tag (if your module requires any CSS)
-                 <link rel="stylesheet" href="/build/app.css"> -->
         {% endblock %}
     </head>
     <body>
@@ -41,11 +36,6 @@
         <a href="mailto:anders@femtearenan.se">anders@femtearenan.se</a>
     </footer>
     {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
-
-        <!-- Renders app.js & a webpack runtime.js file
-            <script src="/build/runtime.js"></script>
-            <script src="/build/app.js"></script> -->
     {% endblock %}
     </body>
 </html>

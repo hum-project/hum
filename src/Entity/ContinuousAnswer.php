@@ -2,17 +2,28 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ContinuousAnswerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get"
+ *     },
+ *     itemOperations={
+ *         "get"
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=ContinuousAnswerRepository::class)
  */
 class ContinuousAnswer
 {
     /**
+     * @Groups({"hum"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -30,11 +41,13 @@ class ContinuousAnswer
     private $clientContinuousAnswers;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="float")
      */
     private $minimum;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="float")
      */
     private $maximum;

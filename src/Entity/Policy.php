@@ -2,17 +2,28 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PolicyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get"
+ *     },
+ *     itemOperations={
+ *         "get"
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=PolicyRepository::class)
  */
 class Policy
 {
     /**
+     * @Groups({"hum"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,31 +31,37 @@ class Policy
     private $id;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="string", length=255)
      */
     private $title;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="text")
      */
     private $text;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="string", length=255)
      */
     private $source;
 
     /**
+     * @Groups({"hum"})
      * @ORM\ManyToOne(targetEntity=PolicyTheme::class, inversedBy="policies")
      */
     private $policyTheme;
 
     /**
+     * @Groups({"hum"})
      * @ORM\OneToOne(targetEntity=Argument::class, cascade={"persist", "remove"})
      */
     private $argument;
 
     /**
+     * @Groups({"hum"})
      * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="policies")
      */
     private $language;
@@ -55,11 +72,13 @@ class Policy
     private $parent;
 
     /**
+     * @Groups({"hum"})
      * @ORM\OneToMany(targetEntity=Policy::class, mappedBy="parent")
      */
     private $policies;
 
     /**
+     * @Groups({"hum"})
      * @ORM\ManyToOne(targetEntity=Vote::class, inversedBy="policies")
      */
     private $vote;

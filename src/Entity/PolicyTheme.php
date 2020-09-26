@@ -2,17 +2,28 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\PolicyThemeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get"
+ *     },
+ *     itemOperations={
+ *         "get"
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=PolicyThemeRepository::class)
  */
 class PolicyTheme
 {
     /**
+     * @Groups({"hum"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,16 +31,19 @@ class PolicyTheme
     private $id;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="string", length=255)
      */
     private $title;
 
     /**
+     * @Groups({"hum"})
      * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"})
      */
     private $symbol;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="text")
      */
     private $text;
@@ -45,6 +59,7 @@ class PolicyTheme
     private $institutions;
 
     /**
+     * @Groups({"hum"})
      * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="policyThemes")
      */
     private $language;
@@ -55,6 +70,7 @@ class PolicyTheme
     private $translation;
 
     /**
+     * @Groups({"hum"})
      * @ORM\OneToMany(targetEntity=PolicyTheme::class, mappedBy="translation")
      */
     private $translations;

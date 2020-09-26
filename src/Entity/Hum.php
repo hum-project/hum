@@ -2,17 +2,29 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\HumRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *     normalizationContext={"groups"={"hum"}},
+ *     collectionOperations={
+ *         "get"
+ *     },
+ *     itemOperations={
+ *         "get"
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=HumRepository::class)
  */
 class Hum
 {
     /**
+     * @Groups({"hum"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,21 +32,25 @@ class Hum
     private $id;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="datetime")
      */
     private $date;
 
     /**
+     * @Groups({"hum"})
      * @ORM\OneToMany(targetEntity=Question::class, mappedBy="hum")
      */
     private $questions;
 
     /**
+     * @Groups({"hum"})
      * @ORM\OneToOne(targetEntity=Policy::class, cascade={"persist", "remove"})
      */
     private $policy;
 
     /**
+     * @Groups({"hum"})
      * @ORM\OneToOne(targetEntity=Institution::class, cascade={"persist", "remove"})
      */
     private $institution;

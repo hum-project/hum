@@ -2,17 +2,28 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\VoteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get"
+ *     },
+ *     itemOperations={
+ *         "get"
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=VoteRepository::class)
  */
 class Vote
 {
     /**
+     * @Groups({"hum"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,21 +31,25 @@ class Vote
     private $id;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="integer")
      */
     private $yes;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="integer")
      */
     private $no;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="integer")
      */
     private $abstain;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="integer")
      */
     private $absent;

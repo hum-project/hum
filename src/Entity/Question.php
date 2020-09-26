@@ -2,17 +2,28 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={
+ *         "get"
+ *     },
+ *     itemOperations={
+ *         "get"
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=QuestionRepository::class)
  */
 class Question
 {
     /**
+     * @Groups({"hum"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,6 +31,7 @@ class Question
     private $id;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="text")
      */
     private $text;
@@ -35,26 +47,31 @@ class Question
     private $translation;
 
     /**
+     * @Groups({"hum"})
      * @ORM\OneToMany(targetEntity=Question::class, mappedBy="translation")
      */
     private $translations;
 
     /**
+     * @Groups({"hum"})
      * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="questions")
      */
     private $language;
 
     /**
+     * @Groups({"hum"})
      * @ORM\OneToMany(targetEntity=ContinuousAnswer::class, mappedBy="question")
      */
     private $continuousAnswers;
 
     /**
+     * @Groups({"hum"})
      * @ORM\OneToMany(targetEntity=OrdinalAnswer::class, mappedBy="question")
      */
     private $ordinalAnswers;
 
     /**
+     * @Groups({"hum"})
      * @ORM\OneToMany(targetEntity=NominalAnswer::class, mappedBy="question")
      */
     private $nominalAnswers;

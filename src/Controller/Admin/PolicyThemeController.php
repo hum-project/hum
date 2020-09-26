@@ -198,7 +198,12 @@ class PolicyThemeController extends AbstractController
                 $prevImage = $theme->getSymbol();
                 if ($prevImage) {
                     // and delete the old one.
-                    $deleteStatus = unlink($filePath . '/' . $prevImage->getFileName());
+                    try {
+                        $deleteStatus = unlink($filePath . '/' . $prevImage->getFileName());
+                    } catch (\Exception $e) {
+                        $errors[] = $e;
+                        $deleteStatus = true;
+                    }
                     if ($deleteStatus) {
                         $prevImage->setFileName($newFileName);
                         $prevImage->setAlt($alt);
