@@ -76,12 +76,18 @@ class Question
      */
     private $nominalAnswers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ClientAnswer::class, mappedBy="question")
+     */
+    private $clientAnswers;
+
     public function __construct()
     {
         $this->translations = new ArrayCollection();
         $this->continuousAnswers = new ArrayCollection();
         $this->ordinalAnswers = new ArrayCollection();
         $this->nominalAnswers = new ArrayCollection();
+        $this->clientAnswers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -260,6 +266,37 @@ class Question
             // set the owning side to null (unless already changed)
             if ($nominalAnswer->getQuestion() === $this) {
                 $nominalAnswer->setQuestion(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ClientAnswer[]
+     */
+    public function getClientAnswers(): Collection
+    {
+        return $this->clientAnswers;
+    }
+
+    public function addClientAnswer(ClientAnswer $clientAnswer): self
+    {
+        if (!$this->clientAnswers->contains($clientAnswer)) {
+            $this->clientAnswers[] = $clientAnswer;
+            $clientAnswer->setQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientAnswer(ClientAnswer $clientAnswer): self
+    {
+        if ($this->clientAnswers->contains($clientAnswer)) {
+            $this->clientAnswers->removeElement($clientAnswer);
+            // set the owning side to null (unless already changed)
+            if ($clientAnswer->getQuestion() === $this) {
+                $clientAnswer->setQuestion(null);
             }
         }
 

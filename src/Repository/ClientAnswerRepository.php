@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\ClientNominalAnswer;
+use App\Entity\ClientAnswer;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method ClientNominalAnswer|null find($id, $lockMode = null, $lockVersion = null)
- * @method ClientNominalAnswer|null findOneBy(array $criteria, array $orderBy = null)
- * @method ClientNominalAnswer[]    findAll()
- * @method ClientNominalAnswer[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method ClientAnswer|null find($id, $lockMode = null, $lockVersion = null)
+ * @method ClientAnswer|null findOneBy(array $criteria, array $orderBy = null)
+ * @method ClientAnswer[]    findAll()
+ * @method ClientAnswer[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ClientNominalAnswerRepository extends ServiceEntityRepository
+class ClientAnswerRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ClientNominalAnswer::class);
+        parent::__construct($registry, ClientAnswer::class);
     }
 
     // /**
-    //  * @return ClientNominalAnswer[] Returns an array of ClientNominalAnswer objects
+    //  * @return ClientAnswer[] Returns an array of ClientAnswer objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class ClientNominalAnswerRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?ClientNominalAnswer
+    public function findOneBySomeField($value): ?ClientAnswer
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')

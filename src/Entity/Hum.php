@@ -55,6 +55,11 @@ class Hum
      */
     private $institution;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ClientAnswer::class, mappedBy="hum")
+     */
+    private $clientAnswers;
+
 
     public function __construct()
     {
@@ -62,6 +67,7 @@ class Hum
         $this->date->modify('+7 day');
         $this->questions = new ArrayCollection();
         $this->hums = new ArrayCollection();
+        $this->clientAnswers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -139,6 +145,37 @@ class Hum
     public function __toString()
     {
         return $this->getPolicy() . ' [' . $this->getDate()->format("Y-m-d") . ']';
+    }
+
+    /**
+     * @return Collection|ClientAnswer[]
+     */
+    public function getClientAnswers(): Collection
+    {
+        return $this->clientAnswers;
+    }
+
+    public function addClientAnswer(ClientAnswer $clientAnswer): self
+    {
+        if (!$this->clientAnswers->contains($clientAnswer)) {
+            $this->clientAnswers[] = $clientAnswer;
+            $clientAnswer->setHum($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientAnswer(ClientAnswer $clientAnswer): self
+    {
+        if ($this->clientAnswers->contains($clientAnswer)) {
+            $this->clientAnswers->removeElement($clientAnswer);
+            // set the owning side to null (unless already changed)
+            if ($clientAnswer->getHum() === $this) {
+                $clientAnswer->setHum(null);
+            }
+        }
+
+        return $this;
     }
 
 
