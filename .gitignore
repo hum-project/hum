@@ -21,7 +21,10 @@
 
 ###> PROJECT SPECIFIC ###
 /public/uploads/
+styles.min.css
+styles.min.css.map
 ###> PROJECT SPECIFIC ###
+
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 /public/build/
