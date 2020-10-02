@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Image
 {
     /**
-     * @Groups({"hum"})
+     * @Groups({"hum", "news"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -29,13 +29,13 @@ class Image
     private $id;
 
     /**
-     * @Groups({"hum"})
+     * @Groups({"hum", "news"})
      * @ORM\Column(type="string", length=255)
      */
     private $alt;
 
     /**
-     * @Groups({"hum"})
+     * @Groups({"hum", "news"})
      * @ORM\Column(type="string", length=255)
      */
     private $fileName;
