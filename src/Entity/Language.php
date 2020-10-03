@@ -23,7 +23,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Language
 {
     /**
-     * @Groups({"hum"})
+     * @Groups({"hum", "news"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -31,7 +31,7 @@ class Language
     private $id;
 
     /**
-     * @Groups({"hum"})
+     * @Groups({"hum", "news"})
      * @ORM\Column(type="string", length=255)
      */
     private $name;
