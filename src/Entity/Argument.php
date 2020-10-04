@@ -7,6 +7,7 @@ use App\Repository\ArgumentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
@@ -22,6 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Argument
 {
     /**
+     * @Groups({"hum"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -29,11 +31,13 @@ class Argument
     private $id;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="string", length=255)
      */
     private $side;
 
     /**
+     * @Groups({"hum"})
      * @ORM\Column(type="text")
      */
     private $text;
@@ -44,11 +48,13 @@ class Argument
     private $parent;
 
     /**
+     * @Groups({"hum"})
      * @ORM\OneToOne(targetEntity=Argument::class, mappedBy="parent", cascade={"persist", "remove"})
      */
     private $child;
 
     /**
+     * @Groups({"hum"})
      * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="arguments")
      */
     private $language;
@@ -59,6 +65,7 @@ class Argument
     private $translation;
 
     /**
+     * @Groups({"hum"})
      * @ORM\OneToMany(targetEntity=Argument::class, mappedBy="translation")
      */
     private $translations;
