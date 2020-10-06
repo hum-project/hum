@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
+ *     attributes={"order"={"publishTime": "DESC"}},
  *     normalizationContext={"groups"={"news"}},
  *     collectionOperations={
  *         "get"
