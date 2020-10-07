@@ -87,6 +87,7 @@ class BlogPost
     private $language;
 
     /**
+     * @Groups({"news"})
      * @ORM\ManyToOne(targetEntity=BlogPost::class, inversedBy="blogPosts")
      */
     private $parent;
