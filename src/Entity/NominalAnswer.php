@@ -42,17 +42,6 @@ class NominalAnswer
      */
     private $question;
 
-    /**
-     * @ORM\OneToMany(targetEntity=ClientNominalAnswer::class, mappedBy="nominalAnswer")
-     */
-    private $clientNominalAnswers;
-
-    public function __construct()
-    {
-        $this->clientNominalAnswers = new ArrayCollection();
-    }
-
-
     public function getId(): ?int
     {
         return $this->id;
@@ -82,41 +71,9 @@ class NominalAnswer
         return $this;
     }
 
-    /**
-     * @return Collection|ClientNominalAnswer[]
-     */
-    public function getClientNominalAnswers(): Collection
-    {
-        return $this->clientNominalAnswers;
-    }
-
-    public function addClientNominalAnswer(ClientNominalAnswer $clientNominalAnswer): self
-    {
-        if (!$this->clientNominalAnswers->contains($clientNominalAnswer)) {
-            $this->clientNominalAnswers[] = $clientNominalAnswer;
-            $clientNominalAnswer->setNominalAnswer($this);
-        }
-
-        return $this;
-    }
-
-    public function removeClientNominalAnswer(ClientNominalAnswer $clientNominalAnswer): self
-    {
-        if ($this->clientNominalAnswers->contains($clientNominalAnswer)) {
-            $this->clientNominalAnswers->removeElement($clientNominalAnswer);
-            // set the owning side to null (unless already changed)
-            if ($clientNominalAnswer->getNominalAnswer() === $this) {
-                $clientNominalAnswer->setNominalAnswer(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function __toString()
     {
         return "Nominal type: " . $this->getValue();
     }
-
 
 }

@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\BlogImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
@@ -20,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 class BlogImage
 {
     /**
+     * @Groups({"news"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -27,16 +29,19 @@ class BlogImage
     private $id;
 
     /**
+     * @Groups({"news"})
      * @ORM\Column(type="integer")
      */
     private $ordering;
 
     /**
+     * @Groups({"news"})
      * @ORM\Column(type="text", nullable=true)
      */
     private $subtext;
 
     /**
+     * @Groups({"news"})
      * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"})
      */
     private $image;

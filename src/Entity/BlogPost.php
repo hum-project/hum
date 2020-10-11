@@ -4,12 +4,17 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\BlogPostRepository;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
+ *     attributes={"order"={"publishTime": "DESC"}},
+ *     normalizationContext={"groups"={"news"}},
  *     collectionOperations={
  *         "get"
  *     },
@@ -22,6 +27,8 @@ use Doctrine\ORM\Mapping as ORM;
 class BlogPost
 {
     /**
+     *
+     * @Groups({"news"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -29,16 +36,19 @@ class BlogPost
     private $id;
 
     /**
+     * @Groups({"news"})
      * @ORM\Column(type="string", length=255)
      */
     private $slug;
 
     /**
+     * @Groups({"news"})
      * @ORM\Column(type="string", length=255)
      */
     private $title;
 
     /**
+     * @Groups({"news"})
      * @ORM\Column(type="text")
      */
     private $text;
@@ -54,6 +64,7 @@ class BlogPost
     private $modified;
 
     /**
+     * @Groups({"news"})
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $publishTime;
@@ -64,21 +75,25 @@ class BlogPost
     private $user;
 
     /**
+     * @Groups({"news"})
      * @ORM\OneToMany(targetEntity=BlogImage::class, mappedBy="blogPost")
      */
     private $blogImages;
 
     /**
+     * @Groups({"news"})
      * @ORM\ManyToOne(targetEntity=Language::class, inversedBy="blogPosts")
      */
     private $language;
 
     /**
+     * @Groups({"news"})
      * @ORM\ManyToOne(targetEntity=BlogPost::class, inversedBy="blogPosts")
      */
     private $parent;
 
     /**
+     * @Groups({"news"})
      * @ORM\OneToMany(targetEntity=BlogPost::class, mappedBy="parent")
      */
     private $blogPosts;
@@ -137,15 +152,15 @@ class BlogPost
         return $this;
     }
 
-    public function getEntered(): ?\DateTimeInterface
+    public function getEntered(): ?DateTimeInterface
     {
         return $this->entered;
     }
 
-    public function setEntered(\DateTimeInterface $entered): self
+    public function setEntered(DateTimeInterface $entered): self
     {
-        $this->entered = new \DateTime($entered->format('Y-m-d H:i:s'));
-        $this->modified = new \DateTime($entered->format('Y-m-d H:i:s'));
+        $this->entered = new DateTime($entered->format('Y-m-d H:i:s'));
+        $this->modified = new DateTime($entered->format('Y-m-d H:i:s'));
         $minutes = $entered->format("i");
         $entered->modify("+1 hour");
         $entered->modify("-" . $minutes . " minutes");
@@ -154,24 +169,24 @@ class BlogPost
         return $this;
     }
 
-    public function getModified(): ?\DateTimeInterface
+    public function getModified(): ?DateTimeInterface
     {
         return $this->modified;
     }
 
-    public function setModified(?\DateTimeInterface $modified): self
+    public function setModified(?DateTimeInterface $modified): self
     {
         $this->modified = $modified;
 
         return $this;
     }
 
-    public function getPublishTime(): ?\DateTimeInterface
+    public function getPublishTime(): ?DateTimeInterface
     {
         return $this->publishTime;
     }
 
-    public function setPublishTime(?\DateTimeInterface $publishTime): self
+    public function setPublishTime(?DateTimeInterface $publishTime): self
     {
         $this->publishTime = $publishTime;
 

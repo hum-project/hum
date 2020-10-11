@@ -5,9 +5,9 @@ namespace App\Controller\Admin;
 use App\Entity\BlogImage;
 use App\Entity\BlogPost;
 use App\Entity\Image;
-use App\Form\BlogImageType;
 use App\Form\BlogPostType;
 use App\Repository\BlogPostRepository;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,7 @@ class BlogController extends AbstractController
     /**
      * @Route("/news/add", name="news_add", methods={"GET", "POST"})
      */
-    public function addPost(Request $request, BlogPostRepository $repository, SluggerInterface $slugger)
+    public function addPost(Request $request, SluggerInterface $slugger)
     {
         $blogPost = new BlogPost();
 
@@ -78,7 +78,7 @@ class BlogController extends AbstractController
 
             }
 
-            $blogPost->setEntered(new \DateTime('now'));
+            $blogPost->setEntered(new DateTime('now'));
             $blogPost->updateSlug();
 
             $entitymanager->persist($blogPost);
@@ -151,7 +151,7 @@ class BlogController extends AbstractController
 
             }
 
-            $blogPost->setEntered(new \DateTime('now'));
+            $blogPost->setEntered(new DateTime('now'));
             $blogPost->updateSlug();
 
             $entitymanager->persist($blogPost);
@@ -255,7 +255,8 @@ class BlogController extends AbstractController
                 }
 
                 if ($remove) {
-                    $deleteStatus = unlink($filePath . '/' . $prevBlogImage->getImage()->getFileName());
+                    $deleteStatus = true;
+                        //unlink($filePath . '/' . $prevBlogImage->getImage()->getFileName());
                     if ($deleteStatus) {
                         $blogPost->removeBlogImage($prevBlogImage);
                         $entitymanager->remove($prevBlogImage->getImage());
