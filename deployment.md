@@ -28,7 +28,22 @@ composer install --no-dev --optimize-autoloader
 there's no need for modifying it's require. We will be able 
 to use .env.local on production.*
 
-### Create .htaccess
+#### Edit composer.json
+Add instructions for Symfony of which directory to treat as the index directory: 
+```
+"extra": {
+        "public-dir": "httpd.www"
+}
+```
+#### Edit index.php
+Since the code base is split up, we need to instruct Symfony of where it can find its instructions. Add the following to the top of the index.php-file: 
+```
+require dirname(__DIR__).'/httpd.private/config/bootstrap.php';
+```
+
+### Create .htaccess 
+The purpose of editing .htaccess and provide it to the host server is so it can interpret routes in a smooth manner. That way each request can omit the [domain]/index.php/[subdomain]: 
+
 ```
 <IfModule mod_rewrite.c>
     Options +FollowSymlinks
@@ -71,4 +86,20 @@ php bin/console doctrine:migrations:migrate
 **Prerequisite:** 
 * SSH protocol.
 * SFTP application: *FileZilla*. 
-Use SFTP and move the project to production.
+
+Use SFTP and move the project to production. 
+
+
+Move files to different filepaths. 
+origin | destination
+--- | ---
+/public/* | httpd.www/
+/composer.json | httpd.www/
+/.htaccess | httpd.www/
+/.env | httpd.private/
+/bin | httpd.private/
+/config | httpd.private/
+/src | httpd.private/
+/vendor | httpd.private/
+/templates | httpd.private/
+/var | httpd.private/
