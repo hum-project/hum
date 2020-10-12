@@ -38,7 +38,7 @@ Add instructions for Symfony of which directory to treat as the index directory:
 #### Edit index.php
 Since the code base is split up, we need to instruct Symfony of where it can find its instructions. Add the following to the top of the index.php-file: 
 ```
-require dirname(__DIR__).'/httpd.private/config/bootstrap.php';
+require dirname(__DIR__).'/httpd.private/api/config/bootstrap.php';
 ```
 
 ### Create .htaccess 
