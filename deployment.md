@@ -32,7 +32,7 @@ to use .env.local on production.*
 Add instructions for Symfony of which directory to treat as the index directory: 
 ```
 "extra": {
-        "public-dir": "httpd.www"
+        "public-dir": "httpd.www/api"
 }
 ```
 #### Edit index.php
